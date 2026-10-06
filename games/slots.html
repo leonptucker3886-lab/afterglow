@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nebula Nights · AFTERGLOW social casino</title>
+<meta name="description" content="Spin Nebula Nights, a free-to-play 5-reel neon video slot with NOVA wilds and wormhole free spins on AFTERGLOW. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.panel{display:flex;flex-direction:column}
+.panel .ghead{order:-3}
+.sl-spinrow{display:flex;gap:8px;align-items:stretch;margin-bottom:12px}
+.sl-spinrow .btn.big{flex:1;font-size:19px;letter-spacing:.12em;min-height:60px}
+.sl-spinrow .btn.big.auto{background:linear-gradient(180deg,#ff6fd7,var(--p2));color:#fff;box-shadow:var(--glowp)}
+.sl-spinrow .pt{min-width:60px;padding:0 12px;flex:none}
+.sl-spinrow .pt svg{width:24px;height:24px}
+.sl-opt{display:flex;align-items:center;justify-content:space-between;min-height:44px;margin-bottom:8px;gap:10px}
+.sl-opt span{font:700 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.sl-opt small{display:block;font:500 12px var(--sans);letter-spacing:0;text-transform:none;color:var(--faint)}
+.sl-auto{display:flex;gap:8px}
+.sl-auto .seg{flex:1}
+.sl-auto .seg button{min-height:44px}
+.sl-auto .btn{min-height:50px;padding:0 14px}
+@media(max-width:899px){.sl-spinrow{order:-2}}
+
+.stage.sl{min-height:0}
+.sl-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:8px 4px 6px;gap:8px}
+.sl-fsbar{width:min(100%,760px);display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:linear-gradient(90deg,#3a0a4a,#1a0b3a);border:1px solid var(--p);box-shadow:var(--glowp);font:800 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.sl-fsbar[hidden]{display:none}
+.sl-fsbar b{font:900 18px var(--mono);color:var(--y);text-shadow:0 0 10px #ffd84d88}
+.sl-fsbar .x2{color:var(--l);text-shadow:var(--glowl)}
+.sl-frame{position:relative;width:min(100%,760px);padding:6px;border-radius:18px;background:linear-gradient(180deg,#120a2c,#07060f);border:1px solid #3b2a77;box-shadow:0 0 0 1px #22f0ff22,0 0 30px #8b5cff33,inset 0 0 30px #000}
+.sl-frame:before{content:"";position:absolute;inset:-1px;border-radius:18px;padding:1px;background:linear-gradient(90deg,var(--c),var(--v),var(--p));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.8;pointer-events:none}
+.fsmode .sl-frame{border-color:var(--p);box-shadow:0 0 40px #ff3dc866,inset 0 0 30px #000}
+.sl-reels{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(4px,1vw,8px)}
+.reel{position:relative;aspect-ratio:1/3;overflow:hidden;border-radius:10px;background:linear-gradient(180deg,#0a0a18,#141432 50%,#0a0a18);box-shadow:inset 0 10px 14px -6px #000,inset 0 -10px 14px -6px #000;transition:box-shadow .3s}
+.reel:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#05050acc,transparent 14%,transparent 86%,#05050acc);border-radius:10px}
+.reel.antic{box-shadow:0 0 0 2px var(--p),0 0 26px #ff3dc8,inset 0 0 22px #ff3dc888;animation:antic .5s ease-in-out infinite alternate}
+@keyframes antic{to{box-shadow:0 0 0 2px var(--y),0 0 34px #ffd84d,inset 0 0 26px #ffd84d88}}
+.strip{position:absolute;left:0;top:0;width:100%;will-change:transform}
+.reel.spinning .strip{filter:url(#vblur)}
+.cell{width:100%;aspect-ratio:1;display:grid;place-items:center;transition:opacity .25s}
+.cell svg{width:86%;height:86%;overflow:visible}
+.cell.k-d svg{filter:drop-shadow(0 0 5px #22f0ffaa)}.cell.k-t svg{filter:drop-shadow(0 0 5px #b8ff3baa)}
+.cell.k-c svg{filter:drop-shadow(0 0 5px #ff3dc8aa)}.cell.k-s svg{filter:drop-shadow(0 0 5px #8b5cffcc)}
+.cell.k-P svg,.cell.k-C svg,.cell.k-A svg,.cell.k-U svg{filter:drop-shadow(0 0 6px #ffffff55)}
+.cell.k-W svg{filter:drop-shadow(0 0 8px #ffd84d)}.cell.k-X svg{filter:drop-shadow(0 0 8px #ff3dc8)}
+.sl-reels.won .cell{opacity:.32}
+.sl-reels.won .cell.win{opacity:1}
+.cell.win svg{animation:pulse .55s ease-in-out infinite alternate}
+.cell.k-X.win svg{animation:pulse .55s ease-in-out infinite alternate,spinx 3s linear infinite}
+@keyframes pulse{to{transform:scale(1.13);filter:drop-shadow(0 0 14px #fff) brightness(1.25)}}
+@keyframes spinx{to{rotate:360deg}}
+.cell.land svg{animation:pop .3s}
+.sl-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.sl-lines polyline{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .45s ease-out forwards,lglow 1s ease-in-out .45s infinite alternate}
+.sl-lines polyline.core{stroke:#fff;stroke-width:1.6;opacity:.9}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes lglow{to{stroke-width:7;opacity:.75}}
+.sl-banner{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;border-radius:18px;background:radial-gradient(circle,#2a0b4aee,#05050af2 75%);cursor:pointer;animation:fade .25s}
+.sl-banner[hidden]{display:none}
+.sl-banner .in{animation:bw .5s cubic-bezier(.2,1.6,.4,1);padding:12px}
+.sl-banner .k{font:800 13px var(--sans);letter-spacing:.25em;color:var(--c);text-transform:uppercase}
+.sl-banner .t{font:900 clamp(30px,8vw,64px)/1.05 var(--sans);letter-spacing:.04em;background:linear-gradient(180deg,#fff,var(--y) 40%,var(--p));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px #ff3dc8aa);margin:6px 0}
+.sl-banner .s{font:800 clamp(14px,3.6vw,18px) var(--mono);color:var(--l);text-shadow:var(--glowl)}
+.sl-banner .f{font:600 12px var(--sans);color:var(--faint);margin-top:12px}
+.sl-banner svg{width:clamp(54px,14vw,90px);height:auto;margin:0 auto 6px;filter:drop-shadow(0 0 14px #ff3dc8);animation:spinx 4s linear infinite}
+.sl-win{width:min(100%,760px);display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:52px;padding:6px 14px;border-radius:12px;background:#0b0b18cc;border:1px solid var(--line)}
+.sl-win small{color:var(--dim);font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.sl-win b{font:900 26px var(--mono);color:var(--faint);font-variant-numeric:tabular-nums;flex:none}
+.sl-win.on{border-color:var(--l);box-shadow:var(--glowl)}
+.sl-win.on b{color:var(--l);text-shadow:var(--glowl)}
+.sl-hud{display:flex;justify-content:center;gap:10px;padding:2px 12px 14px;flex-wrap:wrap}
+.sl-hud div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 14px;text-align:center;min-width:120px;flex:1;max-width:200px}
+.sl-hud small{display:block;color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.sl-hud b{font:800 17px var(--mono)}
+@media(min-width:900px){.sl-wrap{padding:18px 20px 8px;gap:12px}.sl-frame{padding:12px}.sl-win b{font-size:32px}}
+
+/* paytable */
+.ptab{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.ptab .pr{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:6px 8px}
+.ptab .pr.wide{grid-column:1/-1}
+.ptab svg{width:46px;height:46px;flex:none;overflow:visible}
+.ptab .pv{font:700 12px/1.45 var(--mono);color:var(--txt)}
+.ptab .pv i{font-style:normal;color:var(--faint);display:inline-block;width:22px}
+.ptab .pv.txt{font-family:var(--sans);font-weight:500;color:var(--dim)}
+.plines{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.plines div{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:13px 3px 3px}
+.plines svg{width:100%;height:auto}
+.plines span{position:absolute;top:1px;left:4px;font:800 9px var(--mono);color:var(--faint)}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="sl-spinrow">
+      <button class="btn big pri" id="spin" aria-label="Spin (space bar)">SPIN</button>
+      <button class="btn pt" id="ptbtn" aria-label="Paytable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></button>
+    </div>
+    <div id="betslot"></div>
+    <div class="sl-opt"><span>Turbo<small>Faster reels</small></span><label class="toggle"><input type="checkbox" id="turbo" aria-label="Turbo spins"><i></i></label></div>
+    <div class="field"><label>Autoplay <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">stops on free spins or 20×+</span></label>
+      <div class="sl-auto"><div class="seg" id="aseg"><button data-n="10" class="on">10</button><button data-n="25">25</button><button data-n="50">50</button><button data-n="100">100</button></div><button class="btn" id="auto">Auto</button></div>
+    </div>
+    <div style="margin-top:4px">
+      <div class="stat-row"><span>Line bet × 20 lines</span><b id="linebet">-</b></div>
+      <div class="stat-row"><span>Free spins</span><b>3+ wormholes</b></div>
+    </div>
+  </section>
+  <section class="stage sl" id="stage">
+    <div class="recent" id="recent"></div>
+    <div class="sl-wrap">
+      <div class="sl-fsbar" id="fsbar" hidden><span>Free spins <b id="fsleft">0</b> left</span><span class="x2">×2</span><span>Won <b id="fswon">0</b></span></div>
+      <div class="sl-frame" id="frame">
+        <div class="sl-reels" id="reels"></div>
+        <svg class="sl-lines" id="lines" aria-hidden="true"></svg>
+        <div class="sl-banner" id="banner" hidden></div>
+      </div>
+      <div class="sl-win" id="winbox" aria-live="polite"><small id="winmsg">20 lines · 3 of a kind from reel 1 pays</small><b id="winamt">0</b></div>
+    </div>
+    <div class="sl-hud"><div><small>Last win</small><b id="lastwin">0</b></div><div><small>Total bet</small><b id="totbet">0</b></div></div>
+  </section>
+</main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="vblur" x="0" y="-20%" width="100%" height="140%"><feGaussianBlur stdDeviation="0 7"/></filter></svg>
+<script type="module" src="/games/slots.js"></script>
+</body></html>

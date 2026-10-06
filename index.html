@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AFTERGLOW · Free neon social casino</title>
+<meta name="description" content="AFTERGLOW is a free-to-play neon social casino. Slots, blackjack, roulette, Liftoff, Plinko and Mines with play-money Glow Coins. No purchase, no cash-out, just the glow. 18+.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="canonical" href="https://afterglow.leonlink.net/">
+<meta property="og:title" content="AFTERGLOW · Free neon social casino"><meta property="og:description" content="Slots, blackjack, roulette and neon originals. Play money only, free forever.">
+<meta property="og:image" content="https://afterglow.leonlink.net/og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.hero{position:relative;overflow:hidden;border-radius:22px;margin-top:14px;border:1px solid var(--line2);padding:26px 20px;min-height:260px;display:flex;flex-direction:column;justify-content:flex-end;
+  background:radial-gradient(120% 120% at 100% 0%,#3a0a3a 0%,transparent 55%),radial-gradient(100% 100% at 0% 100%,#06303a 0%,transparent 60%),linear-gradient(180deg,#0e0e22,#08080f)}
+.hero h1{font:900 clamp(30px,8.5vw,58px)/1 var(--sans);letter-spacing:-.01em;max-width:13ch}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--c),var(--p));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px #ff3dc866)}
+.hero p{color:var(--dim);max-width:44ch;margin:10px 0 16px}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.orb{position:absolute;right:-60px;top:-50px;width:300px;height:300px;pointer-events:none;opacity:.9}
+@media(min-width:760px){.hero{padding:44px;min-height:340px}.orb{right:30px;top:20px;width:320px;height:320px}}
+.orb .r1{animation:spin 18s linear infinite;transform-origin:150px 150px}.orb .r2{animation:spin 11s linear infinite reverse;transform-origin:150px 150px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chipf{position:absolute;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px) rotate(8deg)}}
+.bonus{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,82%);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 8px;margin:14px -2px 0;scrollbar-width:none}
+.bonus::-webkit-scrollbar{display:none}
+@media(min-width:760px){.bonus{grid-auto-flow:row;grid-template-columns:repeat(3,1fr);overflow:visible}}
+.bcard{scroll-snap-align:start;display:flex;gap:14px;align-items:center;padding:14px;border-radius:var(--rad);border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#0a0a16);min-height:92px}
+.bcard .ic{width:54px;height:54px;flex:none;border-radius:14px;display:grid;place-items:center;font-size:26px}
+.bcard h3{font-size:15px}.bcard small{color:var(--dim);display:block;font-size:12.5px}
+.bcard .go{margin-left:auto;flex:none}
+.bcard.ready{border-color:#ff3dc866;box-shadow:0 0 22px #ff3dc822}
+.cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.cats::-webkit-scrollbar{display:none}
+.cats button{flex:none;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);font-weight:700;color:var(--dim);cursor:pointer}
+.cats button.on{background:var(--c);color:#031417;border-color:var(--c);box-shadow:var(--glow)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media(min-width:720px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(min-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
+.gc{position:relative;display:block;border-radius:var(--rad);overflow:hidden;border:1px solid var(--line);background:var(--panel);color:var(--txt);transition:transform .15s,box-shadow .2s,border-color .2s}
+.gc:hover{transform:translateY(-3px);border-color:var(--c);box-shadow:0 10px 30px #000a,0 0 24px #22f0ff33}
+.gc .art{aspect-ratio:16/10;display:grid;place-items:center;padding:8px 14px;position:relative}
+.gc .art svg{width:100%;height:100%}
+.gc .meta{padding:10px 12px 12px}
+.gc h3{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc .meta small{display:block;color:var(--faint);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc .badge{position:absolute;top:8px;left:8px;font:900 10px var(--sans);letter-spacing:.1em;padding:4px 8px;border-radius:6px;background:var(--p);color:#fff;box-shadow:var(--glowp)}
+.gc .badge.NEW{background:var(--l);color:#122000;box-shadow:var(--glowl)}
+.gc .play{position:absolute;inset:0;display:grid;place-items:center;background:#05050a99;opacity:0;transition:opacity .2s}
+.gc .play span{background:var(--c);color:#031417;font-weight:900;padding:10px 20px;border-radius:999px;box-shadow:var(--glow)}
+.gc:hover .play{opacity:1}
+.gc.soon{pointer-events:none;opacity:.55}.gc.soon .art{filter:grayscale(.6)}
+.gc .mine{position:absolute;top:8px;right:8px;font:800 10.5px var(--mono);padding:3px 7px;border-radius:6px;background:#05050acc;color:var(--l)}
+.feat{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:760px){.feat{grid-template-columns:repeat(3,1fr)}}
+.feat .card h3{font-size:16px;margin:8px 0 4px}.feat .card p{margin:0;color:var(--dim);font-size:14px}
+.feat .card .ic{font-size:26px}
+.hist{display:flex;flex-direction:column;gap:6px}
+.hist a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--line);color:var(--txt);font-size:14px}
+.hist a b{margin-left:auto;font-family:var(--mono)}
+</style></head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <svg class="orb" viewBox="0 0 300 300" aria-hidden="true"><defs><radialGradient id="og"><stop offset="0" stop-color="#fff"/><stop offset=".25" stop-color="#22f0ff"/><stop offset=".7" stop-color="#8b5cff"/><stop offset="1" stop-color="#ff3dc8" stop-opacity="0"/></radialGradient><linearGradient id="ol" x1="0" x2="1"><stop offset="0" stop-color="#22f0ff"/><stop offset="1" stop-color="#ff3dc8"/></linearGradient></defs>
+      <circle cx="150" cy="150" r="64" fill="url(#og)" opacity=".85"/>
+      <g class="r1"><ellipse cx="150" cy="150" rx="135" ry="44" fill="none" stroke="url(#ol)" stroke-width="2.5" transform="rotate(-24 150 150)"/><circle cx="270" cy="96" r="7" fill="#b8ff3b" style="filter:drop-shadow(0 0 8px #b8ff3b)"/></g>
+      <g class="r2"><ellipse cx="150" cy="150" rx="110" ry="30" fill="none" stroke="#ff3dc8" stroke-opacity=".6" stroke-width="1.5" transform="rotate(30 150 150)"/><circle cx="60" cy="110" r="5" fill="#22f0ff" style="filter:drop-shadow(0 0 8px #22f0ff)"/></g>
+    </svg>
+    <span class="pill p" style="align-self:flex-start;margin-bottom:12px">Free to play · 18+</span>
+    <h1>The casino that <em>never closes.</em></h1>
+    <p>Neon slots, blackjack, roulette and originals you won't find anywhere else. Play money only: nothing to buy, nothing to lose.</p>
+    <div class="ctas"><a class="btn pri" id="heroCta" href="/games/slots.html">Play Nebula Nights</a><a class="btn ghost" href="#games">Browse games</a></div>
+  </section>
+
+  <div class="bonus" id="bonus">
+    <a class="bcard" id="bDaily" href="/rewards.html#wheel"><div class="ic" style="background:#ff3dc822;box-shadow:inset 0 0 0 1px #ff3dc855">🎡</div><div><h3>Daily Glow Wheel</h3><small data-k="s">…</small></div><span class="btn sm pink go" data-k="b">Spin</span></a>
+    <div class="bcard" id="bDrop"><div class="ic" style="background:#22f0ff1a;box-shadow:inset 0 0 0 1px #22f0ff55">🛰️</div><div><h3>Orbit Drop</h3><small data-k="s">…</small></div><button class="btn sm pri go" data-k="b">Collect</button></div>
+    <button class="bcard" id="bLvl" style="text-align:left;color:inherit;cursor:pointer;font:inherit"><div class="ic" style="background:#b8ff3b14;box-shadow:inset 0 0 0 1px #b8ff3b55"><svg width="44" height="44" viewBox="0 0 44 44" style="transform:rotate(-90deg)"><circle cx="22" cy="22" r="18" fill="none" stroke="#22223d" stroke-width="5"/><circle data-k="ring" cx="22" cy="22" r="18" fill="none" stroke="#b8ff3b" stroke-width="5" stroke-linecap="round" stroke-dasharray="113.1" stroke-dashoffset="113.1"/></svg></div><div><h3 data-k="t">Level 1</h3><small data-k="s">…</small></div></button>
+  </div>
+
+  <div class="h-sec" id="games"><h2>All <em>games</em></h2><span class="faint" style="font-size:13px" id="gcount"></span></div>
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="grid"></div>
+
+  <section id="recentWrap" hidden><div class="h-sec"><h2>Your <em>last plays</em></h2><a href="/profile.html#history" style="font-size:13px">All history</a></div><div class="hist" id="hist"></div></section>
+
+  <div class="h-sec"><h2>Why <em>AFTERGLOW</em></h2></div>
+  <div class="feat">
+    <div class="card"><div class="ic">🌙</div><h3>Free, forever</h3><p>Start with 10,000 Glow, plus a daily wheel, an Orbit Drop every 3 hours and a refuel if you run dry. There's no store, ever.</p></div>
+    <div class="card"><div class="ic">🛡️</div><h3>Fair-play seeds</h3><p>Every round runs from a seed hash you can see before you play. Rotate seeds and check any result yourself.</p></div>
+    <div class="card"><div class="ic">⚡</div><h3>Level up</h3><p>Every bet earns XP. Climb from Spark to Quasar, unlock achievements and collect bigger level rewards.</p></div>
+  </div>
+</main>
+<script type="module">
+import { boot, state, on, GAMES, CATS, art, fmt, fmtFull, fmtX, xpFor, tierOf, levelReward, levelModal, toast, sfx, burst, $, esc } from '/core/ag.js';
+import * as B from '/core/bonus.js';
+boot({ nav: 'lobby' });
+
+let cat = 'all';
+$('#cats').innerHTML = CATS.map(([k, l]) => `<button data-c="${k}" class="${k === cat ? 'on' : ''}">${l}</button>`).join('');
+$('#cats').onclick = e => { const b = e.target.closest('button'); if (!b) return; sfx('tap'); cat = b.dataset.c; [...$('#cats').children].forEach(x => x.classList.toggle('on', x === b)); grid(); };
+function grid() {
+  const list = GAMES.filter(g => cat === 'all' || g.cat === cat);
+  $('#grid').innerHTML = list.map(g => {
+    const best = state.stats.byGame[g.id]?.best;
+    return `<a class="gc ${g.live ? '' : 'soon'}" ${g.live ? `href="${g.url}"` : 'aria-disabled="true"'}><div class="art" style="background:${g.bg || 'linear-gradient(135deg,#141428,#08080f)'}">${art(g.live ? g.id : 'soon')}${g.badge ? `<span class="badge ${g.badge}">${g.badge}</span>` : ''}${!g.live ? '<span class="badge" style="background:#32325a;box-shadow:none">SOON</span>' : ''}${best ? `<span class="mine">best ${fmtX(best)}</span>` : ''}</div><div class="meta"><h3>${esc(g.name)}</h3><small>${esc(g.tag)}</small></div>${g.live ? '<div class="play"><span>Play</span></div>' : ''}</a>`;
+  }).join('');
+  $('#gcount').textContent = `${GAMES.filter(g => g.live).length} live · ${GAMES.filter(g => !g.live).length} coming soon`;
+}
+grid();
+
+function bonus() {
+  const d = $('#bDaily'), r = B.dailyReady();
+  d.classList.toggle('ready', r);
+  $('[data-k=s]', d).textContent = r ? `Day ${B.nextStreak()} streak · up to ${fmt(Math.round(25000 * B.streakMult(B.nextStreak())))}` : `Next spin in ${B.clock(B.msToMidnight())}`;
+  $('[data-k=b]', d).textContent = r ? 'Spin' : 'View';
+  const p = $('#bDrop'), dr = B.dropReady();
+  p.classList.toggle('ready', dr);
+  $('[data-k=s]', p).textContent = dr ? `${fmtFull(B.dropAmount())} Glow is ready` : `Next drop in ${B.clock(B.dropIn())}`;
+  $('[data-k=b]', p).disabled = !dr;
+  const l = $('#bLvl'), t = tierOf(state.level), k = state.xp / xpFor(state.level);
+  $('[data-k=t]', l).innerHTML = `Level ${state.level} <span style="color:${t[2]};font-size:12px">· ${t[1]}</span>`;
+  $('[data-k=s]', l).textContent = `${Math.floor(k * 100)}% to level ${state.level + 1} · +${fmt(levelReward(state.level + 1))}`;
+  const ring = $('[data-k=ring]', l); ring.setAttribute('stroke-dashoffset', 113.1 * (1 - k)); ring.style.stroke = t[2];
+  if (r) { $('#heroCta').textContent = 'Spin the daily wheel'; $('#heroCta').href = '/rewards.html#wheel'; $('#heroCta').className = 'btn pink'; }
+}
+$('#bDrop [data-k=b]').onclick = e => { const n = B.claimDrop(); if (n) { sfx('cash'); const r = e.target.getBoundingClientRect(); burst(r.left + r.width / 2, r.top, { count: 40 }); toast(`🛰️ Orbit Drop · <b>+${fmtFull(n)} Glow</b>`, 'l'); bonus(); } };
+$('#bLvl').onclick = levelModal;
+bonus(); setInterval(bonus, 1000); on('change', bonus);
+
+if (state.history.length) {
+  $('#recentWrap').hidden = false;
+  const name = id => GAMES.find(g => g.id === id)?.name || id;
+  $('#hist').innerHTML = state.history.slice(0, 5).map(x => { const g = GAMES.find(y => y.id === x.game); const net = x.payout - x.bet; return `<a href="${g?.url || '#'}"><span>${esc(name(x.game))}</span><span class="faint mono" style="font-size:12px">${fmtX(x.mult)}</span><b style="color:${net > 0 ? 'var(--l)' : net < 0 ? 'var(--faint)' : 'var(--dim)'}">${net > 0 ? '+' : ''}${fmt(net)}</b></a>`; }).join('');
+}
+</script>
+</body></html>

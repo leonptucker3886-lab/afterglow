@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sun N Fun Slots · AFTERGLOW social casino</title>
+<meta name="description" content="Fire up the pig pit. A 3-reel, 5-payline slot with scatter free spins and a progressive jackpot. Free to play on AFTERGLOW, play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+:root{--o:#ff8a1f;--gold:#ffc23d;--ember:#ff4d1a}
+.snf.stage{background:radial-gradient(120% 70% at 50% 110%,#5a1a06 0%,#2a0c06 35%,#0b0608 75%);}
+.snf .sky{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.snf .sun{position:absolute;left:50%;bottom:-140px;width:420px;height:420px;margin-left:-210px;border-radius:50%;background:repeating-linear-gradient(180deg,#ff8a1f 0 18px,transparent 18px 26px),radial-gradient(circle,#ffd84d,#ff3dc8);-webkit-mask:radial-gradient(circle,#000 60%,transparent 71%);mask:radial-gradient(circle,#000 60%,transparent 71%);opacity:.22;filter:blur(1px)}
+.ember{position:absolute;bottom:-10px;border-radius:50%;animation:rise linear infinite}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx),-110vh);opacity:0}}
+body.reduced .ember{display:none}
+@media (prefers-reduced-motion:reduce){.ember{display:none}}
+.snf .inner{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px 12px 18px}
+.jp{display:flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;border:1px solid #ffc23d88;background:#1a0a04cc;box-shadow:0 0 22px #ff8a1f44,inset 0 0 12px #ff8a1f22}
+.jp small{font:800 11px var(--sans);letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+.jp b{font:900 clamp(20px,5vw,26px) var(--mono);color:#fff;text-shadow:0 0 10px var(--o),0 0 22px var(--ember)}
+.mach{width:min(100%,460px);border-radius:22px;padding:12px;background:linear-gradient(180deg,#5b3417,#3a1f0c 50%,#26140a);border:2px solid var(--o);box-shadow:0 0 0 1px #000,0 0 26px #ff8a1f77,0 0 60px #ff3dc833,inset 0 2px 0 #ffffff22}
+.mtop{text-align:center;font:900 clamp(15px,4vw,19px)/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff4d6;text-shadow:0 0 8px var(--o),0 0 18px var(--ember);padding:4px 0 10px}
+.reels{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px;border-radius:14px;background:#0d0705;box-shadow:inset 0 0 18px #000,inset 0 0 0 1px #ff8a1f55}
+.reel{display:grid;grid-template-rows:repeat(3,1fr);gap:6px;border-radius:10px;background:linear-gradient(180deg,#1d0f08,#2b170b 50%,#1d0f08);padding:6px;overflow:hidden}
+.cell{aspect-ratio:1;display:grid;place-items:center;font-size:clamp(34px,10vw,52px);line-height:1;border-radius:10px;background:radial-gradient(circle,#3a2010,#1a0d06);border:1px solid #ffffff10;transition:transform .14s,box-shadow .2s,border-color .2s}
+.reel.spin .cell{filter:blur(1.5px);transform:translateY(2px)}
+.cell.win{border-color:var(--gold);box-shadow:0 0 16px #ffc23d,inset 0 0 12px #ff8a1f88;animation:pulse .7s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.07)}}
+.reel.bounce{animation:bnc .18s cubic-bezier(.17,.67,.3,1.5)}
+@keyframes bnc{50%{transform:translateY(7px)}}
+.lines{position:absolute;inset:8px;pointer-events:none;width:calc(100% - 16px);height:calc(100% - 16px)}
+.lines path{fill:none;stroke:var(--gold);stroke-width:2.2;stroke-linecap:round;filter:drop-shadow(0 0 5px #ff8a1f);opacity:0;vector-effect:non-scaling-stroke}
+.lines path.on{opacity:.95}
+.msg{min-height:44px;max-width:460px;text-align:center;font:800 15px/1.35 var(--sans);color:#ffe2b8;text-shadow:0 0 10px #ff8a1f88;display:grid;place-items:center;padding:0 8px}
+.wintxt{font:900 clamp(22px,6vw,30px) var(--mono);color:var(--gold);text-shadow:0 0 12px var(--o),0 0 28px var(--ember);min-height:36px}
+.fsban{position:absolute;top:10px;right:10px;font:900 12px var(--sans);letter-spacing:.1em;color:#170900;background:var(--gold);border-radius:999px;padding:6px 12px;box-shadow:0 0 18px var(--o);display:none;z-index:2}
+.fsban.on{display:block;animation:pop .3s}
+.punt{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:#0b0608cc;z-index:5;backdrop-filter:blur(3px)}
+.punt.on{display:flex}
+.punt .pig{font-size:88px;animation:fly 1.3s cubic-bezier(.2,.8,.3,1) forwards}
+.punt .t{font:900 clamp(24px,7vw,40px) var(--sans);color:var(--gold);text-shadow:0 0 14px var(--o),0 0 30px var(--ember);text-align:center}
+@keyframes fly{0%{transform:translate(-40vw,30px) rotate(0)}45%{transform:translate(0,-60px) rotate(400deg) scale(1.3)}100%{transform:translate(0,0) rotate(720deg) scale(1)}}
+.pt{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+.pt td{padding:6px 4px;border-bottom:1px solid var(--line)}
+.pt td:first-child{font-size:22px;width:40px}
+.pt td.n{text-align:right;font-family:var(--mono);color:var(--gold)}
+@media(max-width:899px){#go{position:sticky;bottom:calc(var(--bn) + env(safe-area-inset-bottom) + 10px);z-index:6}}
+.spinbtn{background:linear-gradient(180deg,#ffb347,#ff6a1a)!important;color:#1a0800!important;border-color:#ffc23d!important;box-shadow:0 0 22px #ff8a1f88!important}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="field"><label>Reel speed</label>
+      <div class="seg" id="spd"><button data-s="slow">Slow</button><button data-s="normal" class="on">Normal</button><button data-s="fast">Fast</button></div>
+    </div>
+    <button class="btn big spinbtn" id="go">Spin</button>
+    <div style="margin-top:14px">
+      <div class="stat-row"><span>Paylines</span><b>5</b></div>
+      <div class="stat-row"><span>Top line pays</span><b id="top">80×</b></div>
+      <div class="stat-row"><span>Last win</span><b id="last">-</b></div>
+      <div class="stat-row"><span>RTP</span><b>96.7%</b></div>
+    </div>
+    <p class="faint" style="font-size:12px;margin:12px 0 0">Tip: press Space to spin.</p>
+  </section>
+  <section class="stage snf">
+    <div class="sky" id="sky"><div class="sun"></div></div>
+    <div class="recent" id="recent" style="position:relative"></div>
+    <div class="fsban" id="fsban">FREE SPINS <span id="fsn">0</span></div>
+    <div class="inner">
+      <div class="jp"><small>🔥 Progressive jackpot</small><b id="jp">0</b></div>
+      <div class="mach">
+        <div class="mtop">☀️ Sun N Fun · Pig Pit 🐷</div>
+        <div class="reels" id="reels">
+          <div class="reel" id="r0"></div><div class="reel" id="r1"></div><div class="reel" id="r2"></div>
+          <svg class="lines" viewBox="0 0 300 300" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M10 50H290"/><path d="M10 150H290"/><path d="M10 250H290"/><path d="M20 40L150 150 280 260"/><path d="M20 260L150 150 280 40"/>
+          </svg>
+        </div>
+      </div>
+      <div class="wintxt" id="win"></div>
+      <div class="msg" id="msg">🔥 Fire's lit. Set your bet and spin.</div>
+    </div>
+    <div class="punt" id="punt"><div class="pig">🐷</div><div class="t">PUNT THAT PIG!<br><span style="font-size:.6em">10 FREE SPINS</span></div></div>
+  </section>
+</main>
+<script type="module" src="/games/sunnfun.js"></script>
+</body></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Profile · AFTERGLOW social casino</title>
+<meta name="description" content="Your AFTERGLOW stats, play history and settings.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.ph{display:flex;align-items:center;gap:14px;margin-top:18px}
+.av{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font:900 26px var(--sans);color:#031417;flex:none}
+.ph input{background:none;border:0;border-bottom:1px dashed var(--line2);font:800 22px var(--sans);color:var(--hi);width:100%;max-width:260px;padding:2px 0;outline:0}
+.ph input:focus{border-color:var(--c)}
+.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+@media(min-width:760px){.sg{grid-template-columns:repeat(4,1fr)}}
+.sg div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.sg small{display:block;color:var(--faint);font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.sg b{font:800 20px var(--mono)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;color:var(--faint);font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:10px 6px;border-bottom:1px solid var(--line)}
+td.n,th.n{text-align:right;font-family:var(--mono)}
+.tw{overflow-x:auto}
+.hrow{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 12px;border-bottom:1px solid var(--line);font-size:13.5px}
+.hrow .d{color:var(--faint);font-size:12px;grid-column:1/-1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hrow b{font-family:var(--mono);text-align:right}
+.set{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.set small{display:block;color:var(--faint);font-size:12.5px}
+.cols{display:grid;gap:14px}
+@media(min-width:900px){.cols{grid-template-columns:1.3fr 1fr;align-items:start}}
+</style></head>
+<body>
+<main class="wrap">
+  <div class="ph"><div class="av" id="av"></div><div style="flex:1;min-width:0"><input id="name" maxlength="20" aria-label="Display name"><div class="faint" style="font-size:13px" id="since"></div></div></div>
+  <div class="sg" id="sg"></div>
+  <div class="cols">
+    <div>
+      <div class="h-sec"><h2>By <em>game</em></h2></div>
+      <div class="card tw" style="padding:6px 10px"><table id="bg"></table></div>
+      <div class="h-sec" id="history"><h2>Play <em>history</em></h2><a href="/fair.html" style="font-size:13px">Verify a round</a></div>
+      <div class="card" style="padding:0" id="hist"></div>
+    </div>
+    <div>
+      <div class="h-sec" id="settings"><h2>Set<em>tings</em></h2></div>
+      <div class="card" style="padding:4px 16px">
+        <label class="set"><span>Sound effects<small>Synth sounds for spins, wins and cards</small></span><span class="toggle"><input type="checkbox" data-s="sound"><i></i></span></label>
+        <label class="set"><span>Haptics<small>Vibration on supported phones</small></span><span class="toggle"><input type="checkbox" data-s="haptics"><i></i></span></label>
+        <label class="set"><span>Reduce motion<small>Shorter animations, no particles</small></span><span class="toggle"><input type="checkbox" data-s="reduced"><i></i></span></label>
+        <div class="set"><span>Break reminder<small>A nudge after this much play</small></span><div class="inp" style="min-height:40px;width:120px"><select id="rem" aria-label="Break reminder"><option value="0">Off</option><option value="30">30 min</option><option value="60">60 min</option><option value="120">2 hours</option></select></div></div>
+        <div class="set" style="border:0"><span>Reset progress<small>Wipe coins, levels, stats and history on this device</small></span><button class="btn sm" id="reset" style="border-color:var(--r);color:var(--r)">Reset</button></div>
+      </div>
+      <p class="faint" style="font-size:12.5px;margin-top:12px">Your progress is saved only in this browser. Clearing site data will reset it. Accounts and cloud saves are on the roadmap.</p>
+    </div>
+  </div>
+</main>
+<script type="module">
+import { boot, state, save, on, GAMES, fmt, fmtFull, fmtX, tierOf, resetAll, modal, toast, $, esc } from '/core/ag.js';
+boot({ nav: 'profile' });
+const nm = id => GAMES.find(g => g.id === id)?.name || id;
+function paint() {
+  const t = tierOf(state.level), s = state.stats;
+  $('#av').textContent = (state.name || 'P')[0].toUpperCase();
+  $('#av').style.cssText = `background:linear-gradient(135deg,${t[2]},var(--p));box-shadow:0 0 20px ${t[2]}66`;
+  if (document.activeElement !== $('#name')) $('#name').value = state.name;
+  $('#since').innerHTML = `<span style="color:${t[2]}">Level ${state.level} · ${t[1]}</span> · playing since ${new Date(state.created).toLocaleDateString()}`;
+  const net = s.won - s.wagered;
+  $('#sg').innerHTML = [['Balance', fmt(state.coins)], ['Rounds', fmtFull(s.rounds)], ['Wagered', fmt(s.wagered)], ['Net', (net > 0 ? '+' : '') + fmt(net)], ['Win rate', s.rounds ? Math.round(s.wins / s.rounds * 100) + '%' : '-'], ['Biggest win', fmt(s.biggestWin)], ['Best multiplier', s.biggestMult ? fmtX(s.biggestMult) : '-'], ['Achievements', Object.keys(state.ach).length]].map(([k, v]) => `<div><small>${k}</small><b>${v}</b></div>`).join('');
+  const rows = GAMES.filter(g => g.live).map(g => [g, s.byGame[g.id] || { rounds: 0, wagered: 0, won: 0, best: 0 }]);
+  $('#bg').innerHTML = `<tr><th>Game</th><th class="n">Rounds</th><th class="n">Net</th><th class="n">Best</th></tr>` + rows.map(([g, x]) => `<tr><td><a href="${g.url}">${esc(g.name)}</a></td><td class="n">${fmtFull(x.rounds)}</td><td class="n" style="color:${x.won - x.wagered > 0 ? 'var(--l)' : 'var(--dim)'}">${x.rounds ? fmt(x.won - x.wagered) : '-'}</td><td class="n">${x.best ? fmtX(x.best) : '-'}</td></tr>`).join('');
+  $('#hist').innerHTML = state.history.length ? state.history.slice(0, 50).map(x => { const n = x.payout - x.bet; return `<div class="hrow"><span>${esc(nm(x.game))} <span class="faint mono" style="font-size:12px">${fmtX(x.mult)}</span></span><b style="color:${n > 0 ? 'var(--l)' : 'var(--faint)'}">${n > 0 ? '+' : ''}${fmtFull(n)}</b><span class="d">${new Date(x.t).toLocaleString()} · bet ${fmtFull(x.bet)} · nonce ${x.nonce} · ${esc(x.detail)}</span></div>`; }).join('') : '<p class="dim" style="padding:16px;margin:0">No rounds yet. <a href="/">Pick a game</a>.</p>';
+  document.querySelectorAll('[data-s]').forEach(i => (i.checked = !!state.settings[i.dataset.s]));
+  $('#rem').value = state.settings.reminder;
+}
+$('#name').addEventListener('change', e => { state.name = e.target.value.trim().slice(0, 20) || 'Player'; save(); toast('Name saved'); });
+document.querySelectorAll('[data-s]').forEach(i => i.addEventListener('change', () => { state.settings[i.dataset.s] = i.checked; save(); document.body.classList.toggle('reduced', !!state.settings.reduced); }));
+$('#rem').onchange = e => { state.settings.reminder = +e.target.value; save(); };
+$('#reset').onclick = async () => { const v = await modal('<h2>Reset everything?</h2><p class="dim">Coins, level, stats, achievements and history on this device will be wiped. You\'ll start again with 10,000 Glow.</p>', { actions: [{ label: 'Cancel', value: 0 }, { label: 'Reset', cls: 'pink', value: 1 }] }); if (v === 1) { resetAll(); paint(); toast('Fresh start. 10,000 Glow added.', 'l'); } };
+paint(); on('change', paint);
+</script>
+</body></html>

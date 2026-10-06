@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fair play · AFTERGLOW social casino</title>
+<meta name="description" content="How AFTERGLOW decides outcomes: seeded HMAC-SHA256 randomness you can inspect, rotate and verify.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.cols{display:grid;gap:14px;margin-top:16px}
+@media(min-width:900px){.cols{grid-template-columns:1fr 1fr;align-items:start}}
+.hash{font:600 12.5px var(--mono);word-break:break-all;color:var(--c);background:var(--bg2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;position:relative;padding:0 0 14px 40px;color:var(--dim);font-size:14px}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:900 13px var(--mono);color:#031417;background:var(--c);box-shadow:var(--glow)}
+.steps b{color:var(--txt)}
+.out{font:13px/1.7 var(--mono);color:var(--dim)}
+.out b{color:var(--l)}
+code{font-family:var(--mono);font-size:.92em;color:var(--p)}
+</style></head>
+<body>
+<main class="wrap">
+  <div class="h-sec" style="margin-top:18px"><h2>Fair <em>play</em></h2></div>
+  <p class="dim" style="max-width:70ch;margin:0">Every result on AFTERGLOW comes from a seeded generator, not a hidden dice roll. You can see the seed's fingerprint before you play, change your own seed at any time, and re-run any round to check it.</p>
+  <div class="cols">
+    <section class="card">
+      <div class="lab">How it works</div>
+      <ol class="steps" style="margin-top:12px">
+        <li>A secret <b>server seed</b> is generated, and you're shown its <b>SHA-256 hash</b> up front. The hash locks the seed in without revealing it.</li>
+        <li>You pick a <b>client seed</b> (or keep the random one). Each round adds a <b>nonce</b> that counts up by one.</li>
+        <li>Each round computes <code>HMAC-SHA256(server, "client:nonce:cursor")</code>. Every 4 bytes become a number between 0 and 1, which the game turns into cards, reel stops, a pocket or a crash point.</li>
+        <li>When you <b>rotate</b>, the old server seed is revealed. Hash it to confirm it matches what you were shown, then verify any past round below.</li>
+      </ol>
+      <p class="faint" style="font-size:12.5px;margin:4px 0 0">Honest note: right now seeds are generated and stored in your browser, because AFTERGLOW has no accounts yet. That makes this a transparency tool rather than proof against the house. When cloud accounts arrive, the server seed will be committed by our server.</p>
+    </section>
+    <section class="card">
+      <div class="lab">Your seeds</div>
+      <div class="field" style="margin-top:12px"><label>Server seed hash (active)</label><div class="hash" id="hash">…</div></div>
+      <div class="field"><label>Client seed</label><div class="inp"><input id="client" maxlength="64" aria-label="Client seed"></div></div>
+      <div class="stat-row"><span>Next nonce</span><b id="nonce">0</b></div>
+      <button class="btn pri" id="rotate" style="width:100%;margin-top:8px">Rotate seeds &amp; reveal current</button>
+      <div id="prev" style="margin-top:14px"></div>
+    </section>
+  </div>
+  <section class="card" style="margin-top:14px" id="verify">
+    <div class="lab">Verify a round</div>
+    <div class="cols" style="margin-top:12px">
+      <div>
+        <div class="field"><label>Server seed (revealed)</label><div class="inp"><input id="vs" aria-label="Server seed"></div></div>
+        <div class="field"><label>Client seed</label><div class="inp"><input id="vc" aria-label="Client seed to verify"></div></div>
+        <div class="field"><label>Nonce</label><div class="inp"><input id="vn" inputmode="numeric" value="0" aria-label="Nonce"></div></div>
+        <button class="btn pri" id="vgo" style="width:100%">Verify</button>
+      </div>
+      <div class="out" id="vout">Enter a revealed server seed to see the round's outcome in every game.</div>
+    </div>
+  </section>
+</main>
+<script type="module">
+import { boot, toast, sfx, $, esc, shuffle, floatsFor, sha256 } from '/core/ag.js';
+import * as F from '/core/fair.js';
+boot({ nav: 'fair' });
+async function paint() {
+  const i = await F.info();
+  $('#hash').textContent = i.hash; $('#client').value = i.client; $('#nonce').textContent = i.nonce;
+  $('#prev').innerHTML = i.prev ? `<div class="lab">Previous seed (revealed)</div><div class="hash" style="color:var(--l)">${esc(i.prev.server)}</div><div class="stat-row"><span>Its hash</span><b style="font-size:11px;word-break:break-all;text-align:right;max-width:70%">${esc(i.prev.hash.slice(0, 24))}…</b></div><div class="stat-row"><span>Client seed · rounds</span><b>${esc(i.prev.client)} · ${i.prev.nonces}</b></div><button class="btn sm" id="usePrev" style="margin-top:6px">Verify with this seed</button>` : '';
+  $('#usePrev') && ($('#usePrev').onclick = () => { $('#vs').value = i.prev.server; $('#vc').value = i.prev.client; $('#vn').value = Math.max(0, i.prev.nonces - 1); $('#verify').scrollIntoView({ behavior: 'smooth' }); });
+}
+$('#rotate').onclick = async () => { await F.rotate($('#client').value); sfx('reveal'); toast('Seeds rotated. The previous server seed is revealed below.', 'l'); paint(); };
+$('#client').addEventListener('change', () => toast('Your new client seed applies after you rotate.', ''));
+$('#vgo').onclick = async () => {
+  const s = $('#vs').value.trim(), c = $('#vc').value.trim(), n = Math.max(0, parseInt($('#vn').value) || 0);
+  if (!s) return toast('Paste a revealed server seed first.', 'r');
+  const f = await floatsFor(s, c, n, 24), h = await sha256(s);
+  const crash = Math.min(10000, Math.max(1, Math.floor(99 / (1 - f[0])) / 100));
+  const mines = shuffle([...Array(25).keys()], f.slice(0, 24)).slice(0, 3).sort((a, b) => a - b);
+  const path = (await floatsFor(s, c, n, 16)).map(x => (x < 0.5 ? 'L' : 'R')).join('');
+  $('#vout').innerHTML = `sha256(server) = <span style="color:var(--c);word-break:break-all">${h}</span><br>first floats: ${f.slice(0, 4).map(x => x.toFixed(6)).join(', ')}<br>
+    Orbit Roulette → pocket <b>${Math.floor(f[0] * 37)}</b><br>Liftoff → crash at <b>${crash.toFixed(2)}×</b><br>Void Mines (3 voids) → tiles <b>${mines.map(x => x + 1).join(', ')}</b><br>
+    Starfall Plinko (16 rows) → <b>${path}</b> · slot <b>${[...path].filter(x => x === 'R').length}</b><br><span class="faint">Slots and blackjack use the same stream to pick reel stops and shuffle the shoe.</span>`;
+};
+paint();
+</script>
+</body></html>

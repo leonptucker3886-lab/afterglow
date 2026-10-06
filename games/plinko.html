@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Starfall Plinko · AFTERGLOW social casino</title>
+<meta name="description" content="Drop falling stars through a neon peg field and land multipliers up to 1,000×. A free-to-play Plinko game on AFTERGLOW. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.game .stage{min-height:520px}
+@media(min-width:900px){.game .stage{min-height:640px}}
+.pboard{position:relative;flex:1;min-height:420px}
+.pboard canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
+.lastdrops{position:absolute;top:8px;right:10px;z-index:2;pointer-events:none;text-align:right;font:700 11px var(--mono);color:var(--faint);line-height:1.5;min-width:96px}
+.lastdrops small{display:block;font:800 9.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);opacity:.8}
+.lastdrops div{white-space:nowrap;animation:pop .25s}
+.lastdrops .w{color:var(--l)}.lastdrops .b{color:var(--p);text-shadow:0 0 8px #ff3dc8aa}.lastdrops .l{color:var(--dim)}
+.inflight{position:absolute;top:8px;left:10px;z-index:2;pointer-events:none;font:800 10px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.inflight b{font:800 13px var(--mono);color:var(--c);letter-spacing:0;margin-left:4px}
+.rows{display:flex;align-items:center;gap:8px}
+.rows .stp{width:46px;min-height:46px;padding:0;font-size:20px;flex:none}
+.rows .rv{flex:none;width:44px;text-align:center;font:800 20px var(--mono);color:var(--hi)}
+.rows input[type=range]{flex:1;min-width:0;height:44px;accent-color:var(--p);cursor:pointer;background:none}
+.rows input[type=range]:disabled{opacity:.4;cursor:not-allowed}
+.seg button:disabled{opacity:.45;cursor:not-allowed}
+#drop{margin-top:4px;font-size:19px;letter-spacing:.12em}
+#drop kbd{font:700 10px var(--mono);letter-spacing:0;opacity:.6;border:1px solid currentColor;border-radius:5px;padding:1px 5px;margin-left:4px}
+@media(hover:none){#drop kbd{display:none}}
+.auto{display:flex;gap:8px;margin-top:10px}
+.auto .chips{flex:1;margin:0;flex-wrap:nowrap;gap:6px}
+.auto .chips button{min-width:0;padding:0}
+.auto .chips button{min-height:44px}
+.auto .chips button.on{color:var(--hi);border-color:var(--p);box-shadow:0 0 10px #ff3dc855}
+.auto .btn{flex:none;min-width:108px;padding:0 12px}
+.pstats{margin-top:12px;border-top:1px solid var(--line);padding-top:6px}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div id="bet"></div>
+    <div class="field"><label>Risk <span class="faint">hotter edges, colder centre</span></label>
+      <div class="seg" id="risk"><button data-r="low">Low</button><button data-r="medium" class="on">Medium</button><button data-r="high">High</button></div>
+    </div>
+    <div class="field"><label>Rows <span class="faint">8 to 16</span></label>
+      <div class="rows"><button class="btn stp" id="rminus" aria-label="Fewer rows">−</button><span class="rv" id="rv">12</span><input type="range" id="rows" min="8" max="16" step="1" value="12" aria-label="Rows"><button class="btn stp" id="rplus" aria-label="More rows">+</button></div>
+    </div>
+    <button class="btn big pink" id="drop">DROP <kbd>Space</kbd></button>
+    <div class="auto">
+      <div class="chips" id="autoN"><button data-n="10">10</button><button data-n="25" class="on">25</button><button data-n="50">50</button><button data-n="100">100</button></div>
+      <button class="btn lime" id="auto">Auto 25</button>
+    </div>
+    <div class="pstats">
+      <div class="stat-row"><span>Top multiplier</span><b id="topm">-</b></div>
+      <div class="stat-row"><span>Session drops</span><b id="sdrops">0</b></div>
+      <div class="stat-row"><span>Session net</span><b id="snet">0</b></div>
+    </div>
+  </section>
+  <section class="stage">
+    <div class="recent" id="recent"></div>
+    <div class="pboard" id="board">
+      <canvas id="cv" aria-label="Plinko board" role="img"></canvas>
+      <div class="inflight">In flight<b id="fly">0</b></div>
+      <div class="lastdrops" id="last"><small>Last drops</small></div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/games/plinko.js"></script>
+</body></html>

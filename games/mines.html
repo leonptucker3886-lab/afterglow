@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Void Mines · AFTERGLOW social casino</title>
+<meta name="description" content="Find the gems, dodge the void. A free-to-play Mines game on AFTERGLOW. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.mgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(6px,1.6vw,12px);width:min(100%,480px);margin:auto;padding:16px}
+.tile{aspect-ratio:1;border-radius:14px;border:1px solid var(--line2);background:linear-gradient(180deg,#24244a,#16162e);cursor:pointer;display:grid;place-items:center;transition:transform .12s,background .2s,box-shadow .2s;box-shadow:inset 0 -4px 0 #0007;padding:0}
+.tile:hover:not(:disabled){transform:translateY(-2px);border-color:var(--c);box-shadow:0 0 14px #22f0ff44,inset 0 -4px 0 #0007}
+.tile:disabled{cursor:default}
+.tile svg{width:58%;height:58%}
+.tile.gem{background:radial-gradient(circle,#0e3340,#0b0b18);border-color:var(--c);box-shadow:0 0 16px #22f0ff55;animation:pop .25s}
+.tile.void{background:radial-gradient(circle,#40101c,#0b0b18);border-color:var(--r);box-shadow:0 0 22px #ff4d6d88;animation:pop .25s}
+.tile.dim{opacity:.4;animation:none}
+.tile.idle{opacity:.55}
+.mhud{display:flex;justify-content:center;gap:10px;padding:0 16px 16px;flex-wrap:wrap}
+.mhud div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 14px;text-align:center;min-width:110px}
+.mhud small{display:block;color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.mhud b{font:800 18px var(--mono)}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div id="bet"></div>
+    <div class="field"><label>Voids <span class="faint">more voids, bigger multipliers</span></label>
+      <div class="seg" id="mseg"><button data-m="1">1</button><button data-m="3" class="on">3</button><button data-m="5">5</button><button data-m="10">10</button><button data-m="20">20</button></div>
+    </div>
+    <button class="btn big pri" id="go">Bet</button>
+    <button class="btn ghost" id="rand" style="width:100%;margin-top:8px" disabled>Pick a random tile</button>
+    <div style="margin-top:14px">
+      <div class="stat-row"><span>Next gem pays</span><b id="nextm">-</b></div>
+      <div class="stat-row"><span>Gems found</span><b id="found">0</b></div>
+    </div>
+  </section>
+  <section class="stage">
+    <div class="recent" id="recent"></div>
+    <div class="mgrid" id="grid"></div>
+    <div class="mhud"><div><small>Multiplier</small><b id="mult">1.00×</b></div><div><small>Cash out</small><b id="cash" style="color:var(--l)">0</b></div></div>
+  </section>
+</main>
+<script type="module" src="/games/mines.js"></script>
+</body></html>
