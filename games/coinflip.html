@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Heads or Tails · AFTERGLOW social casino</title>
+<meta name="description" content="Call it, flip it, double it. A free-to-play neon coin flip with chain multipliers up to 836× on AFTERGLOW. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+/* side picker */
+.cf-picks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cf-pick{display:flex;align-items:center;justify-content:center;gap:10px;min-height:58px;border-radius:14px;border:1px solid var(--line2);background:var(--panel2);font:800 16px var(--sans);letter-spacing:.04em;color:var(--dim);cursor:pointer;transition:transform .08s,box-shadow .2s,border-color .2s,color .2s,background .2s}
+.cf-pick svg{width:30px;height:30px;flex:none}
+.cf-pick:active{transform:scale(.97)}
+.cf-pick:disabled{opacity:.45;cursor:not-allowed}
+.cf-pick[data-s=H].on{color:var(--y);border-color:var(--y);background:linear-gradient(180deg,#2a2208,#15120a);box-shadow:0 0 18px #ffd84d55,inset 0 0 12px #ffd84d22}
+.cf-pick[data-s=T].on{color:var(--c);border-color:var(--c);background:linear-gradient(180deg,#08262c,#0a1416);box-shadow:0 0 18px #22f0ff55,inset 0 0 12px #22f0ff22}
+.cf-pick kbd{font:700 10px var(--mono);color:var(--faint);border:1px solid var(--line2);border-radius:5px;padding:1px 5px}
+.cf-row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;margin-bottom:10px;font-size:14px;color:var(--dim);cursor:pointer}
+.cf-row b{color:var(--txt);font-weight:700}
+.cf-acts [hidden]{display:none}
+.cf-acts{display:grid;grid-template-columns:1fr;gap:8px}
+.cf-acts.chain{grid-template-columns:1fr 1fr}
+.cf-acts .btn{white-space:normal;line-height:1.1;flex-direction:column;gap:2px;padding:0 10px}
+.cf-acts .btn small{font:700 12px var(--mono);opacity:.85;letter-spacing:0}
+.cf-keys{margin-top:10px;font-size:12px;color:var(--faint);text-align:center;display:none}
+.cf-keys kbd{font:700 11px var(--mono);border:1px solid var(--line2);border-radius:5px;padding:1px 6px;color:var(--dim)}
+@media(hover:hover) and (pointer:fine){.cf-keys{display:block}}
+
+/* recent strip chips */
+.recent span.h,.recent span.t{min-width:28px;text-align:center}
+.recent span.h{color:var(--y);background:#2a220855;box-shadow:inset 0 0 0 1px #ffd84d66}
+.recent span.t{color:var(--c);background:#08262c55;box-shadow:inset 0 0 0 1px #22f0ff66}
+.recent span.h.w{color:#1a1400;background:var(--y);box-shadow:0 0 12px #ffd84d88}
+.recent span.t.w{color:#031417;background:var(--c);box-shadow:var(--glow)}
+.recent span.x{opacity:.55;text-decoration:line-through;text-decoration-color:var(--r);text-decoration-thickness:2px}
+
+/* hud */
+.cf-hud{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 12px 0}
+.cf-hud>div{background:#0e0e1ccc;border:1px solid var(--line);border-radius:12px;padding:7px 8px;text-align:center;min-width:0}
+.cf-hud small{display:block;color:var(--faint);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;white-space:nowrap}
+.cf-hud b{font:800 clamp(15px,4.2vw,20px) var(--mono);white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis}
+#streak{color:var(--p);text-shadow:0 0 10px #ff3dc888}
+#streak.hot{animation:hot .6s ease-in-out infinite alternate}
+@keyframes hot{to{text-shadow:0 0 18px #ff3dc8,0 0 4px #fff}}
+.pips{display:flex;justify-content:center;gap:4px;margin-top:4px}
+.pips i{width:8px;height:8px;border-radius:50%;background:var(--line2);transition:background .2s,box-shadow .2s}
+.pips i.on{background:var(--p);box-shadow:0 0 8px var(--p)}
+.pips.done i{background:var(--l);box-shadow:0 0 6px var(--l)}
+
+/* arena + coin */
+.cf-arena{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;min-height:270px;perspective:900px;--cs:clamp(118px,34vw,230px);padding-bottom:calc(var(--cs) * .32)}
+.cf-arena:before{content:"";position:absolute;left:50%;bottom:0;width:min(86%,520px);height:38%;transform:translateX(-50%);background:radial-gradient(50% 50% at 50% 70%,#8b5cff22,transparent 70%);pointer-events:none}
+.cf-floor{position:absolute;left:50%;bottom:calc(var(--cs) * .16);width:min(80%,440px);height:2px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#8b5cff88,#22f0ffaa,#8b5cff88,transparent);box-shadow:0 0 14px #8b5cff88}
+.cf-spot{position:relative;width:var(--cs);height:var(--cs);margin:auto 0 0;z-index:1}
+.cf-shadow{position:absolute;left:50%;bottom:calc(var(--cs) * -.26);width:calc(var(--cs) * .9);height:calc(var(--cs) * .16);transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,#000d,#0000);filter:blur(2px)}
+.cf-toss{position:absolute;inset:0;transform-style:preserve-3d}
+.cf-coin{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(0deg)}
+.cf-face,.cf-edge{position:absolute;inset:0;border-radius:50%;backface-visibility:hidden}
+.cf-face svg{width:100%;height:100%;max-width:none}
+.cf-face.h{transform:translateZ(calc(var(--cs) * .045))}
+.cf-face.t{transform:rotateX(180deg) translateZ(calc(var(--cs) * .045))}
+.cf-edge{backface-visibility:visible;background:radial-gradient(circle,#1a1240 60%,#5b3cc4 88%,#2a1d5a);box-shadow:0 0 0 1px #8b5cff66}
+.cf-coin.glow-h .cf-face.h{filter:drop-shadow(0 0 22px #ffd84d)}
+.cf-coin.glow-t .cf-face.t{filter:drop-shadow(0 0 22px #22f0ff)}
+.cf-coin.lose .cf-face{filter:saturate(.35) brightness(.7)}
+.cf-msg{position:relative;z-index:2;margin-top:12px;min-height:3.2em;text-align:center;font:900 clamp(20px,5.6vw,30px)/1.1 var(--sans);letter-spacing:.06em;text-transform:uppercase;pointer-events:none;padding:0 12px}
+.cf-msg small{display:block;font:700 13px var(--mono);letter-spacing:.02em;text-transform:none;color:var(--dim);margin-top:6px}
+.cf-msg.w{color:var(--l);text-shadow:var(--glowl)}
+.cf-msg.l{color:var(--r);text-shadow:0 0 16px #ff4d6d88}
+.cf-msg.n{color:var(--txt)}
+.cf-msg.pop{animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
+
+/* chain ladder */
+.cf-ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:0 12px 12px}
+@media(min-width:900px){.cf-ladder{grid-template-columns:repeat(10,1fr);padding:0 16px 16px}}
+.cf-step{position:relative;border-radius:10px;border:1px solid var(--line);background:#0e0e1ccc;padding:6px 2px 5px;text-align:center;transition:background .25s,border-color .25s,box-shadow .25s,transform .25s;min-width:0}
+.cf-step small{display:block;font:700 10px var(--sans);color:var(--faint);letter-spacing:.06em}
+.cf-step b{display:block;font:800 clamp(11px,3.2vw,14px) var(--mono);color:var(--dim);white-space:nowrap}
+.cf-step.done{border-color:#b8ff3b88;background:linear-gradient(180deg,#1f2c0a,#10160a)}
+.cf-step.done b{color:var(--l)}
+.cf-step.cur{border-color:var(--l);box-shadow:0 0 16px #b8ff3b66;transform:translateY(-2px)}
+.cf-step.next{border-color:var(--p);animation:nxt 1s ease-in-out infinite alternate}
+.cf-step.next b{color:var(--p)}
+.cf-step.bust{border-color:var(--r);background:#2a0b14}
+.cf-step.bust b{color:var(--r);text-decoration:line-through}
+@keyframes nxt{to{box-shadow:0 0 14px #ff3dc866}}
+.cf-lab{display:flex;justify-content:space-between;padding:0 14px 6px;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+@media(min-width:900px){.cf-arena{min-height:400px;--cs:250px}.cf-lab{padding:0 18px 6px}}
+@media(max-width:899px){#panel{display:flex;flex-direction:column}#panel .ghead{order:0}#panel .cf-pickf{order:1}#panel .cf-acts{order:2;margin-bottom:14px}#panel .betctl{order:3}#panel .cf-row{order:4}#panel .cf-keys{order:5}#panel .cf-stats{order:6}
+.cf-arena{min-height:214px;--cs:clamp(100px,28vw,190px)}
+.cf-msg{margin-top:6px;font-size:21px;min-height:2.7em}.cf-msg small{font-size:12px;margin-top:3px}
+.cf-hud{gap:6px;padding:8px 10px 0}.cf-hud>div{padding:4px 6px}.cf-hud small{font-size:9.5px}.cf-hud b{font-size:16px}
+.pips{margin-top:2px}.pips i{width:6px;height:6px}
+.cf-ladder{gap:5px;padding:0 10px 10px}.cf-step{padding:3px 2px}.cf-step small{font-size:9px;line-height:1.2}.cf-step b{font-size:12.5px}
+.cf-lab{padding:0 12px 4px;font-size:10px}
+.cf-pick{min-height:52px}.cf-picks + *{margin:0}}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="field cf-pickf"><label>Your call <span class="faint">pays 1.96×</span></label>
+      <div class="cf-picks" id="picks">
+        <button class="cf-pick on" data-s="H" aria-pressed="true"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="#2a2208" stroke="#ffd84d" stroke-width="2.5"/><text x="16" y="21.5" font-size="15" font-weight="900" font-family="system-ui" fill="#ffd84d" text-anchor="middle">H</text></svg>Heads <kbd>H</kbd></button>
+        <button class="cf-pick" data-s="T" aria-pressed="false"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="#08262c" stroke="#22f0ff" stroke-width="2.5"/><text x="16" y="21.5" font-size="15" font-weight="900" font-family="system-ui" fill="#22f0ff" text-anchor="middle">T</text></svg>Tails <kbd>T</kbd></button>
+      </div>
+    </div>
+    <label class="cf-row"><span><b>Random side</b> <span class="faint">· auto-pick</span></span><span class="toggle"><input type="checkbox" id="rnd"><i></i></span></label>
+    <div class="cf-acts" id="acts">
+      <button class="btn big lime" id="cash" hidden>Cash out<small id="cashv">0</small></button>
+      <button class="btn big pri" id="go">Flip</button>
+    </div>
+    <div class="cf-keys"><kbd>H</kbd> / <kbd>T</kbd> pick · <kbd>Space</kbd> flip · <kbd>C</kbd> cash out</div>
+    <div class="cf-stats" style="margin-top:14px">
+      <div class="stat-row"><span>Win chance</span><b>50%</b></div>
+      <div class="stat-row"><span>Next correct call pays</span><b id="nextv">-</b></div>
+      <div class="stat-row"><span>Best streak (this visit)</span><b id="best">0</b></div>
+    </div>
+  </section>
+  <section class="stage">
+    <div class="recent" id="recent" aria-label="Recent flips"></div>
+    <div class="cf-hud">
+      <div><small>Streak</small><b id="streak">0</b><div class="pips" id="pips"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div><small>Chain</small><b id="chain">0 / 10</b></div>
+      <div><small>Current win</small><b id="win" style="color:var(--l)">0</b></div>
+    </div>
+    <div class="cf-arena" id="arena">
+      <div class="cf-msg n" id="msg">Call it<small>Pick a side, then flip</small></div>
+      <div class="cf-floor"></div>
+      <div class="cf-spot">
+        <div class="cf-shadow" id="shadow"></div>
+        <div class="cf-toss" id="toss"><div class="cf-coin" id="coin"></div></div>
+      </div>
+    </div>
+    <div class="cf-lab"><span>Chain ladder</span><span id="ladlab">Win to climb</span></div>
+    <div class="cf-ladder" id="ladder"></div>
+  </section>
+</main>
+<script type="module" src="/games/coinflip.js"></script>
+</body></html>

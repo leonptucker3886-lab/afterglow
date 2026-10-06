@@ -103,6 +103,11 @@ export const ACH = {
   rlt:     ['Zero hero', 'Win a straight-up bet on 0 in Roulette', 3000],
   plinko:  ['Edge case', 'Hit an edge slot in Plinko', 3000],
   pig:     ['Punt that pig', 'Trigger free spins on Sun N Fun', 2000],
+  flip:    ['Lucky streak', 'Win 5 coin flips in a row in Heads or Tails', 2000],
+  poker:   ['Full house', 'Get a full house or better in Synth Poker', 3000],
+  keno:    ['Starmap', 'Match 6 or more spots in one Keno draw', 3000],
+  hilo:    ['Hyperdrive', 'Chain 8 correct calls in one Hi-Lo round', 3000],
+  bacc:    ['Dead heat', 'Win a tie bet in Velvet Baccarat', 3000],
 };
 export function unlock(id) {
   if (state.ach[id] || !ACH[id]) return false;

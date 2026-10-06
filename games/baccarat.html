@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Velvet Baccarat · AFTERGLOW social casino</title>
+<meta name="description" content="Velvet Baccarat: Punto Banco in a neon velvet lounge. Bet Player, Banker or Tie. Free to play on AFTERGLOW. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.stage.velvet{background:radial-gradient(120% 85% at 50% 30%,#4a1240 0%,#2c0b2e 40%,#170823 72%,#08050d 100%);box-shadow:inset 0 0 90px #000c}
+.velvet:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(65% 40% at 50% 48%,#ff3dc814,transparent 70%),repeating-linear-gradient(115deg,#ffffff04 0 1px,transparent 1px 4px)}
+.rim{position:absolute;inset:52px 6px 6px;border-radius:26px;pointer-events:none;border:2px solid #ff3dc8aa;box-shadow:0 0 18px #ff3dc866,inset 0 0 22px #ff3dc844,0 0 0 5px #8b5cff22;animation:rim 6s ease-in-out infinite}
+@keyframes rim{50%{border-color:#8b5cffcc;box-shadow:0 0 22px #8b5cff77,inset 0 0 22px #8b5cff44,0 0 0 5px #22f0ff1a}}
+.btbl{position:relative;flex:1;display:flex;flex-direction:column;gap:10px;padding:14px 14px 16px;--cw:48px;--ov:-14px}
+@media(min-width:900px){.btbl{--cw:84px;--ov:-18px;padding:22px 26px 24px;gap:14px}.rim{inset:56px 10px 10px;border-radius:34px}}
+/* bead road */
+.roadbox{display:flex;align-items:stretch;gap:10px;background:#0b0612cc;border:1px solid #ff3dc833;border-radius:14px;padding:8px;position:relative;z-index:1}
+.road{flex:1;min-width:0;display:grid;grid-template-rows:repeat(6,var(--bd));grid-auto-flow:column;grid-auto-columns:var(--bd);gap:3px;--bd:15px;overflow:hidden;justify-content:start}
+@media(min-width:900px){.road{--bd:20px;gap:4px}}
+.road i{width:var(--bd);height:var(--bd);border-radius:50%;border:1px solid #ffffff14;display:grid;place-items:center;font:900 calc(var(--bd)*.55)/1 var(--sans);font-style:normal}
+.road i.P{background:#22f0ff;color:#031417;border-color:#22f0ff;box-shadow:0 0 6px #22f0ff99}
+.road i.B{background:#ff3dc8;color:#fff;border-color:#ff3dc8;box-shadow:0 0 6px #ff3dc899}
+.road i.T{background:#b8ff3b;color:#122000;border-color:#b8ff3b;box-shadow:0 0 6px #b8ff3b99}
+.road i.new{animation:pop .35s}
+.rstat{display:flex;flex-direction:column;justify-content:center;gap:4px;font:800 11px var(--mono);flex:none;min-width:58px}
+.rstat span{display:flex;align-items:center;gap:6px;color:var(--dim)}
+.rstat span:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.rstat .P{color:#7ff8ff}.rstat .B{color:#ff8fe0}.rstat .T{color:#d4ff7a}
+@media(min-width:900px){.rstat{font-size:13px;min-width:74px}}
+/* hands */
+.duel{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;align-items:center}
+.side{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 4px 10px;border-radius:16px;border:1px solid transparent;transition:border-color .25s,box-shadow .25s,background .25s}
+.side .who{font:900 12px var(--sans);letter-spacing:.24em;text-transform:uppercase}
+.side.P .who{color:#7ff8ff;text-shadow:0 0 8px #22f0ff}.side.B .who{color:#ff8fe0;text-shadow:0 0 8px #ff3dc8}
+.side.won.P{border-color:#22f0ff;box-shadow:0 0 24px #22f0ff55,inset 0 0 20px #22f0ff22;background:#22f0ff0c}
+.side.won.B{border-color:#ff3dc8;box-shadow:0 0 24px #ff3dc855,inset 0 0 20px #ff3dc822;background:#ff3dc80c}
+.side.lost{opacity:.6}
+.cards{display:flex;justify-content:center;align-items:center;min-height:calc(var(--cw)*1.4);position:relative}
+.tot{font:900 18px var(--mono);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#05050acc;border:2px solid var(--line2);color:var(--hi);transition:.25s}
+.side.P .tot.on{border-color:#22f0ff;box-shadow:0 0 12px #22f0ff88}.side.B .tot.on{border-color:#ff3dc8;box-shadow:0 0 12px #ff3dc888}
+.tot.nat{background:var(--y);color:#1a1400;border-color:var(--y)!important;box-shadow:0 0 16px #ffd84daa!important}
+@media(min-width:900px){.tot{width:54px;height:54px;font-size:22px}.side .who{font-size:14px}}
+/* cards (after Neon 21) */
+.pc{width:var(--cw);aspect-ratio:5/7;perspective:700px;flex:none;margin-left:var(--ov);position:relative}
+.pc:first-child{margin-left:0}
+.pc.third{margin-left:calc(var(--cw)*.26);margin-right:calc(var(--cw)*.2);transform:rotate(90deg)}
+.pc .in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,1.3,.5,1)}
+.pc.down .in{transform:rotateY(180deg)}
+.pc .fc,.pc .bk{position:absolute;inset:0;border-radius:calc(var(--cw)*.11);backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.pc .fc{background:linear-gradient(160deg,#fff 0%,#f6f0fb 70%,#e9def4);color:#14142a;box-shadow:0 6px 14px #0009,0 0 0 1px #0002;font-family:var(--sans)}
+.pc.red .fc{color:#e81ea8}
+.pc .fc .cn{position:absolute;display:flex;flex-direction:column;align-items:center;line-height:.9;font-weight:900;font-size:calc(var(--cw)*.26)}
+.pc .fc .cn i{font-style:normal;font-size:.8em;margin-top:1px}
+.pc .fc .tl{top:6%;left:7%}.pc .fc .br{bottom:6%;right:7%;transform:rotate(180deg)}
+.pc .fc .pip{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--cw)*.56);line-height:1}
+.pc.red .fc .pip{text-shadow:0 0 10px #ff3dc866}
+.pc .fc .face{position:absolute;inset:22% 22%;border-radius:6px;border:2px solid currentColor;display:grid;place-items:center;font:900 calc(var(--cw)*.42)/1 var(--sans);background:linear-gradient(160deg,#8b5cff22,#ff3dc822)}
+.pc .fc .face small{display:block;font-size:.45em;text-align:center;margin-top:2px}
+.pc .bk{transform:rotateY(180deg);border:2px solid #ff3dc8;box-shadow:0 6px 14px #0009,0 0 12px #ff3dc866;background:
+  radial-gradient(circle at 50% 50%,#ffd84d55 0 10%,transparent 11%),
+  repeating-linear-gradient(45deg,#ff3dc833 0 3px,transparent 3px 9px),repeating-linear-gradient(-45deg,#8b5cff44 0 3px,transparent 3px 9px),linear-gradient(160deg,#4a0f3a,#1a0624)}
+.pc .bk:after{content:"";position:absolute;inset:7%;border-radius:5px;border:1px solid #ffd84d88;box-shadow:inset 0 0 10px #ffd84d44}
+.shoe{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:34px;height:44px;opacity:.85;pointer-events:none}
+.shoe i{position:absolute;inset:0;border-radius:5px;border:1px solid #ff3dc8aa;background:repeating-linear-gradient(45deg,#4a0f3a 0 4px,#1a0624 4px 8px);box-shadow:0 0 10px #ff3dc844}
+.shoe i:first-child{transform:translate(-3px,3px) rotate(-6deg)}
+.vs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:900 12px var(--sans);letter-spacing:.2em;color:#ffffff40;pointer-events:none}
+.duel:has(.pc) .vs{opacity:0}
+/* result banner */
+.ban{display:inline-flex;align-items:baseline;gap:10px;font:900 clamp(15px,4.4vw,22px)/1 var(--sans);letter-spacing:.08em;padding:8px 14px;border-radius:12px;white-space:nowrap;animation:banin .45s cubic-bezier(.2,1.6,.4,1);background:#0a0410ee;border:2px solid currentColor}
+.ban small{font:800 11px var(--mono);letter-spacing:.04em;opacity:.85}
+@media(min-width:900px){.ban small{font-size:13px}}
+.ban.P{color:var(--c);box-shadow:0 0 24px #22f0ff88;text-shadow:0 0 10px var(--c)}
+.ban.B{color:var(--p);box-shadow:0 0 24px #ff3dc888;text-shadow:0 0 10px var(--p)}
+.ban.T{color:var(--l);box-shadow:0 0 28px #b8ff3b99;text-shadow:0 0 10px var(--l)}
+@keyframes banin{from{transform:scale(.2);opacity:0}}
+/* betting spots */
+.spots{position:relative;z-index:1;display:grid;grid-template-columns:1fr .8fr 1fr;gap:8px}
+@media(min-width:900px){.spots{gap:14px}}
+.spot{position:relative;min-height:96px;border-radius:16px;border:2px solid;background:#0a0410aa;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:8px 4px 6px;gap:2px;transition:transform .1s,box-shadow .2s,background .2s,opacity .2s;color:var(--txt)}
+@media(min-width:900px){.spot{min-height:132px;padding:12px 6px 10px}}
+.spot:active:not(:disabled){transform:scale(.97)}
+.spot:disabled{cursor:default}
+.spot b{font:900 14px var(--sans);letter-spacing:.16em}
+.spot em{font:700 11px var(--mono);font-style:normal;color:var(--dim)}
+.spot .amt{font:800 12px var(--mono);color:var(--y);min-height:16px;margin-top:auto}
+.spot .amt:empty{visibility:hidden}
+@media(min-width:900px){.spot b{font-size:18px}.spot em{font-size:13px}.spot .amt{font-size:14px}}
+.spot.P{border-color:#22f0ff88}.spot.P b{color:#7ff8ff;text-shadow:0 0 8px #22f0ff}
+.spot.B{border-color:#ff3dc888}.spot.B b{color:#ff8fe0;text-shadow:0 0 8px #ff3dc8}
+.spot.T{border-color:#b8ff3b88}.spot.T b{color:#d4ff7a;text-shadow:0 0 8px #b8ff3b}
+.spot.P:hover:not(:disabled),.spot.P.has{box-shadow:0 0 18px #22f0ff44,inset 0 0 16px #22f0ff1a}
+.spot.B:hover:not(:disabled),.spot.B.has{box-shadow:0 0 18px #ff3dc844,inset 0 0 16px #ff3dc81a}
+.spot.T:hover:not(:disabled),.spot.T.has{box-shadow:0 0 18px #b8ff3b44,inset 0 0 16px #b8ff3b1a}
+.spot.win{animation:spotwin .9s ease-in-out 2}
+.spot.P.win{background:#22f0ff26;border-color:#22f0ff}.spot.B.win{background:#ff3dc826;border-color:#ff3dc8}.spot.T.win{background:#b8ff3b26;border-color:#b8ff3b}
+.spot.push{border-color:var(--y)}
+.spot.lose{opacity:.45}
+@keyframes spotwin{50%{transform:scale(1.04)}}
+.stack{position:relative;width:34px;height:30px;margin-top:4px}
+@media(min-width:900px){.stack{width:42px;height:40px}}
+.chip{position:absolute;left:0;width:34px;height:12px;border-radius:50%;border:2px dashed #fff8;box-shadow:0 2px 0 #0008}
+@media(min-width:900px){.chip{width:42px;height:14px}}
+.chip.c0{background:#22f0ff}.chip.c1{background:#ff3dc8}.chip.c2{background:#b8ff3b}.chip.c3{background:#ffd84d}.chip.c4{background:#8b5cff}
+.chip.drop{animation:drop .25s cubic-bezier(.2,1.4,.4,1)}
+@keyframes drop{from{transform:translateY(-22px);opacity:0}}
+.hint{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;font:700 12px var(--sans);letter-spacing:.06em;color:#ffffffb0;min-height:58px}
+.hint .sub{font:700 12px var(--sans);color:#ffffffb0}
+@media(min-width:900px){.hint{font-size:14px;min-height:66px}.hint .sub{font-size:13px}}
+/* panel */
+#panel{display:flex;flex-direction:column}
+.dealbox{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row2 .btn{min-height:48px;padding:0 8px;font-size:14px}
+.btn kbd{font:700 10px var(--mono);color:inherit;opacity:.55;border:1px solid currentColor;border-radius:5px;padding:0 4px}
+@media(hover:none){.btn kbd{display:none}}
+.paytbl{margin-top:4px;border-top:1px solid var(--line);padding-top:6px}
+@media(max-width:899px){.dealbox{order:0}#panel .ghead{order:1}.betctl{order:2}.panel-rest{order:3}}
+@media(min-width:900px){.dealbox{order:2;margin:4px 0 12px}.betctl{order:1}.panel-rest{order:3}}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="dealbox">
+      <button class="btn big pri" id="deal">Deal <kbd>Space</kbd></button>
+      <div class="row2"><button class="btn" id="rebet">Rebet</button><button class="btn ghost" id="clear">Clear</button></div>
+    </div>
+    <div class="panel-rest">
+      <div class="stat-row"><span>Total stake</span><b id="sStake">0</b></div>
+      <div class="paytbl">
+        <div class="stat-row"><span>Player pays</span><b>1:1 (2×)</b></div>
+        <div class="stat-row"><span>Banker pays</span><b>0.95:1 (1.95×)</b></div>
+        <div class="stat-row"><span>Tie pays</span><b>8:1 (9×)</b></div>
+      </div>
+      <div class="stat-row" style="border-top:1px solid var(--line);margin-top:4px;padding-top:8px"><span>Coups this session</span><b id="sCoups">0</b></div>
+      <div class="stat-row"><span>Session net</span><b id="sNet">0</b></div>
+    </div>
+  </section>
+  <section class="stage velvet">
+    <div class="recent" id="recent"></div>
+    <div class="rim" aria-hidden="true"></div>
+    <div class="btbl" id="tbl">
+      <div class="roadbox"><div class="road" id="road" aria-label="Bead road: recent results"></div>
+        <div class="rstat" id="rstat"><span class="P">0</span><span class="B">0</span><span class="T">0</span></div></div>
+      <div class="duel" id="duel">
+        <div class="shoe" id="shoe" aria-hidden="true"><i></i><i></i></div>
+        <div class="side P" id="sideP"><span class="who">Player</span><div class="cards" id="cP"></div><span class="tot" id="tP">-</span></div>
+        <div class="side B" id="sideB"><span class="who">Banker</span><div class="cards" id="cB"></div><span class="tot" id="tB">-</span></div>
+        <span class="vs" aria-hidden="true">VS</span>
+      </div>
+      <div class="hint" id="msg" aria-live="polite"></div>
+      <div class="spots" id="spots">
+        <button class="spot P" data-k="P" aria-label="Bet on Player"><b>PLAYER</b><em>pays 1:1</em><span class="stack"></span><span class="amt"></span></button>
+        <button class="spot T" data-k="T" aria-label="Bet on Tie"><b>TIE</b><em>pays 8:1</em><span class="stack"></span><span class="amt"></span></button>
+        <button class="spot B" data-k="B" aria-label="Bet on Banker"><b>BANKER</b><em>0.95:1</em><span class="stack"></span><span class="amt"></span></button>
+      </div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/games/baccarat.js"></script>
+</body></html>

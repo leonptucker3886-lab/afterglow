@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>AFTERGLOW · Free neon social casino</title>
-<meta name="description" content="AFTERGLOW is a free-to-play neon social casino. Slots, blackjack, roulette, Liftoff, Plinko and Mines with play-money Glow Coins. No purchase, no cash-out, just the glow. 18+.">
+<meta name="description" content="AFTERGLOW is a free-to-play neon social casino. Slots, Heads or Tails, video poker, keno, Hi-Lo, baccarat, blackjack, roulette, Liftoff, Plinko and Mines with play-money Glow Coins. No purchase, no cash-out, just the glow. 18+.">
 <meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
 <link rel="canonical" href="https://afterglow.leonlink.net/">
 <meta property="og:title" content="AFTERGLOW · Free neon social casino"><meta property="og:description" content="Slots, blackjack, roulette and neon originals. Play money only, free forever.">
@@ -104,7 +104,7 @@ function grid() {
     const best = state.stats.byGame[g.id]?.best;
     return `<a class="gc ${g.live ? '' : 'soon'}" ${g.live ? `href="${g.url}"` : 'aria-disabled="true"'}><div class="art" style="background:${g.bg || 'linear-gradient(135deg,#141428,#08080f)'}">${art(g.live ? g.id : 'soon')}${g.badge ? `<span class="badge ${g.badge}">${g.badge}</span>` : ''}${!g.live ? '<span class="badge" style="background:#32325a;box-shadow:none">SOON</span>' : ''}${best ? `<span class="mine">best ${fmtX(best)}</span>` : ''}</div><div class="meta"><h3>${esc(g.name)}</h3><small>${esc(g.tag)}</small></div>${g.live ? '<div class="play"><span>Play</span></div>' : ''}</a>`;
   }).join('');
-  $('#gcount').textContent = `${GAMES.filter(g => g.live).length} live · ${GAMES.filter(g => !g.live).length} coming soon`;
+  { const soon = GAMES.filter(g => !g.live).length; $("#gcount").textContent = `${GAMES.filter(g => g.live).length} games live${soon ? ` · ${soon} coming soon` : ""}`; }
 }
 grid();
 

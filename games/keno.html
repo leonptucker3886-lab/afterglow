@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Constellation Keno · AFTERGLOW social casino</title>
+<meta name="description" content="Pick up to 10 stars, watch the draw light up your constellation. Free-to-play Keno on AFTERGLOW with prizes up to 1,000×. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.kn.stage{background:radial-gradient(90% 70% at 20% 0%,#16204a 0%,transparent 60%),radial-gradient(80% 70% at 100% 100%,#2a0b3a 0%,transparent 60%),#06060f}
+.kn .sky{position:absolute;inset:0;pointer-events:none;opacity:.7;background-image:
+  radial-gradient(1px 1px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 33% 72%,#cfe,transparent),radial-gradient(1.5px 1.5px at 58% 12%,#fff,transparent),
+  radial-gradient(1px 1px at 81% 44%,#fde,transparent),radial-gradient(1px 1px at 91% 85%,#fff,transparent),radial-gradient(1.5px 1.5px at 6% 90%,#cff,transparent),
+  radial-gradient(1px 1px at 46% 46%,#fff,transparent),radial-gradient(1px 1px at 70% 66%,#fff,transparent),radial-gradient(1px 1px at 24% 40%,#ffe,transparent);
+  animation:tw 6s ease-in-out infinite alternate}
+@keyframes tw{to{opacity:.35}}
+.kn .recent{position:relative;z-index:1}
+.kbody{position:relative;flex:1;display:flex;flex-direction:column;gap:10px;padding:10px 6px 12px}
+.kmain{display:flex;flex-direction:column;gap:10px}
+/* paytable */
+.ptab{display:flex;gap:4px;padding:0 4px;min-height:48px}
+.ptab .hint{flex:1;display:grid;place-items:center;border:1px dashed var(--line2);border-radius:12px;color:var(--faint);font:700 13px var(--sans);text-align:center;padding:6px}
+.pr{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border-radius:10px;border:1px solid var(--line);background:#0e0e1ccc;padding:5px 2px;transition:background .2s,border-color .2s,box-shadow .2s,transform .2s}
+.pr small{font:800 10px var(--sans);letter-spacing:.04em;color:var(--faint);text-transform:uppercase;white-space:nowrap}
+.pr b{font:800 12px var(--mono);color:var(--txt);white-space:nowrap}
+.pr.zero b{color:var(--faint)}
+.pr.top b{color:var(--y);text-shadow:0 0 8px #ffd84d88}
+.pr.live{border-color:var(--c);box-shadow:0 0 12px #22f0ff55}
+.pr.hit{background:linear-gradient(180deg,#d4ff7a,#86d10f);border-color:transparent;box-shadow:var(--glowl);transform:scale(1.06)}
+.pr.hit small,.pr.hit b{color:#122000;text-shadow:none}
+.pr.miss{border-color:var(--r);box-shadow:0 0 12px #ff4d6d55}
+.pr.miss b{color:var(--r)}
+/* board */
+.board{position:relative;display:grid;grid-template-columns:repeat(8,1fr);width:100%;max-width:640px;margin:0 auto}
+.board svg.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.lines line{stroke:#ffd84d;stroke-width:2;stroke-linecap:round;filter:drop-shadow(0 0 4px #ffd84d) drop-shadow(0 0 10px #ff3dc8);opacity:.9;animation:drawl .45s ease-out forwards}
+@keyframes drawl{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+.st{position:relative;z-index:1;aspect-ratio:1;min-height:44px;min-width:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center;color:var(--dim)}
+.st:disabled{cursor:default}
+.orb{position:relative;width:78%;height:78%;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#262650,#11112a 70%);border:1px solid var(--line2);font:800 clamp(12px,3.4vw,17px) var(--mono);transition:transform .15s,background .2s,border-color .2s,box-shadow .2s,color .2s}
+.orb i{position:absolute;inset:-26%;opacity:0;transform:scale(.3) rotate(-30deg);transition:opacity .25s,transform .35s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
+.orb i svg{width:100%;height:100%}
+.orb span{position:relative}
+@media(hover:hover){.st:not(:disabled):hover .orb{border-color:var(--c);color:var(--hi);transform:scale(1.08)}}
+.st:not(:disabled):active .orb{transform:scale(.92)}
+.st.pk .orb{color:#fff;border-color:var(--p);background:radial-gradient(circle at 35% 30%,#ff6fd7,#7a1260 75%);box-shadow:0 0 14px #ff3dc8aa,inset 0 0 8px #fff3}
+.st.dr .orb{color:var(--c);border-color:#22f0ff88;background:radial-gradient(circle,#0e3340,#0b0b18 75%);box-shadow:0 0 10px #22f0ff44;animation:pop .25s}
+.st.hit .orb{color:#1a1400;border-color:#fff;background:radial-gradient(circle at 40% 35%,#fff,#ffd84d 45%,#ff9b3d);box-shadow:0 0 18px #ffd84d,0 0 34px #ff3dc888;animation:hitp .45s cubic-bezier(.2,1.6,.4,1)}
+.st.hit .orb i{opacity:1;transform:scale(1) rotate(0)}
+@keyframes hitp{0%{transform:scale(.5)}60%{transform:scale(1.2)}}
+.st.mute .orb{opacity:.55}
+.st.pk.mute .orb{opacity:.6;box-shadow:none}
+/* draw tape */
+.tape{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;padding:0 4px;max-width:640px;width:100%;margin:0 auto}
+.tape span{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font:800 clamp(11px,3vw,15px) var(--mono);border:1px dashed var(--line2);color:var(--faint);max-width:52px;width:100%;justify-self:center}
+.tape span.on{border:1px solid #22f0ff88;color:var(--c);background:#0e3340;animation:pop .25s}
+.tape span.h{border-color:transparent;color:#1a1400;background:radial-gradient(circle at 40% 35%,#fff,#ffd84d 50%,#ff9b3d);box-shadow:0 0 12px #ffd84d}
+.res{text-align:center;min-height:34px;font:900 clamp(18px,5vw,26px)/34px var(--mono);letter-spacing:.02em;color:var(--dim)}
+.res.w{color:var(--l);text-shadow:var(--glowl);animation:pop .3s}
+.res.l{color:var(--faint)}
+.res small{font:800 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-left:6px}
+/* panel */
+.pickrow{display:flex;gap:8px;margin-bottom:12px}
+.pickrow .btn{flex:1;padding:0 10px}
+.pcount{display:flex;align-items:baseline;gap:6px}
+.pcount b{font:900 15px var(--mono);color:var(--p);text-shadow:0 0 8px #ff3dc888}
+.seg button{min-height:44px}
+.kfoot{margin-top:12px}
+.kbd{font-size:12px;margin-top:10px;text-align:center}
+.kbd kbd{font:700 11px var(--mono);border:1px solid var(--line2);border-bottom-width:2px;border-radius:5px;padding:1px 5px;color:var(--dim)}
+@media(max-width:899px){.kbd{display:none}
+  .game .panel{display:flex;flex-direction:column}
+  .panel .ghead{order:0}.panel #go{order:1;margin-bottom:12px}.panel #pickf{order:2}.panel #spdf{order:3;margin:0 0 12px!important}.panel #bet{order:4}.panel .kfoot{order:5;margin-top:0}}
+@media(max-width:420px){.game{padding:8px;gap:8px}.kbody{padding:8px 2px 10px}}
+@media(min-width:900px){
+  .kbody{padding:18px 18px 16px;gap:14px;justify-content:center}
+  .kmain{flex-direction:row-reverse;align-items:center;gap:18px}
+  .board{flex:1}
+  .ptab{flex-direction:column-reverse;width:150px;flex:none;padding:0;gap:5px}
+  .pr{flex-direction:row;justify-content:space-between;padding:7px 12px;flex:none}
+  .pr small{font-size:11px}.pr b{font-size:14px}
+  .pr.hit{transform:scale(1.04)}
+  .ptab .hint{min-height:200px}
+}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div id="bet"></div>
+    <div class="field" id="pickf"><label><span class="pcount">Stars <b id="pc">0/10</b></span><span class="faint" id="phint">tap 1 to 10</span></label>
+      <div class="pickrow"><button class="btn" id="rand">Random pick</button><button class="btn ghost" id="clear">Clear</button></div>
+    </div>
+    <button class="btn big pri" id="go">Draw</button>
+    <div class="field" id="spdf" style="margin-top:12px;margin-bottom:0"><label>Draw speed</label>
+      <div class="seg" id="speed"><button data-s="normal" class="on">Normal</button><button data-s="fast">Fast</button></div>
+    </div>
+    <div class="kfoot">
+      <div class="stat-row"><span>Top prize</span><b id="top">-</b></div>
+      <div class="stat-row"><span>Last draw</span><b id="last">-</b></div>
+    </div>
+    <p class="kbd faint"><kbd>Space</kbd> / <kbd>Enter</kbd> to draw</p>
+  </section>
+  <section class="stage kn">
+    <div class="sky"></div>
+    <div class="recent" id="recent"></div>
+    <div class="kbody">
+      <div class="kmain">
+        <div class="ptab" id="ptab" aria-live="polite"></div>
+        <div class="board" id="board"><svg class="lines" id="lines" aria-hidden="true"></svg></div>
+      </div>
+      <div class="tape" id="tape" aria-label="Drawn numbers"></div>
+      <div class="res" id="res" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/games/keno.js"></script>
+</body></html>

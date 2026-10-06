@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Synth Poker · AFTERGLOW social casino</title>
+<meta name="description" content="Synth Poker: Jacks or Better video poker under a neon horizon. 9/6 full-pay table. Free to play on AFTERGLOW. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+/* --- synthwave stage --- */
+.stage.synth{background:linear-gradient(180deg,#0a0420 0%,#1a0838 38%,#3a0c4a 52%,#07040f 52.2%,#05050a 100%)}
+.sky{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.sky .sun{position:absolute;left:50%;top:52%;width:min(62vw,340px);aspect-ratio:1;transform:translate(-50%,-62%);border-radius:50%;
+  background:linear-gradient(180deg,#ffd84d 0%,#ff8a3d 35%,#ff3dc8 75%,#8b5cff 100%);opacity:.5;filter:drop-shadow(0 0 40px #ff3dc8aa);
+  -webkit-mask:linear-gradient(#000 0 52%,transparent 52% 56%,#000 56% 64%,transparent 64% 69%,#000 69% 76%,transparent 76% 82%,#000 82% 88%,transparent 88%);
+  mask:linear-gradient(#000 0 52%,transparent 52% 56%,#000 56% 64%,transparent 64% 69%,#000 69% 76%,transparent 76% 82%,#000 82% 88%,transparent 88%)}
+.sky .stars{position:absolute;inset:0 0 50% 0;background:
+  radial-gradient(1px 1px at 12% 20%,#fff9,transparent),radial-gradient(1px 1px at 28% 8%,#fff7,transparent),radial-gradient(1.5px 1.5px at 44% 26%,#22f0ffaa,transparent),
+  radial-gradient(1px 1px at 63% 12%,#fff8,transparent),radial-gradient(1.5px 1.5px at 81% 22%,#ff3dc8aa,transparent),radial-gradient(1px 1px at 92% 6%,#fff6,transparent),
+  radial-gradient(1px 1px at 6% 40%,#fff5,transparent),radial-gradient(1px 1px at 72% 38%,#fff5,transparent)}
+.sky .floor{position:absolute;left:-50%;right:-50%;top:52%;bottom:-10%;transform-origin:50% 0;transform:perspective(260px) rotateX(62deg);
+  background:linear-gradient(90deg,#ff3dc8 1px,transparent 1px) 50% 0/48px 100%,linear-gradient(0deg,#22f0ff 1.5px,transparent 1.5px) 0 0/100% 40px;
+  opacity:.42;animation:grid 1.6s linear infinite;-webkit-mask:linear-gradient(180deg,transparent,#000 25%);mask:linear-gradient(180deg,transparent,#000 25%)}
+.sky .hz{position:absolute;left:0;right:0;top:52%;height:2px;background:linear-gradient(90deg,transparent,#ff3dc8,#22f0ff,#ff3dc8,transparent);box-shadow:0 0 18px #ff3dc8,0 0 4px #fff}
+@keyframes grid{to{background-position:50% 0,0 40px}}
+body.reduced .sky .floor{animation:none}
+.stage.synth>*:not(.sky){position:relative;z-index:1}
+.stage.synth .recent{background:#05050a88}
+
+/* --- paytable --- */
+.pt{margin:10px 10px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3px 10px;padding:8px 10px;border-radius:12px;border:1px solid #22f0ff44;background:#07041aCC;box-shadow:0 0 22px #8b5cff33,inset 0 0 18px #22f0ff11;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.pt div{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:2px 7px;border-radius:7px;font:800 11px var(--sans);letter-spacing:.05em;text-transform:uppercase;color:#d4c8ff;white-space:nowrap;transition:background .2s,color .2s,box-shadow .2s}
+.pt div b{font:800 12px var(--mono);color:var(--y);text-shadow:0 0 6px #ffd84d66}
+.pt div span{overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media(max-width:370px){.pt{gap:3px 6px;padding:6px}.pt div{font-size:10px;letter-spacing:.02em;padding:2px 4px}}
+.pt div.hit{background:#22f0ff26;color:#fff;box-shadow:inset 0 0 0 1px var(--c),0 0 12px #22f0ff55}
+.pt div.win{background:var(--l);color:#122000;box-shadow:0 0 18px #b8ff3baa;animation:ptp .6s ease-in-out 3}
+.pt div.win b{color:#122000;text-shadow:none}
+.pt div.royal{grid-column:1/-1}
+.pt div.royal b{font-size:13px}
+@keyframes ptp{50%{filter:brightness(1.35)}}
+@media(min-width:900px){.pt{margin:18px auto 0;width:min(92%,640px);gap:4px 18px;padding:12px 16px}.pt div{font-size:13px;padding:4px 10px}.pt div b{font-size:14px}.pt div.royal b{font-size:16px}}
+
+
+/* --- cards --- */
+.table{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;padding:12px 8px 10px;--cw:min(calc((100vw - 76px) / 5),74px)}
+@media(min-width:900px){.table{--cw:min(116px,calc((min(100vw,1240px) - 460px) / 5));gap:12px}}
+.row{display:flex;justify-content:center;gap:clamp(6px,1.4vw,14px);position:relative}
+.slot{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;border:0;background:none;cursor:pointer;color:inherit;border-radius:12px;touch-action:manipulation}
+.slot:disabled{cursor:default}
+.hold{min-height:30px;width:var(--cw);display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--line2);background:#07041acc;font:900 11px var(--sans);letter-spacing:.14em;color:var(--faint);transition:.15s}
+.slot:not(:disabled) .hold{color:var(--dim);border-color:#8b5cff88}
+.slot.held .hold{background:var(--y);border-color:var(--y);color:#1a1400;box-shadow:0 0 16px #ffd84daa}
+.slot.sug .hold{outline:2px dashed var(--y);outline-offset:2px}
+.slot kbd{font:700 9px var(--mono);opacity:.6;margin-left:4px}
+@media(hover:none){.slot kbd{display:none}}
+@media(min-width:900px){.hold{min-height:36px;font-size:13px}}
+.pc{width:var(--cw);aspect-ratio:5/7;perspective:700px;position:relative;transition:transform .18s cubic-bezier(.3,1.5,.5,1)}
+.slot.held .pc{transform:translateY(-8px)}
+.slot:not(:disabled):hover .pc{transform:translateY(-4px)}
+.slot.held:not(:disabled):hover .pc{transform:translateY(-10px)}
+.pc .in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .42s cubic-bezier(.3,1.3,.5,1)}
+.pc.down .in{transform:rotateY(180deg)}
+.pc .fc,.pc .bk{position:absolute;inset:0;border-radius:calc(var(--cw)*.1);backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+/* chrome face */
+.pc .fc{color:#1b1640;font-family:var(--sans);box-shadow:0 8px 18px #000a,0 0 0 1px #ffffff55,inset 0 0 0 2px #ffffff88;
+  background:linear-gradient(115deg,transparent 30%,#ffffffcc 42%,transparent 54%),linear-gradient(180deg,#fbfbff 0%,#d9dcef 46%,#9ea3c4 50%,#e8eaf8 54%,#c2c6de 100%)}
+.pc .fc:before{content:"";position:absolute;inset:5%;border-radius:calc(var(--cw)*.06);border:1px solid #8b5cff55}
+.pc.red .fc{color:#d1149a}
+.pc .cn{position:absolute;display:flex;flex-direction:column;align-items:center;line-height:.9;font-weight:900;font-size:calc(var(--cw)*.25);text-shadow:0 1px 0 #fff}
+.pc .cn i{font-style:normal;font-size:.8em;margin-top:1px}
+.pc .tl{top:7%;left:9%}.pc .br{bottom:7%;right:9%;transform:rotate(180deg)}
+.pc .pip{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--cw)*.52);line-height:1;filter:drop-shadow(0 2px 0 #fff) drop-shadow(0 0 6px #8b5cff55)}
+.pc.red .pip{filter:drop-shadow(0 2px 0 #fff) drop-shadow(0 0 8px #ff3dc888)}
+.pc .face{position:absolute;inset:23% 22%;border-radius:6px;border:2px solid currentColor;display:grid;place-items:center;align-content:center;font:900 calc(var(--cw)*.38)/1 var(--sans);
+  background:linear-gradient(180deg,#22f0ff33,#8b5cff33 50%,#ff3dc833);box-shadow:inset 0 0 10px #8b5cff44}
+.pc .face small{font-size:.5em;margin-top:2px}
+.pc .bk{transform:rotateY(180deg);border:2px solid #22f0ff;box-shadow:0 8px 18px #000a,0 0 12px #22f0ff66;background:
+  linear-gradient(180deg,transparent 58%,#ff3dc855 58% 60%,transparent 60%),
+  repeating-linear-gradient(0deg,#22f0ff44 0 1px,transparent 1px 9px),
+  radial-gradient(circle at 50% 48%,#ffd84d 0 16%,#ff3dc8 17% 26%,transparent 27%),
+  linear-gradient(180deg,#1a0838,#3a0c4a 58%,#0a0420 60%)}
+.pc .bk:after{content:"";position:absolute;inset:6%;border-radius:5px;border:1px solid #ff3dc8aa}
+.slot.wc .pc .fc{box-shadow:0 8px 18px #000a,0 0 0 2px var(--l),0 0 22px #b8ff3bcc}
+.row.done .slot:not(.wc) .pc{opacity:.5;filter:saturate(.6)}
+.msg{text-align:center;font:800 13px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#ffffffc0;min-height:20px;text-shadow:0 0 8px #8b5cff}
+.msg.w{color:var(--l);text-shadow:0 0 10px #b8ff3b}
+@media(min-width:900px){.msg{font-size:16px;min-height:24px}}
+.ban{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) rotate(-5deg);z-index:5;font:900 clamp(14px,4.4vw,30px)/1 var(--sans);letter-spacing:.08em;padding:8px 14px;border-radius:10px;white-space:nowrap;
+  pointer-events:none;background:#05050ae6;border:2px solid currentColor;color:var(--l);box-shadow:0 0 24px #b8ff3b99,inset 0 0 12px #b8ff3b55;text-shadow:0 0 10px var(--l);animation:banin .45s cubic-bezier(.2,1.6,.4,1),banout .5s 2.4s forwards}
+.ban.big{color:var(--p);box-shadow:0 0 28px #ff3dc8aa,inset 0 0 12px #ff3dc855;text-shadow:0 0 10px var(--p)}
+@keyframes banout{to{opacity:0;transform:translate(-50%,-50%) rotate(-5deg) scale(.9)}}
+@keyframes banin{from{transform:translate(-50%,-50%) rotate(-5deg) scale(.2);opacity:0}}
+/* action bar */
+.acts{display:grid;grid-template-columns:1fr;gap:8px;padding:10px;border-top:1px solid #22f0ff22;background:#05050acc;flex:none}
+.acts .btn{min-height:56px;font-size:18px;letter-spacing:.12em}
+.acts .btn kbd{font:700 10px var(--mono);opacity:.55;border:1px solid currentColor;border-radius:5px;padding:0 5px}
+@media(hover:none){.acts .btn kbd{display:none}}
+@media(min-width:900px){.acts{padding:14px 20px}.acts .btn{min-height:62px;max-width:420px;width:100%;margin:0 auto}}
+/* panel */
+.hintrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);margin-top:4px;cursor:pointer}
+.hintrow span{font-size:13px;color:var(--dim)}.hintrow b{display:block;color:var(--txt);font-size:14px}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <label class="hintrow"><span><b>Auto-hold hint</b>Pre-selects a simple strategy hold</span><span class="toggle"><input type="checkbox" id="hint"><i></i></span></label>
+    <div class="stat-row"><span>Hands this session</span><b id="sHands">0</b></div>
+    <div class="stat-row"><span>Best hand</span><b id="sBest">-</b></div>
+    <div class="stat-row"><span>Session net</span><b id="sNet">0</b></div>
+  </section>
+  <section class="stage synth">
+    <div class="sky" aria-hidden="true"><div class="stars"></div><div class="sun"></div><div class="floor"></div><div class="hz"></div></div>
+    <div class="recent" id="recent"></div>
+    <div class="pt" id="pt" aria-label="Paytable"></div>
+    <div class="table">
+      <div class="row" id="row"></div>
+      <div class="msg" id="msg" aria-live="polite"></div>
+    </div>
+    <div class="acts"><button class="btn big pri" id="go">DEAL <kbd>SPACE</kbd></button></div>
+  </section>
+</main>
+<script type="module" src="/games/poker.js"></script>
+</body></html>

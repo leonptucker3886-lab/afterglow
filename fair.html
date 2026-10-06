@@ -73,8 +73,8 @@ $('#vgo').onclick = async () => {
   const mines = shuffle([...Array(25).keys()], f.slice(0, 24)).slice(0, 3).sort((a, b) => a - b);
   const path = (await floatsFor(s, c, n, 16)).map(x => (x < 0.5 ? 'L' : 'R')).join('');
   $('#vout').innerHTML = `sha256(server) = <span style="color:var(--c);word-break:break-all">${h}</span><br>first floats: ${f.slice(0, 4).map(x => x.toFixed(6)).join(', ')}<br>
-    Orbit Roulette → pocket <b>${Math.floor(f[0] * 37)}</b><br>Liftoff → crash at <b>${crash.toFixed(2)}×</b><br>Void Mines (3 voids) → tiles <b>${mines.map(x => x + 1).join(', ')}</b><br>
-    Starfall Plinko (16 rows) → <b>${path}</b> · slot <b>${[...path].filter(x => x === 'R').length}</b><br><span class="faint">Slots and blackjack use the same stream to pick reel stops and shuffle the shoe.</span>`;
+    Heads or Tails → <b>${f[0] < 0.5 ? 'Heads' : 'Tails'}</b><br>Orbit Roulette → pocket <b>${Math.floor(f[0] * 37)}</b><br>Liftoff → crash at <b>${crash.toFixed(2)}×</b><br>Void Mines (3 voids) → tiles <b>${mines.map(x => x + 1).join(', ')}</b><br>
+    Starfall Plinko (16 rows) → <b>${path}</b> · slot <b>${[...path].filter(x => x === 'R').length}</b><br><span class="faint">Slots, poker, keno, Hi-Lo, baccarat and blackjack use the same stream to pick reel stops and shuffle the shoe.</span>`;
 };
 paint();
 </script>

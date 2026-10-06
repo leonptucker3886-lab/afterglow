@@ -102,10 +102,10 @@ h1,h2,h3{line-height:1.15;margin:0}
 .h-sec h2 em{font-style:normal;color:var(--c);text-shadow:var(--glow)}
 
 /* --- game layout --- */
-.game{max-width:1240px;margin:0 auto;padding:12px;display:grid;gap:12px;grid-template-columns:1fr;grid-template-areas:"stage" "panel"}
+.game{max-width:1240px;margin:0 auto;padding:12px;display:grid;gap:12px;grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "panel"}
 .game .stage{grid-area:stage;position:relative;min-height:340px;border-radius:var(--rad);border:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#141432,#08080f 70%);overflow:hidden;display:flex;flex-direction:column}
 .game .panel{grid-area:panel;border-radius:var(--rad);border:1px solid var(--line);background:var(--panel);padding:14px;align-self:start}
-@media(min-width:900px){.game{grid-template-columns:330px 1fr;grid-template-areas:"panel stage";padding:20px}.game .stage{min-height:560px}}
+@media(min-width:900px){.game{grid-template-columns:330px minmax(0,1fr);grid-template-areas:"panel stage";padding:20px}.game .stage{min-height:560px}}
 .ghead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .ghead h1{font-size:19px;letter-spacing:.02em}
 .ghead .back{color:var(--dim);display:grid;place-items:center;width:34px;height:34px;border-radius:10px;border:1px solid var(--line2)}
