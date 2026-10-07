@@ -107,6 +107,13 @@ export const ACH = {
   poker:   ['Full house', 'Get a full house or better in Synth Poker', 3000],
   keno:    ['Starmap', 'Match 6 or more spots in one Keno draw', 3000],
   hilo:    ['Hyperdrive', 'Chain 8 correct calls in one Hi-Lo round', 3000],
+  zeus:    ['Sky father', 'Land a 50× or bigger tumble on Storm of Olympus', 3000],
+  buffalo: ['Stampede', 'Trigger free spins on Thunder Herd', 2000],
+  joker:   ['Last laugh', 'Fill a reel with jokers on Neon Joker', 2000],
+  diamonds:['Ice cold', 'Hit a 25× or bigger line on Diamond Fever', 2000],
+  hogwild: ['Bring home the bacon', 'Break the piggy bank on Hog Wild', 3000],
+  fireball:['Ring of fire', 'Win a jackpot on Fireball Fury', 3000],
+  fishing: ['Big catch', 'Reel in 10 fish in one Lucky Lure bonus', 3000],
   bacc:    ['Dead heat', 'Win a tie bet in Velvet Baccarat', 3000],
 };
 export function unlock(id) {

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fireball Fury · AFTERGLOW social casino</title>
+<meta name="description" content="Fire up the volcanic forge in Fireball Fury: a free-to-play 5-reel, 25-line slot with a Hold &amp; Spin fireball feature and four jackpots on AFTERGLOW. Play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+:root{--o:#ff8a1f;--ember:#ff4d1a;--gold:#ffc23d;--lava:#ff5a1a}
+.panel{display:flex;flex-direction:column}
+.panel .ghead{order:-3}
+.fb-spinrow{display:flex;gap:8px;align-items:stretch;margin-bottom:12px}
+.fb-spinrow .btn.big{flex:1;font-size:19px;letter-spacing:.12em;min-height:60px}
+.fb-spin{background:linear-gradient(180deg,#ffd06a,#ff7a1a 55%,#e8400f)!important;color:#1a0600!important;border-color:transparent!important;box-shadow:0 0 22px #ff8a1f99,inset 0 1px 0 #fff8!important}
+.fb-spinrow .pt{min-width:60px;padding:0 12px;flex:none}
+.fb-spinrow .pt svg{width:24px;height:24px}
+.fb-opt{display:flex;align-items:center;justify-content:space-between;min-height:44px;margin-bottom:8px;gap:10px}
+.fb-opt span{font:700 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.fb-opt small{display:block;font:500 12px var(--sans);letter-spacing:0;text-transform:none;color:var(--faint)}
+.fb-opt .toggle input:checked+i{background:var(--o);box-shadow:0 0 14px #ff8a1f}
+@media(max-width:899px){.fb-spinrow{order:-2;position:sticky;bottom:calc(var(--bn) + env(safe-area-inset-bottom) + 8px);z-index:6}}
+
+/* stage + ambience */
+.stage.fbs{min-height:0;background:radial-gradient(120% 60% at 50% 115%,#6a1606 0%,#2a0905 38%,#0a0507 78%)}
+.fb-sky{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ember{position:absolute;bottom:-10px;border-radius:50%;animation:rise linear infinite;will-change:transform}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx),-110vh);opacity:0}}
+body.reduced .ember{display:none}
+@media (prefers-reduced-motion:reduce){.ember{display:none}}
+.fb-wrap{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:8px 6px 8px;gap:8px}
+
+/* jackpot marquee */
+.jpm{width:min(100%,720px);display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.jpt{position:relative;border-radius:12px;padding:5px 4px 6px;text-align:center;background:linear-gradient(180deg,#1f0a06,#0c0505);border:1px solid var(--jc);box-shadow:0 0 12px color-mix(in srgb,var(--jc) 40%,transparent),inset 0 0 10px #000;overflow:hidden}
+.jpt small{display:block;font:900 11px/1.2 var(--sans);letter-spacing:.16em;color:var(--jc);text-shadow:0 0 8px var(--jc)}
+.jpt b{display:block;font:900 clamp(13px,3.6vw,20px)/1.25 var(--mono);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jpt i{display:block;font:700 10px var(--mono);color:#ffffff88;font-style:normal}
+.jpt.mini{--jc:#ffb347}.jpt.minor{--jc:#ff7a3d}.jpt.major{--jc:#ff3d6e}.jpt.grand{--jc:#ffd84d;background:linear-gradient(180deg,#3a1406,#140604)}
+.jpt.grand b{color:var(--y);text-shadow:0 0 10px #ff8a1f}
+.jpt:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,#ffffff22 50%,transparent 70%);transform:translateX(-100%);animation:sheen 4.5s ease-in-out infinite}
+.jpt.minor:after{animation-delay:.4s}.jpt.major:after{animation-delay:.8s}.jpt.grand:after{animation-delay:1.2s}
+@keyframes sheen{40%,100%{transform:translateX(100%)}}
+.jpt.hit{animation:jphit .35s ease-in-out 8 alternate;z-index:1}
+@keyframes jphit{to{transform:scale(1.08);box-shadow:0 0 26px var(--jc),0 0 50px var(--jc),inset 0 0 14px var(--jc)}}
+
+/* hold & spin bar */
+.hsbar{width:min(100%,720px);display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 12px;border-radius:12px;background:linear-gradient(90deg,#4a1206,#200805);border:1px solid var(--o);box-shadow:0 0 18px #ff8a1f66;font:800 12px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.hsbar[hidden]{display:none}
+.hsbar .pips{display:flex;gap:6px;align-items:center}
+.hsbar .pips i{width:14px;height:14px;border-radius:50%;background:#3a1608;border:1px solid #ff8a1f66;transition:background .2s,box-shadow .2s}
+.hsbar .pips i.on{background:radial-gradient(circle at 40% 35%,#fff6c0,#ffb02e 45%,#ff4d1a);box-shadow:0 0 10px #ff8a1f}
+.hsbar .pips.reset i{animation:pop .3s}
+.hsbar b{font:900 16px var(--mono);color:var(--y)}
+
+/* machine */
+.fb-frame{position:relative;width:min(100%,720px);padding:6px;border-radius:18px;background:linear-gradient(180deg,#2a0d06,#0b0505);border:1px solid #7a2a0c;box-shadow:0 0 0 1px #000,0 0 30px #ff4d1a44,inset 0 0 26px #000}
+.fb-frame:before{content:"";position:absolute;inset:-1px;border-radius:18px;padding:1.5px;background:linear-gradient(90deg,#ff4d1a,#ffc23d,#ff3dc8,#ff4d1a);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.85;pointer-events:none}
+/* heat shimmer above the machine: cheap translucent bands drifting upward */
+.fb-frame .heat{position:absolute;left:4%;right:4%;top:-26px;height:34px;pointer-events:none;overflow:hidden;-webkit-mask:linear-gradient(0deg,#000,transparent);mask:linear-gradient(0deg,#000,transparent);opacity:.55}
+.fb-frame .heat:before{content:"";position:absolute;left:0;right:0;top:0;height:200%;background:repeating-linear-gradient(0deg,#ff8a1f00 0 6px,#ff8a1f2a 6px 8px,#ff8a1f00 8px 14px);animation:heat 1.6s linear infinite;will-change:transform}
+@keyframes heat{to{transform:translateY(-50%)}}
+.fb-reels{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(4px,1vw,8px)}
+.reel{position:relative;aspect-ratio:1/3;overflow:hidden;border-radius:10px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 180'%3E%3Cg fill='none' stroke='%23ff5a1a' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 18l12 8 6-6 14 10 10-4M30 30l-4 16 8 10M8 70l10-4 8 10 16-6 12 6M26 76l2 14-10 10M40 116l-8 10 6 12-10 8M4 130l12 2 10 8M46 150l-6 12 10 10M10 168l14-4' stroke-width='1.1' opacity='.55'/%3E%3C/g%3E%3C/svg%3E") center/100% 100%,linear-gradient(180deg,#0c0708,#1a0f12 50%,#0c0708);
+  box-shadow:inset 0 10px 14px -6px #000,inset 0 -10px 14px -6px #000;transition:box-shadow .3s}
+.reel:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#050203d0,transparent 14%,transparent 86%,#050203d0);border-radius:10px}
+.reel.antic{box-shadow:0 0 0 2px var(--o),0 0 26px #ff4d1a,inset 0 0 22px #ff8a1f88;animation:antic .4s ease-in-out infinite alternate}
+@keyframes antic{to{box-shadow:0 0 0 2px var(--y),0 0 36px #ffc23d,inset 0 0 28px #ff4d1aaa}}
+.reel .flames{position:absolute;left:-10%;right:-10%;bottom:0;height:60%;z-index:2;pointer-events:none;opacity:0;transition:opacity .25s;background:radial-gradient(40% 70% at 20% 100%,#ff4d1acc,transparent 70%),radial-gradient(40% 80% at 55% 100%,#ffb02ecc,transparent 70%),radial-gradient(40% 60% at 85% 100%,#ff3d6ecc,transparent 70%);transform-origin:50% 100%}
+.reel.antic .flames{opacity:.9;animation:flick .22s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scaleY(.85) skewX(-3deg)}to{transform:scaleY(1.1) skewX(3deg)}}
+.strip{position:absolute;left:0;top:0;width:100%;will-change:transform}
+.reel.spinning .strip{filter:url(#vblur)}
+.cell{position:relative;width:100%;aspect-ratio:1;display:grid;place-items:center;transition:opacity .25s}
+.cell svg{width:86%;height:86%;overflow:visible}
+.cell.k-DR svg,.cell.k-PH svg,.cell.k-VO svg,.cell.k-HS svg,.cell.k-S7 svg{filter:drop-shadow(0 0 5px #ff6a1a99)}
+.cell.k-FB svg{width:94%;height:94%;filter:drop-shadow(0 0 7px #ff7a1a);animation:fbf 1.1s ease-in-out infinite alternate;transform-origin:50% 62%}
+@keyframes fbf{from{transform:scale(.97) rotate(-2deg)}to{transform:scale(1.03) rotate(2deg)}}
+.fv{position:absolute;left:0;right:0;top:57%;transform:translateY(-50%);text-align:center;font:900 clamp(11px,3.3vw,22px)/1 var(--mono);color:#2a0700;text-shadow:0 0 4px #fff8c8,0 0 2px #fff;letter-spacing:-.02em;pointer-events:none;white-space:nowrap}
+.fv.jp{font:900 clamp(9px,2.7vw,17px)/1 var(--sans);letter-spacing:.06em;color:#fff;padding:2px 0;text-shadow:0 0 6px #000,0 1px 0 #000}
+.fv.MINI{color:#fff1d6}.fv.MINOR{color:#ffe0c8}.fv.MAJOR{color:#ffe6ef}
+.cell.k-FB.MAJOR svg{filter:drop-shadow(0 0 10px #ff3d6e)}
+.cell.dark{background:radial-gradient(circle,#1a0c0a,#090405 70%)}
+.cell.dark:before{content:"";position:absolute;inset:12%;border-radius:50%;border:1px dashed #ff5a1a33}
+.cell.dark.flick:before{animation:dflick .16s steps(2) infinite;border-color:#ff8a1f88;box-shadow:0 0 12px #ff5a1a55 inset}
+@keyframes dflick{50%{opacity:.35}}
+.cell.lock{box-shadow:inset 0 0 0 2px #ff8a1f88,inset 0 0 18px #ff4d1a66;border-radius:8px}
+.cell.land{animation:land .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes land{from{transform:scale(.3);opacity:0}}
+.fb-reels.won .cell{opacity:.3}
+.fb-reels.won .cell.win{opacity:1}
+.cell.win svg{animation:pulse .55s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.12);filter:drop-shadow(0 0 14px #ffc23d) brightness(1.2)}}
+.cell.gone{opacity:.25!important;transition:opacity .2s}
+.fb-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.fb-lines polyline{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .45s ease-out forwards,lglow 1s ease-in-out .45s infinite alternate}
+.fb-lines polyline.core{stroke:#fff;stroke-width:1.6;opacity:.9}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes lglow{to{stroke-width:7;opacity:.75}}
+.hold .reel{background:linear-gradient(180deg,#070304,#0d0607 50%,#070304)}
+
+/* banners */
+.fb-banner{position:absolute;inset:0;z-index:4;display:grid;place-items:center;text-align:center;border-radius:18px;background:radial-gradient(circle,#4a1206ee,#070304f2 75%);cursor:pointer;animation:fade .25s}
+.fb-banner[hidden]{display:none}
+.fb-banner .in{animation:bw .5s cubic-bezier(.2,1.6,.4,1);padding:12px}
+.fb-banner .k{font:800 13px var(--sans);letter-spacing:.25em;color:var(--gold);text-transform:uppercase}
+.fb-banner .t{font:900 clamp(28px,8vw,60px)/1.05 var(--sans);letter-spacing:.04em;background:linear-gradient(180deg,#fff,var(--y) 40%,var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px #ff4d1aaa);margin:6px 0}
+.fb-banner .s{font:800 clamp(13px,3.6vw,18px) var(--mono);color:#ffe2b8;text-shadow:0 0 10px #ff8a1f}
+.fb-banner .f{font:600 12px var(--sans);color:var(--faint);margin-top:10px}
+.fb-banner svg{width:clamp(50px,13vw,86px);height:auto;margin:0 auto 4px;filter:drop-shadow(0 0 14px #ff7a1a);animation:fbf .6s ease-in-out infinite alternate}
+
+/* win readout */
+.fb-win{width:min(100%,720px);display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:50px;padding:6px 14px;border-radius:12px;background:#120706cc;border:1px solid #3a1a12}
+.fb-win small{color:var(--dim);font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.fb-win b{font:900 26px var(--mono);color:var(--faint);font-variant-numeric:tabular-nums;flex:none;transition:transform .12s}
+.fb-win.on{border-color:var(--o);box-shadow:0 0 18px #ff8a1f66}
+.fb-win.on b{color:var(--y);text-shadow:0 0 12px #ff8a1f}
+.fb-win b.bump{transform:scale(1.15)}
+.flyer{position:fixed;z-index:60;pointer-events:none;display:grid;place-items:center;will-change:transform}
+.flyer svg{width:100%;height:100%;filter:drop-shadow(0 0 8px #ff7a1a)}
+.fb-hud{display:flex;justify-content:center;gap:10px;padding:2px 12px 12px;flex-wrap:wrap}
+.fb-hud div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 14px;text-align:center;min-width:110px;flex:1;max-width:200px}
+.fb-hud small{display:block;color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.fb-hud b{font:800 16px var(--mono)}
+@media(max-width:899px){.fb-hud{display:none}}
+@media(min-width:900px){.fb-wrap{padding:16px 20px 8px;gap:10px}.fb-frame{padding:10px}.fb-win b{font-size:30px}.jpm{gap:10px}.jpt{padding:8px 6px}.jpt small{font-size:12px}}
+@media(min-width:900px) and (max-height:950px){.fb-frame,.jpm,.fb-win,.hsbar{width:min(100%,640px)}}
+
+/* paytable */
+.ptab{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.ptab .pr{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:6px 8px}
+.ptab .pr.wide{grid-column:1/-1}
+.ptab svg{width:46px;height:46px;flex:none;overflow:visible}
+.ptab .pv{font:700 12px/1.45 var(--mono);color:var(--txt)}
+.ptab .pv i{font-style:normal;color:var(--faint);display:inline-block;width:22px}
+.ptab .pv.txt{font-family:var(--sans);font-weight:500;color:var(--dim)}
+.vtab{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.vtab td{padding:4px 6px;border-bottom:1px solid var(--line)}
+.vtab td.n{text-align:right;font-family:var(--mono);color:var(--y)}
+.plines{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.plines div{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:13px 3px 3px}
+.plines svg{width:100%;height:auto}
+.plines span{position:absolute;top:1px;left:4px;font:800 9px var(--mono);color:var(--faint)}
+.lab{font:800 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:12px}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="fb-spinrow">
+      <button class="btn big fb-spin" id="spin" aria-label="Spin (space bar)">SPIN</button>
+      <button class="btn pt" id="ptbtn" aria-label="Paytable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></button>
+    </div>
+    <div id="betslot"></div>
+    <div class="fb-opt"><span>Turbo<small>Faster reels and respins</small></span><label class="toggle"><input type="checkbox" id="turbo" aria-label="Turbo spins"><i></i></label></div>
+    <div style="margin-top:4px">
+      <div class="stat-row"><span>Paylines</span><b>25</b></div>
+      <div class="stat-row"><span>Hold &amp; Spin</span><b>6+ fireballs</b></div>
+      <div class="stat-row"><span>Last win</span><b id="lastwin">-</b></div>
+      <div class="stat-row"><span>RTP</span><b>96.3%</b></div>
+    </div>
+    <p class="faint" style="font-size:12px;margin:10px 0 0">Tip: press Space to spin.</p>
+  </section>
+  <section class="stage fbs" id="stage">
+    <div class="fb-sky" id="sky"></div>
+    <div class="recent" id="recent" style="position:relative"></div>
+    <div class="fb-wrap">
+      <div class="jpm" id="jpm">
+        <div class="jpt mini" data-jp="MINI"><small>MINI</small><b>0</b></div>
+        <div class="jpt minor" data-jp="MINOR"><small>MINOR</small><b>0</b></div>
+        <div class="jpt major" data-jp="MAJOR"><small>MAJOR</small><b>0</b></div>
+        <div class="jpt grand" data-jp="GRAND"><small>GRAND</small><b>0</b></div>
+      </div>
+      <div class="hsbar" id="hsbar" hidden><span>Respins <span class="pips" id="pips"><i></i><i></i><i></i></span></span><span>Fireballs <b id="hsn">0</b>/15</span></div>
+      <div class="fb-frame" id="frame">
+        <div class="heat" aria-hidden="true"></div>
+        <div class="fb-reels" id="reels"></div>
+        <svg class="fb-lines" id="lines" aria-hidden="true"></svg>
+        <div class="fb-banner" id="banner" hidden></div>
+      </div>
+      <div class="fb-win" id="winbox" aria-live="polite"><small id="winmsg">25 lines · 6+ fireballs start Hold &amp; Spin</small><b id="winamt">0</b></div>
+    </div>
+    <div class="fb-hud"><div><small>Total bet</small><b id="totbet">0</b></div><div><small>Line bet</small><b id="linebet">0</b></div></div>
+  </section>
+</main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="vblur" x="0" y="-20%" width="100%" height="140%"><feGaussianBlur stdDeviation="0 7"/></filter></svg>
+<script type="module" src="/games/fireball.js"></script>
+</body></html>

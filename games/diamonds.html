@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Diamond Fever · AFTERGLOW social casino</title>
+<meta name="description" content="A classic Vegas 3-reel stepper in ice-cold neon. Multiplying diamond wilds, 1, 3 or 5 lines and a Fever meter with free spins. Free to play on AFTERGLOW, play money only.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.dmf.stage{background:radial-gradient(110% 60% at 50% 0%,#0d2a3c 0%,#081420 40%,#05050a 80%),#05050a}
+.dmf .ice{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.dmf .ice i{position:absolute;width:3px;height:3px;border-radius:50%;background:#bff8ff;box-shadow:0 0 6px #22f0ff;animation:tw 3s ease-in-out infinite alternate;opacity:.15}
+@keyframes tw{to{opacity:.9;transform:scale(1.6)}}
+.dmf .inner{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:10px 10px 14px}
+/* chrome cabinet */
+.cab{position:relative;width:min(100%,500px);border-radius:24px;padding:7px;background:linear-gradient(135deg,#f4fbff,#7d8ea0 18%,#eef7ff 32%,#4c5c6e 52%,#dbe8f4 72%,#66778a 88%,#e9f4ff);box-shadow:0 0 0 1px #000,0 0 30px #22f0ff55,0 0 70px #ff3dc822,0 20px 40px #000a}
+.cab-in{border-radius:18px;padding:8px;background:linear-gradient(180deg,#0a1520,#070b14 40%,#0a1018);box-shadow:inset 0 0 0 1px #ffffff22,inset 0 2px 10px #000}
+.marq{position:relative;text-align:center;padding:6px 8px 7px;margin-bottom:7px;border-radius:12px;background:#05070d;overflow:hidden}
+.marq:before{content:"";position:absolute;inset:0;border-radius:12px;padding:3px;background:repeating-linear-gradient(90deg,#ffd84d 0 4px,transparent 4px 12px);-webkit-mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:.7;animation:chase .8s linear infinite}
+@keyframes chase{to{background-position:12px 0}}
+.marq h2{font:900 clamp(19px,5.6vw,28px)/1 var(--sans);letter-spacing:.14em;margin:0;background:linear-gradient(180deg,#fff 10%,#9ff8ff 45%,#22f0ff 55%,#ff3dc8);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px #22f0ff88)}
+.marq small{display:block;font:800 9.5px var(--sans);letter-spacing:.3em;color:#b8ff3b;margin-top:3px;text-shadow:0 0 6px #b8ff3b88}
+/* paytable on glass */
+.glass{position:relative;border-radius:12px;padding:6px 8px 5px;margin-bottom:8px;background:linear-gradient(160deg,#ffffff14,#ffffff03 40%,#22f0ff0a 60%,#ffffff10),#0a1622;border:1px solid #9ff8ff33;box-shadow:inset 0 1px 0 #ffffff22}
+.glass:after{content:"";position:absolute;inset:0;border-radius:12px;background:linear-gradient(115deg,transparent 30%,#ffffff12 38%,transparent 46%);pointer-events:none}
+.ptg{display:grid;grid-template-columns:1fr 1fr;column-gap:10px}
+.pr{display:flex;align-items:center;gap:4px;height:21px;padding:0 5px;border-radius:6px;font:800 11.5px var(--mono);color:#cfe9f5;transition:background .2s,box-shadow .2s}
+.pr .ic{display:flex;gap:1px;flex:none}.pr .ic svg{width:17px;height:17px}
+.pr .lb{font:800 9.5px var(--sans);letter-spacing:.06em;color:#8fb3c4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr b{margin-left:auto;color:#ffd84d;font-variant-numeric:tabular-nums}
+.pr.top b{color:#b8ff3b;text-shadow:0 0 8px #b8ff3b}
+.pr.lit{background:#22f0ff2e;box-shadow:inset 0 0 0 1px #22f0ff,0 0 14px #22f0ff88;color:#fff;animation:litp .5s ease-in-out infinite alternate}
+.pr.lit b{color:#fff;text-shadow:0 0 8px #22f0ff}
+@keyframes litp{to{background:#ff3dc833;box-shadow:inset 0 0 0 1px #ff3dc8,0 0 14px #ff3dc888}}
+.wl{text-align:center;font:800 9.5px var(--sans);letter-spacing:.08em;color:#9ff8ff;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wl em{font-style:normal}.wl .c{color:#22f0ff}.wl .m{color:#ff3dc8}.wl .l{color:#b8ff3b}
+/* reels */
+.rwrap{position:relative;display:grid;grid-template-columns:16px 1fr 16px;gap:4px;align-items:stretch}
+.lm{display:grid;grid-template-rows:repeat(3,1fr);align-items:center;justify-items:center}
+.lm div{display:flex;flex-direction:column;gap:3px}
+.lm span{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font:900 9px var(--mono);color:#556;background:#111a24;border:1px solid #2a3a4a;transition:.2s}
+.lm span.on{color:#031417;background:#22f0ff;border-color:#9ff8ff;box-shadow:0 0 8px #22f0ff}
+.lm span.hit{background:#ffd84d;border-color:#fff;box-shadow:0 0 10px #ffd84d}
+.reels{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px;border-radius:12px;background:linear-gradient(180deg,#9aa9b8,#3b4756 50%,#9aa9b8);box-shadow:inset 0 0 0 1px #000,inset 0 2px 6px #000}
+.reel{position:relative;aspect-ratio:1/2.16;overflow:hidden;border-radius:8px;background:linear-gradient(180deg,#071018 0%,#16303f 22%,#2e5468 47%,#3d6a80 50%,#2e5468 53%,#16303f 78%,#071018 100%)}
+.reel:before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,#ffffff14 30%,transparent 42%,transparent 70%,#ffffff0d 78%,transparent 85%);pointer-events:none;z-index:1}
+.reel:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#02050acc,transparent 18%,transparent 82%,#02050acc);z-index:2}
+.reel.antic{box-shadow:0 0 0 2px #ff3dc8,0 0 22px #ff3dc8;animation:antic .4s ease-in-out infinite alternate}
+@keyframes antic{to{box-shadow:0 0 0 2px #b8ff3b,0 0 26px #b8ff3b}}
+.strip{position:absolute;left:0;top:0;width:100%;will-change:transform}
+.cell{width:100%;aspect-ratio:1/.72;display:grid;place-items:center;position:relative}
+.cell svg{height:84%;width:84%;overflow:visible}
+.cell.k-BL svg{opacity:.5}
+.reels.won .cell{opacity:.35;transition:opacity .25s}
+.reels.won .cell.win{opacity:1}
+.cell.win svg{animation:wpulse .5s ease-in-out infinite alternate}
+@keyframes wpulse{to{transform:scale(1.12)}}
+.cell.land svg{animation:pop .3s}
+.cell.fz svg{filter:drop-shadow(0 0 6px #ff3dc8)}
+.lines{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);pointer-events:none;z-index:3}
+.lines path{fill:none;stroke-width:3;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:0;stroke-dasharray:6 6}
+.lines path.on{opacity:.22;stroke:#9ff8ff}
+.lines path.hit{opacity:1;stroke-dasharray:none;stroke:#ffd84d;filter:drop-shadow(0 0 4px #ffd84d)}
+.payline{position:absolute;left:6px;right:6px;top:50%;height:2px;margin-top:-1px;background:linear-gradient(90deg,transparent,#ff3dc8 10%,#ff3dc8 90%,transparent);opacity:.55;z-index:2;pointer-events:none}
+/* fever meter */
+.fever{display:flex;align-items:center;gap:8px;margin-top:8px;padding:5px 8px;border-radius:10px;background:#0a0f18;border:1px solid #ff3dc833}
+.fever small{font:900 10px var(--sans);letter-spacing:.16em;color:#ff3dc8;text-shadow:0 0 6px #ff3dc8}
+.pips{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;flex:1}
+.pips i{height:10px;border-radius:3px;background:#1a2230;border:1px solid #2a3446;transition:.25s}
+.pips i.on{background:linear-gradient(90deg,#22f0ff,#ff3dc8);border-color:#fff8;box-shadow:0 0 8px #ff3dc8}
+.pips i.new{animation:pop .4s}
+.fever b{font:800 11px var(--mono);color:#cfe9f5;min-width:34px;text-align:right}
+/* readouts */
+.winbar{display:flex;align-items:center;justify-content:center;gap:10px;min-height:38px;width:min(100%,500px)}
+.wintxt{font:900 clamp(22px,6vw,30px) var(--mono);color:#b8ff3b;text-shadow:0 0 12px #b8ff3b88;font-variant-numeric:tabular-nums}
+.wintxt.zero{color:var(--faint);text-shadow:none;font-size:16px;font-family:var(--sans);letter-spacing:.06em}
+.msg{min-height:20px;max-width:500px;text-align:center;font:700 13.5px/1.35 var(--sans);color:#bfe9f5;padding:0 8px}
+.fsban{position:absolute;top:8px;right:10px;font:900 12px var(--sans);letter-spacing:.1em;color:#1a0016;background:linear-gradient(90deg,#ff6fd7,#ff3dc8);border-radius:999px;padding:6px 12px;box-shadow:0 0 18px #ff3dc8;display:none;z-index:6}
+.fsban.on{display:block;animation:pop .3s}
+.dmf.fev .reel{background:linear-gradient(180deg,#14061a 0%,#3a1240 22%,#6a1f6a 47%,#82307e 50%,#6a1f6a 53%,#3a1240 78%,#14061a 100%)}
+.dmf.fev .cab{box-shadow:0 0 0 1px #000,0 0 34px #ff3dc8aa,0 0 80px #ff3dc844,0 20px 40px #000a}
+.ban{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:#05050acc;z-index:8;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);text-align:center;padding:20px}
+.ban.on{display:flex;animation:fade .25s}
+.ban .t{font:900 clamp(30px,9vw,54px)/1 var(--sans);letter-spacing:.08em;background:linear-gradient(180deg,#fff,#22f0ff 45%,#ff3dc8);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px #ff3dc8aa);animation:bw .5s cubic-bezier(.2,1.6,.4,1)}
+.ban .s{font:800 15px var(--sans);color:#ffd84d;letter-spacing:.06em}
+.ban .gems{display:flex;gap:10px}.ban .gems svg{width:54px;height:54px;animation:pop .5s backwards}
+.ban .gems svg:nth-child(2){animation-delay:.12s}.ban .gems svg:nth-child(3){animation-delay:.24s}
+/* panel */
+.pt{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.pt td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:middle}
+.pt td.n{text-align:right;font-family:var(--mono);color:var(--y);white-space:nowrap}
+.pt .ic{display:flex;gap:2px}.pt .ic svg{width:22px;height:22px}
+#go{font-size:19px;letter-spacing:.12em}
+#go:disabled{opacity:1;filter:saturate(.55) brightness(.62)}
+.spinbtn{background:linear-gradient(180deg,#e9fbff,#7fe9ff 35%,#22c8e0 70%,#0a8fa8)!important;color:#032028!important;border:1px solid #c9fbff!important;box-shadow:0 0 22px #22f0ff99,inset 0 1px 0 #fff!important}
+.spinbtn.fz{background:linear-gradient(180deg,#ffd0f3,#ff6fd7 40%,#c21d97)!important;color:#fff!important;border-color:#ffd0f3!important;box-shadow:0 0 22px #ff3dc8aa!important}
+@media(max-width:899px){#go{position:sticky;bottom:calc(var(--bn) + env(safe-area-inset-bottom) + 10px);z-index:6}}
+@media(min-width:900px){.cab{width:min(100%,580px)}.winbar,.msg{max-width:580px}.dmf .inner{gap:14px;padding:18px}.glass{padding:8px 12px 6px}.pr{height:24px;font-size:13px}.pr .lb{font-size:10.5px}.pr .ic svg{width:20px;height:20px}.rwrap{grid-template-columns:20px 1fr 20px}.lm span{width:20px;height:20px;font-size:11px}}
+@media(max-width:899px) and (max-height:760px){.reel{aspect-ratio:1/1.95}.cell{aspect-ratio:1/.65}}
+body.reduced .ice i,body.reduced .marq:before{animation:none}
+@media (prefers-reduced-motion:reduce){.ice i,.marq:before{animation:none}}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="field"><label>Lines <span class="faint" id="totlab">total bet 100</span></label>
+      <div class="seg" id="lseg"><button data-n="1" class="on">1 line</button><button data-n="3">3 lines</button><button data-n="5">5 lines</button></div>
+    </div>
+    <div class="field"><label>Reel speed</label>
+      <div class="seg" id="spd"><button data-s="slow">Slow</button><button data-s="normal" class="on">Normal</button><button data-s="fast">Fast</button></div>
+    </div>
+    <button class="btn big spinbtn" id="go">SPIN</button>
+    <div style="margin-top:14px">
+      <div class="stat-row"><span>Total bet</span><b id="tot">-</b></div>
+      <div class="stat-row"><span>Top award (3 Lime)</span><b id="topv">-</b></div>
+      <div class="stat-row"><span>Fever meter</span><b id="pipv">0 / 10</b></div>
+      <div class="stat-row"><span>Last win</span><b id="last">-</b></div>
+      <div class="stat-row"><span>RTP</span><b>96.5%</b></div>
+    </div>
+    <p class="faint" style="font-size:12px;margin:12px 0 0">Tip: press Space to spin.</p>
+  </section>
+  <section class="stage dmf" id="stage">
+    <div class="ice" id="ice"></div>
+    <div class="recent" id="recent" style="position:relative"></div>
+    <div class="fsban" id="fsban">FEVER SPIN <span id="fsn">1</span> / 5</div>
+    <div class="inner">
+      <div class="cab">
+        <div class="cab-in">
+          <div class="marq"><h2>DIAMOND FEVER</h2><small>ICE-COLD MULTIPLIERS</small></div>
+          <div class="glass" id="glass"></div>
+          <div class="rwrap">
+            <div class="lm" id="lmL"></div>
+            <div class="reels" id="reels">
+              <div class="reel"><div class="strip"></div></div><div class="reel"><div class="strip"></div></div><div class="reel"><div class="strip"></div></div>
+              <div class="payline"></div>
+              <svg class="lines" id="lines" viewBox="0 0 300 300" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M4 150H296"/><path d="M4 50H296"/><path d="M4 250H296"/><path d="M8 40L150 150 292 260"/><path d="M8 260L150 150 292 40"/>
+              </svg>
+            </div>
+            <div class="lm" id="lmR"></div>
+          </div>
+          <div class="fever" title="Each spin with a diamond on the centre line adds a pip. 10 pips = 5 Fever spins."><small>FEVER</small><div class="pips" id="pips"></div><b id="pipn">0/10</b></div>
+        </div>
+      </div>
+      <div class="winbar"><div class="wintxt zero" id="win">GOOD LUCK</div></div>
+      <div class="msg" id="msg">Chrome's polished. Pick your lines and spin.</div>
+    </div>
+    <div class="ban" id="ban"><div class="gems" id="bangems"></div><div class="t" id="bant">FEVER!</div><div class="s" id="bans">5 FEVER SPINS · BLANKS TURN TO CHERRIES</div></div>
+  </section>
+</main>
+<script type="module" src="/games/diamonds.js"></script>
+</body></html>

@@ -46,7 +46,7 @@ export function modal(html, { actions = [{ label: 'Close', cls: 'pri' }], dismis
 export function tween(from, to, ms, fn) {
   if (state.settings.reduced || ms <= 0) return fn(to);
   const t0 = performance.now();
-  const step = t => { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); fn(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
+  const step = t => { const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - Math.pow(1 - k, 3); fn(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
   requestAnimationFrame(step);
 }
 

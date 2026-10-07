@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Storm of Olympus · AFTERGLOW social casino</title>
+<meta name="description" content="Storm of Olympus: a free-to-play 6×5 scatter-pays slot with tumbling wins, lightning multiplier orbs and free spins with a persistent multiplier. Play money only on AFTERGLOW.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+:root{--gold:#ffd84d;--gold2:#ffb43d}
+.panel{display:flex;flex-direction:column}
+.panel .ghead{order:-3}
+.zs-spinrow{display:flex;gap:8px;align-items:stretch;margin-bottom:12px}
+.zs-spinrow .btn.big{flex:1;font-size:19px;letter-spacing:.12em;min-height:58px}
+.zs-spin{background:linear-gradient(180deg,#ffe98a,#ffb43d 55%,#c27a12)!important;color:#1d1200!important;border-color:transparent!important;box-shadow:0 0 22px #ffd84d77,0 0 2px #fff!important}
+.zs-spin:disabled{opacity:.6}
+.zs-spinrow .pt{min-width:58px;padding:0 12px;flex:none}
+.zs-spinrow .pt svg{width:24px;height:24px}
+.zs-opt{display:flex;align-items:center;justify-content:space-between;min-height:44px;margin-bottom:8px;gap:10px}
+.zs-opt span{font:700 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.zs-opt small{display:block;font:500 12px var(--sans);letter-spacing:0;text-transform:none;color:var(--faint)}
+@media(max-width:899px){.zs-spinrow{order:-2;position:sticky;bottom:calc(var(--bn) + env(safe-area-inset-bottom) + 8px);z-index:6}}
+
+/* stage */
+.stage.zs{min-height:0;background:radial-gradient(120% 80% at 50% 0%,#1d1650,#0a0920 55%,#05050a)}
+.zs-sky{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.zs-sky .cl{position:absolute;border-radius:50%;filter:blur(18px);opacity:.5;animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(40px)}}
+.zs-sky .mt{position:absolute;left:0;right:0;bottom:0;width:100%;height:42%;opacity:.55}
+.zs-flash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 30% 20%,#fff8,#8b5cff55 40%,transparent 70%);opacity:0;z-index:4}
+.zs-flash.on{animation:flash .45s ease-out}
+@keyframes flash{0%{opacity:1}30%{opacity:.2}45%{opacity:.8}100%{opacity:0}}
+.zs-wrap{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px 6px 8px;gap:6px}
+.zs-fsbar{width:min(100%,820px);display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 12px;border-radius:12px;background:linear-gradient(90deg,#2a0b4a,#14123a);border:1px solid var(--v);box-shadow:0 0 18px #8b5cff66;font:800 12px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.zs-fsbar[hidden]{display:none}
+.zs-fsbar b{font:900 17px var(--mono);color:var(--gold);text-shadow:0 0 10px #ffd84d88}
+.zs-fsbar .rm b{color:var(--p);text-shadow:var(--glowp)}
+.oly{width:min(100%,820px);display:flex;flex-direction:column;gap:6px;position:relative}
+.zbox{display:flex;align-items:center;gap:8px;min-height:0;position:relative}
+.zeus{width:auto;height:112px;flex:none;overflow:visible;margin:-6px -4px -4px -6px}
+.zhud{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.say{position:relative;font:800 13.5px/1.3 var(--sans);color:#e6e0ff;background:#140f33cc;border:1px solid #3b2a77;border-radius:12px;padding:7px 10px;min-height:38px;display:flex;align-items:center}
+.say:before{content:"";position:absolute;left:-6px;top:50%;width:10px;height:10px;margin-top:-5px;background:#140f33;border-left:1px solid #3b2a77;border-bottom:1px solid #3b2a77;transform:rotate(45deg)}
+.mplq{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 10px;border-radius:12px;background:linear-gradient(90deg,#2b1f05,#160f2e);border:1px solid #ffd84d66;box-shadow:inset 0 0 14px #ffd84d22}
+.mplq small{font:800 10.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#ffe9a8}
+.mplq b{font:900 22px var(--mono);color:var(--gold);text-shadow:0 0 10px #ffb43d,0 0 22px #ff3dc866;transition:transform .15s}
+.mplq b.bump{transform:scale(1.35)}
+.mplq.off b{color:var(--faint);text-shadow:none}
+
+#arm{transform-box:view-box;transform-origin:136px 150px;transform:rotate(112deg);transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
+.zeus.raise #arm{transform:rotate(-6deg)}
+.zeus.strike #arm{transform:rotate(52deg);transition-duration:.12s;transition-timing-function:cubic-bezier(.6,0,.9,.5)}
+.zeus .eye{transition:fill .2s}
+.zeus.raise .eye,.zeus.strike .eye{fill:#fff}
+.zeus .bolt{filter:drop-shadow(0 0 4px #ffd84d)}
+.zeus.raise .bolt,.zeus.strike .bolt{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 4px #ffd84d)}
+.zeus .aura{opacity:.35;transition:opacity .25s}
+.zeus.raise .aura,.zeus.strike .aura{opacity:.9}
+.zeus .chest{animation:breathe 4s ease-in-out infinite;transform-box:view-box;transform-origin:100px 300px}
+@keyframes breathe{50%{transform:scaleY(1.012)}}
+
+.frame{position:relative;padding:6px;border-radius:18px;background:linear-gradient(180deg,#120a2ccc,#07060fe6);border:1px solid #3b2a77;box-shadow:0 0 0 1px #ffd84d22,0 0 30px #8b5cff44,inset 0 0 30px #000;flex:1}
+.frame:before{content:"";position:absolute;inset:-1px;border-radius:18px;padding:1px;background:linear-gradient(90deg,var(--gold),var(--v),var(--p),var(--gold));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.75;pointer-events:none}
+.fsmode .frame{box-shadow:0 0 0 1px #ff3dc844,0 0 40px #ff3dc866,inset 0 0 30px #000}
+.board{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(3px,.8vw,6px);overflow:hidden;border-radius:12px}
+.col{display:grid;grid-template-rows:repeat(5,1fr);gap:clamp(3px,.8vw,6px);border-radius:10px;background:linear-gradient(180deg,#0b0a1d99,#17143a99 50%,#0b0a1d99);transition:box-shadow .3s}
+.col.antic{box-shadow:0 0 0 2px var(--gold),0 0 22px #ffd84d,inset 0 0 18px #ffd84d66;animation:antic .45s ease-in-out infinite alternate}
+@keyframes antic{to{box-shadow:0 0 0 2px var(--p),0 0 28px #ff3dc8,inset 0 0 22px #ff3dc866}}
+.cell{aspect-ratio:1;display:grid;place-items:center;position:relative;will-change:transform}
+.cell svg{width:88%;height:88%;overflow:visible}
+.cell.lo svg{filter:drop-shadow(0 0 4px var(--gc,#22f0ff))}
+.cell.hi svg{filter:drop-shadow(0 0 5px #ffd84d88)}
+.cell.k-Z svg{width:96%;height:96%;filter:drop-shadow(0 0 8px #ffd84d)}
+.board.won .cell{opacity:.35;transition:opacity .2s}
+.board.won .cell.win,.board.won .cell.k-M{opacity:1}
+.cell.win svg{animation:pulse .4s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.14)}}
+.cell.boom{animation:boom .32s ease-in forwards}
+@keyframes boom{40%{transform:scale(1.3);opacity:1}100%{transform:scale(.1) rotate(25deg);opacity:0}}
+.cell.zap svg{animation:zapc .5s ease-out}
+@keyframes zapc{0%{transform:scale(1.5);filter:brightness(2.5) drop-shadow(0 0 14px #fff)}100%{transform:scale(1)}}
+.cell.k-Z.hot svg{animation:pulse .5s ease-in-out infinite alternate}
+.orb{position:absolute;inset:4%;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 38% 32%,#fff 0 6%,var(--oc) 30%,#0a0820 78%);box-shadow:0 0 12px var(--oc),inset 0 0 10px #fff6;border:2px solid #ffffffcc}
+.orb svg{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.orb b{position:relative;font:900 clamp(12px,3.6vw,22px)/1 var(--mono);color:#fff;text-shadow:0 0 6px #000,0 0 10px var(--oc);letter-spacing:-.04em}
+.orb.t1{--oc:#22f0ff}.orb.t2{--oc:#8b5cff}.orb.t3{--oc:#ff3dc8}.orb.t4{--oc:#ffd84d}
+.orb.t4 b{color:#fff6cc}
+.zapsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:visible}
+.zapsvg polyline{fill:none;stroke-linecap:round;stroke-linejoin:round;animation:zfade .38s ease-out forwards}
+@keyframes zfade{0%{opacity:1}70%{opacity:.9}100%{opacity:0}}
+.wtags{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;flex-wrap:wrap;gap:4px;pointer-events:none;z-index:3}
+.wtags span{font:900 12px var(--mono);padding:3px 8px;border-radius:999px;background:#05050ae6;border:1px solid var(--gold);color:var(--gold);box-shadow:0 0 10px #ffd84d55;animation:pop .25s}
+.banner{position:absolute;inset:0;z-index:6;display:grid;place-items:center;text-align:center;border-radius:18px;background:radial-gradient(circle,#2a0b4aee,#05050af2 75%);cursor:pointer;animation:fade .25s}
+.banner[hidden]{display:none}
+.banner .in{animation:bw .5s cubic-bezier(.2,1.6,.4,1);padding:12px}
+.banner .k{font:800 13px var(--sans);letter-spacing:.25em;color:var(--c);text-transform:uppercase}
+.banner .t{font:900 clamp(30px,8vw,60px)/1.05 var(--sans);letter-spacing:.04em;background:linear-gradient(180deg,#fff,var(--gold) 40%,var(--p));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px #ffb43daa);margin:6px 0}
+.banner .s{font:800 clamp(14px,3.6vw,18px) var(--mono);color:var(--l);text-shadow:var(--glowl)}
+.banner .f{font:600 12px var(--sans);color:var(--faint);margin-top:12px}
+.banner svg{width:clamp(60px,15vw,96px);height:auto;margin:0 auto 6px;filter:drop-shadow(0 0 14px #ffd84d)}
+.zs-win{width:min(100%,820px);display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;padding:4px 14px;border-radius:12px;background:#0b0b18cc;border:1px solid var(--line)}
+.zs-win small{color:var(--dim);font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.zs-win b{font:900 24px var(--mono);color:var(--faint);font-variant-numeric:tabular-nums;flex:none}
+.zs-win.on{border-color:var(--gold);box-shadow:0 0 16px #ffd84d55}
+.zs-win.on b{color:var(--gold);text-shadow:0 0 12px #ffb43d}
+@media(min-width:900px){
+  .zs-wrap{padding:14px 16px 12px;gap:10px}
+  .oly{flex-direction:row;align-items:stretch;gap:10px}
+  .zbox{flex-direction:column;justify-content:flex-end;width:200px;flex:none;gap:10px}
+  .zeus{height:auto;width:100%;margin:0}
+  .zhud{width:100%;flex:none}
+  .say{min-height:58px}
+  .say:before{left:50%;top:auto;bottom:-6px;margin:0 0 0 -5px;transform:rotate(-45deg)}
+  .zhud{order:-1}
+  .frame{padding:10px}
+  .zs-win b{font-size:30px}
+}
+@media(min-width:1200px){.zbox{width:230px}}
+body.reduced .zs-sky .cl,body.reduced .zeus .chest{animation:none}
+@media(prefers-reduced-motion:reduce){.zs-sky .cl,.zeus .chest{animation:none}}
+
+/* paytable */
+.ptab{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.ptab .pr{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:6px 8px}
+.ptab .pr.wide{grid-column:1/-1}
+.ptab svg{width:44px;height:44px;flex:none;overflow:visible}
+.ptab .pv{font:700 12px/1.45 var(--mono);color:var(--txt)}
+.ptab .pv i{font-style:normal;color:var(--faint);display:inline-block;width:44px}
+.ptab .pv.txt{font-family:var(--sans);font-weight:500;color:var(--dim)}
+.ptab .orbmini{width:44px;height:44px;position:relative;flex:none}
+.ptab .orbmini .orb b{font-size:13px}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="zs-spinrow">
+      <button class="btn big zs-spin" id="spin" aria-label="Spin (space bar)">SPIN</button>
+      <button class="btn pt" id="ptbtn" aria-label="Paytable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></button>
+    </div>
+    <div id="betslot"></div>
+    <div class="zs-opt"><span>Turbo<small>Faster tumbles</small></span><label class="toggle"><input type="checkbox" id="turbo" aria-label="Turbo spins"><i></i></label></div>
+    <div>
+      <div class="stat-row"><span>Pays</span><b>8+ anywhere</b></div>
+      <div class="stat-row"><span>Free spins</span><b>4+ Zeus</b></div>
+      <div class="stat-row"><span>Last win</span><b id="lastwin">0</b></div>
+      <div class="stat-row"><span>RTP · max win</span><b><span id="rtp">96.4%</span> · 5,000×</b></div>
+    </div>
+    <p class="faint" style="font-size:12px;margin:10px 0 0">Tip: press Space to spin.</p>
+  </section>
+  <section class="stage zs" id="stage">
+    <div class="zs-sky" aria-hidden="true">
+      <i class="cl" style="left:-10%;top:4%;width:60%;height:28%;background:#8b5cff55"></i>
+      <i class="cl" style="right:-15%;top:10%;width:55%;height:24%;background:#ff3dc840;animation-delay:-6s"></i>
+      <i class="cl" style="left:20%;top:30%;width:50%;height:20%;background:#22f0ff26;animation-delay:-11s"></i>
+      <svg class="mt" viewBox="0 0 400 160" preserveAspectRatio="none"><defs><linearGradient id="mtg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b2a77"/><stop offset="1" stop-color="#05050a"/></linearGradient></defs><path d="M0 160V110L40 80 70 96 120 40 150 62 200 14 236 52 262 36 300 74 340 58 400 100V160Z" fill="url(#mtg)"/><path d="M120 40l30 22 50-48 36 38 26-16" fill="none" stroke="#ffd84d" stroke-width="1.5" opacity=".6"/><g fill="#ffd84d" opacity=".8"><rect x="186" y="22" width="3" height="10"/><rect x="194" y="18" width="3" height="14"/><rect x="202" y="18" width="3" height="14"/><rect x="210" y="22" width="3" height="10"/><path d="M182 22l17-8 17 8z"/></g></svg>
+    </div>
+    <div class="zs-flash" id="flash"></div>
+    <div class="recent" id="recent" style="position:relative"></div>
+    <div class="zs-wrap">
+      <div class="zs-fsbar" id="fsbar" hidden><span>Spins <b id="fsleft">0</b></span><span class="rm">Multiplier <b id="fsmult">0×</b></span><span>Won <b id="fswon">0</b></span></div>
+      <div class="oly" id="oly">
+        <div class="zbox">
+          <svg class="zeus" id="zeus" viewBox="0 0 200 300" role="img" aria-label="Zeus holding a thunderbolt"></svg>
+          <div class="zhud">
+            <div class="say" id="say" aria-live="polite">Mortal! Spin, and I shall bring the storm.</div>
+            <div class="mplq off" id="mplq"><small id="mplab">Orb multiplier</small><b id="mpl">0×</b></div>
+          </div>
+        </div>
+        <div class="frame" id="frame">
+          <div class="board" id="board"></div>
+          <div class="wtags" id="wtags"></div>
+          <div class="banner" id="banner" hidden></div>
+        </div>
+      </div>
+      <div class="zs-win" id="winbox" aria-live="polite"><small id="winmsg">8+ matching symbols anywhere pay</small><b id="winamt">0</b></div>
+    </div>
+    <svg class="zapsvg" id="zap" aria-hidden="true"></svg>
+  </section>
+</main>
+<script type="module" src="/games/zeus.js"></script>
+</body></html>
