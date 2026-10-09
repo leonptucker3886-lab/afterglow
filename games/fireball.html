@@ -69,7 +69,7 @@ body.reduced .ember{display:none}
 .reel.antic .flames{opacity:.9;animation:flick .22s ease-in-out infinite alternate}
 @keyframes flick{from{transform:scaleY(.85) skewX(-3deg)}to{transform:scaleY(1.1) skewX(3deg)}}
 .strip{position:absolute;left:0;top:0;width:100%;will-change:transform}
-.reel.spinning .strip{filter:url(#vblur)}
+.reel.spinning .strip{filter:blur(2px)}.reel.spinning .cell svg{filter:none}
 .cell{position:relative;width:100%;aspect-ratio:1;display:grid;place-items:center;transition:opacity .25s}
 .cell svg{width:86%;height:86%;overflow:visible}
 .cell.k-DR svg,.cell.k-PH svg,.cell.k-VO svg,.cell.k-HS svg,.cell.k-S7 svg{filter:drop-shadow(0 0 5px #ff6a1a99)}

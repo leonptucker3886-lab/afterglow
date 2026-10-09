@@ -36,7 +36,7 @@
 .reel.antic{box-shadow:0 0 0 2px var(--p),0 0 26px #ff3dc8,inset 0 0 22px #ff3dc888;animation:antic .5s ease-in-out infinite alternate}
 @keyframes antic{to{box-shadow:0 0 0 2px var(--y),0 0 34px #ffd84d,inset 0 0 26px #ffd84d88}}
 .strip{position:absolute;left:0;top:0;width:100%;will-change:transform}
-.reel.spinning .strip{filter:url(#vblur)}
+.reel.spinning .strip{filter:blur(2px)}.reel.spinning .cell svg{filter:none}
 .cell{width:100%;aspect-ratio:1;display:grid;place-items:center;transition:opacity .25s}
 .cell svg{width:86%;height:86%;overflow:visible}
 .cell.k-d svg{filter:drop-shadow(0 0 5px #22f0ffaa)}.cell.k-t svg{filter:drop-shadow(0 0 5px #b8ff3baa)}
