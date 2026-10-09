@@ -71,7 +71,7 @@ $('#wsvg').innerHTML = B.WHEEL.map((v, i) => {
   const a0 = (i * seg - 90 - seg / 2) * Math.PI / 180, a1 = ((i + 1) * seg - 90 - seg / 2) * Math.PI / 180, R = 150;
   const mid = (i * seg - 90) * Math.PI / 180;
   return `<path d="M0 0L${R * Math.cos(a0)} ${R * Math.sin(a0)}A${R} ${R} 0 0 1 ${R * Math.cos(a1)} ${R * Math.sin(a1)}Z" fill="${i % 2 ? '#0e0e1c' : '#15152a'}" stroke="${COLS[i]}" stroke-opacity=".5"/>
-  <text transform="translate(${100 * Math.cos(mid)} ${100 * Math.sin(mid)}) rotate(${i * seg})" text-anchor="middle" dominant-baseline="middle" fill="${COLS[i]}" font-family="ui-monospace,monospace" font-weight="900" font-size="${v >= 10000 ? 24 : 20}" style="filter:drop-shadow(0 0 4px ${COLS[i]})">${fmt(v)}</text>`;
+  <text transform="translate(${100 * Math.cos(mid)} ${100 * Math.sin(mid)}) rotate(${i * seg})" text-anchor="middle" dominant-baseline="middle" fill="${COLS[i]}" font-family="ui-monospace,monospace" font-weight="900" font-size="${v >= 10000 ? 24 : 20}">${fmt(v)}</text>`;
 }).join('') + `<circle r="152" fill="none" stroke="url(#wr)" stroke-width="6"/><defs><linearGradient id="wr"><stop offset="0" stop-color="#22f0ff"/><stop offset="1" stop-color="#ff3dc8"/></linearGradient></defs>` +
   Array.from({ length: n }, (_, i) => { const a = (i * seg - 90 + seg / 2) * Math.PI / 180; return `<circle cx="${152 * Math.cos(a)}" cy="${152 * Math.sin(a)}" r="4" fill="#fff"/>`; }).join('');
 
@@ -122,7 +122,17 @@ function paintAch() {
   $('#achs').innerHTML = ids.sort((a, b) => !!state.ach[b] - !!state.ach[a]).map(i => `<div class="ach ${state.ach[i] ? 'got' : ''}"><div class="ic">${AI[i] || '🏆'}</div><div><b>${esc(ACH[i][0])}</b><small>${esc(ACH[i][1])}</small></div>${ACH[i][2] ? `<span class="rw2">${state.ach[i] ? '✓ ' : '+'}${fmt(ACH[i][2])}</span>` : ''}</div>`).join('');
 }
 paintWheel(); paintSide(); paintAch();
-setInterval(() => { paintSide(); if (!spinning) paintWheel(); }, 1000);
+setInterval(() => {
+  // cheap per-second tick: countdown text only, no DOM rebuilds
+  const ready = B.dailyReady(), s = ready ? B.nextStreak() : state.daily.streak;
+  $('#wtxt').innerHTML = ready ? `Day <b>${s}</b> streak bonus: every prize ×<b>${B.streakMult(s)}</b>. Come back tomorrow to keep it going.` : `Claimed today. Next spin in <b class="mono">${B.clock(B.msToMidnight())}</b>.`;
+  if (ready !== !$('#spin').disabled && !spinning) paintWheel();
+  $('#dtxt').textContent = B.dropReady() ? `${fmtFull(B.dropAmount())} Glow ready (grows with your level)` : `Next drop in ${B.clock(B.dropIn())} · ${fmtFull(B.dropAmount())} Glow`;
+  $('#drop').disabled = !B.dropReady();
+  const f = B.refuelReady();
+  $('#ftxt').textContent = state.coins >= B.REFUEL_UNDER ? `Available when you're under ${fmtFull(B.REFUEL_UNDER)} Glow` : f ? `${fmtFull(B.REFUEL_AMT)} Glow, ready now` : `Next refuel in ${B.clock(B.refuelIn())}`;
+  $('#fuel').disabled = !f;
+}, 1000);
 on('achievement', paintAch);
 if (location.hash === '#wheel') setTimeout(() => $('#wheel').scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
 </script>
