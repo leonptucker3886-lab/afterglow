@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Get Glow · AFTERGLOW social casino</title>
+<meta name="description" content="Get Glow Coins for AFTERGLOW: coin packs or free daily rewards. Play money only, no cash value.">
+<meta name="theme-color" content="#05050a"><link rel="icon" href="/favicon.svg">
+<link rel="canonical" href="https://afterglow.leonlink.net/store.html">
+<meta property="og:title" content="Get Glow · AFTERGLOW social casino"><meta property="og:description" content="Coin packs and free daily Glow Coins. Play money only.">
+<meta property="og:image" content="https://afterglow.leonlink.net/og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/core/ag.css">
+<style>
+.packs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media(min-width:720px){.packs{grid-template-columns:repeat(4,1fr)}}
+.pack{position:relative;border-radius:var(--rad);border:1px solid var(--line2);background:linear-gradient(180deg,var(--panel),#0a0a16);padding:18px 14px;text-align:center}
+.pack .tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font:900 10px var(--sans);letter-spacing:.08em;background:var(--l);color:#122000;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.pack .tag.hot{background:var(--p);color:#fff;box-shadow:var(--glowp)}
+.pack .coins{font:900 24px var(--sans);color:var(--y)}
+.pack .nm{font:700 13px var(--sans);color:var(--dim);margin:4px 0 12px}
+.pack .btn{width:100%}
+.freebox{margin-top:18px}
+.fine{margin:18px 0 0;color:var(--faint);font-size:12px;line-height:1.6}
+</style>
+</head>
+<body>
+<main id="panel" style="max-width:920px;margin:0 auto;padding:0 14px 120px">
+  <h1 style="font:900 clamp(26px,6vw,40px)/1.1 var(--sans);margin:18px 0 6px">Get <em style="font-style:normal;color:var(--y)">Glow</em></h1>
+  <p class="dim" style="margin:0 0 4px">Top up your play-money stack, or grab it free below.</p>
+  <div class="packs" id="packs"></div>
+  <div class="freebox card">
+    <h3 style="margin:0 0 4px">Free Glow</h3>
+    <p class="dim" style="margin:0 0 12px;font-size:14px">Daily wheel, Orbit Drop every 3 hours, and refuels when you're low.</p>
+    <a class="btn" href="/rewards.html">Free rewards</a>
+  </div>
+  <p class="fine">Glow Coins are play money with no cash value. They can't be purchased for, redeemed, or exchanged for real money or prizes. Purchases are final. 18+.</p>
+</main>
+<script type="module">
+import { boot, $, h, credit, fmtFull, sfx, toast, confetti, modal } from '/core/ag.js';
+boot({ nav: '' });
+
+const PACKS = [
+  { id: 'p1', coins: 10000, price: '$0.99', name: 'Handful of Glow' },
+  { id: 'p2', coins: 65000, price: '$4.99', name: 'Stack of Glow', tag: '+30% bonus' },
+  { id: 'p3', coins: 160000, price: '$9.99', name: 'Vault of Glow', tag: 'Most popular', hot: true },
+  { id: 'p4', coins: 400000, price: '$19.99', name: 'Galaxy of Glow', tag: '+100% bonus' },
+];
+$('#packs').innerHTML = PACKS.map(p => `<div class="pack">${p.tag ? `<span class="tag${p.hot ? ' hot' : ''}">${p.tag}</span>` : ''}
+  <div class="coins">${fmtFull(p.coins)}</div><div class="nm">${p.name}</div>
+  <button class="btn pri" data-pack="${p.id}">${p.price}</button></div>`).join('');
+
+const redeemed = () => { try { return JSON.parse(localStorage.getItem('afterglow:redeemed') || '[]'); } catch (e) { return []; } };
+const markRedeemed = id => { const r = redeemed(); r.push(id); try { localStorage.setItem('afterglow:redeemed', JSON.stringify(r.slice(-50))); } catch (e) {} };
+
+async function verifySession(sid) {
+  if (!sid || redeemed().includes(sid)) return;
+  try {
+    const r = await fetch('/api/verify?session_id=' + encodeURIComponent(sid));
+    const j = await r.json();
+    if (j.paid && j.coins > 0) {
+      markRedeemed(sid);
+      credit(j.coins, 'purchase');
+      confetti(); sfx('big');
+      modal(`<h2>+${fmtFull(j.coins)} Glow</h2><p class="dim">Payment confirmed. Good luck out there.</p>`);
+    } else if (j.paid && j.already) {
+      markRedeemed(sid); // server already credited this purchase (another device)
+    }
+  } catch (e) {}
+  try { localStorage.removeItem('afterglow:pending'); } catch (e) {}
+  if (location.search.includes('session_id')) history.replaceState(null, '', '/store.html');
+}
+
+$('#packs').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-pack]'); if (!b) return;
+  const pack = b.dataset.pack;
+  b.disabled = true; b.textContent = '…'; sfx('tap');
+  try {
+    const r = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pack }) });
+    const j = await r.json();
+    if (!j.url) throw new Error(j.error || 'Checkout failed');
+    try { localStorage.setItem('afterglow:pending', j.id); } catch (e) {}
+    location.href = j.url;
+  } catch (err) {
+    b.disabled = false; b.textContent = PACKS.find(p => p.id === pack).price;
+    toast('Checkout unavailable right now. Try again soon.', 'r');
+  }
+});
+
+// returning from Stripe, or a pending session from a closed tab
+const q = new URLSearchParams(location.search).get('session_id');
+const pend = (() => { try { return localStorage.getItem('afterglow:pending'); } catch (e) { return null; } })();
+if (q || pend) setTimeout(() => verifySession(q || pend), 600);
+</script>
+</body></html>
