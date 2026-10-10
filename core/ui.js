@@ -121,7 +121,7 @@ export function mountShell(active = '') {
   const top = h(`<header class="topbar"><a class="logo" href="/" aria-label="AFTERGLOW lobby">${LOGO}<span class="lt">AFTER<b>GLOW</b></span></a>
     <nav class="tnav">${[['lobby', '/', 'Lobby'], ['games', '/#games', 'Games'], ['rewards', '/rewards.html', 'Rewards'], ['fair', '/fair.html', 'Fair play'], ['profile', '/profile.html', 'Profile']].map(([k, u, l]) => `<a href="${u}" class="${k === active ? 'on' : ''}">${l}</a>`).join('')}</nav>
     <div class="tsp"></div>
-    <div class="bal" title="Glow Coins (play money)">${COIN}<span class="amt mono"></span><a class="plus" href="/rewards.html" aria-label="Free Glow" style="display:grid;place-items:center">+</a></div>
+    <div class="bal" title="Glow Coins (play money)">${COIN}<span class="amt mono"></span><a class="plus" href="/store.html" aria-label="Get Glow" style="display:grid;place-items:center">+</a></div>
     <button class="lvl" aria-label="Level"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#0e0e1c" stroke="#22223d" stroke-width="4"/><circle class="ring" cx="20" cy="20" r="17" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="106.8"/></svg><span></span></button></header>`);
   document.body.prepend(top);
   const bn = h(`<nav class="bnav" aria-label="Main">${[['lobby', '/', 'Lobby'], ['games', '/#games', 'Games'], ['rewards', '/rewards.html', 'Rewards'], ['fair', '/fair.html', 'Fair'], ['profile', '/profile.html', 'Profile']].map(([k, u, l]) => `<a href="${u}" class="${k === active ? 'on' : ''}" data-k="${k}">${icon(k)}<span>${l}</span></a>`).join('')}</nav>`);
