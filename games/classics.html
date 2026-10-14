@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Classic Slots · AFTERGLOW social casino</title>
+<meta name="description" content="Four classic cabinets — Lucky 7s, Fruit Party, Diamond Star, Pirates Gold — with a post-win Gamble on every one. Play money only.">
+<meta name="theme-color" content="#0b0b14"><link rel="icon" href="/favicon.svg">
+<link rel="canonical" href="https://afterglow.leonlink.net/games/classics.html">
+<meta property="og:title" content="Classic Slots · AFTERGLOW social casino">
+<meta property="og:description" content="Four retro cabinets with double-or-nothing Gamble. Play money only.">
+<meta property="og:image" content="https://afterglow.leonlink.net/og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/core/ag.css">
+<link rel="stylesheet" href="/games/engine/v2/slots-v2.css">
+<style>
+:root{--acc:#ff5a5a;--acc2:#aebdd0}
+.s2-stage{background:radial-gradient(120% 100% at 50% 0%,#1c1016 0%,#0b0b14 70%)}
+.s2-cell{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:8px}
+.s2-spin{background:linear-gradient(180deg,#ff8a8a,#d42a2a);box-shadow:0 0 22px #ff5a5a66;color:#fff}
+.s2-linkbar{background:linear-gradient(90deg,#2a1014,#140b0e);border-color:var(--acc)}
+.s2-gamblebanner{display:none;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,#2a1014,#1a0b10);border:1px solid var(--acc);font:800 13px system-ui}
+.s2-gamblebanner.on{display:flex}
+.s2-gamblebanner b{color:var(--acc);font-family:ui-monospace,monospace}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="sl-spinrow">
+      <button class="btn big pri s2-spin" id="spin" aria-label="Spin (space bar)">SPIN</button>
+      <button class="btn pt" id="ptbtn" aria-label="Paytable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></button>
+    </div>
+    <div id="betslot"></div>
+    <div class="sl-opt"><span>Turbo<small>Faster reels</small></span><label class="toggle"><input type="checkbox" id="turbo" aria-label="Turbo spins"><i></i></label></div>
+    <div class="field"><label>Autoplay <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">stops on 20×+ win</span></label>
+      <div class="sl-auto"><div class="seg" id="aseg"><button data-n="10" class="on">10</button><button data-n="25">25</button><button data-n="50">50</button><button data-n="100">100</button></div><button class="btn" id="auto">Auto</button></div>
+    </div>
+    <div class="field"><label>Cabinet</label><div class="sl-auto"><div class="seg" id="gseg" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div></div></div>
+  </section>
+  <section class="stage sl" id="stage">
+    <div class="s2-wrap">
+      <div class="s2-head"><h1 id="gtitle">LUCKY <span class="em">7s</span></h1></div>
+      <div class="s2-gamblebanner" id="gamblebar"><span>Win <b id="gwamt">0</b> — gamble it?</span><button class="btn" id="gamblebtn" style="min-height:44px">GAMBLE</button></div>
+      <div class="s2-stage" id="s2stage">
+        <div class="s2-grid" id="grid"></div>
+        <div class="s2-overlay" id="overlay"></div>
+      </div>
+      <div class="s2-winbox" id="winbox" aria-live="polite"><small id="winmsg"></small><b id="winamt">0</b></div>
+      <div class="s2-msg" id="msg"></div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/games/classics.js"></script>
+</body></html>

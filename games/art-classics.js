@@ -1,0 +1,54 @@
+/* Classics art — intentional retro cabinet set, shared chrome.
+ * Bespoke SVG symbols, viewBox 0 0 100 100.
+ */
+export const DEFS = `
+<linearGradient id="cl-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8a8a"/><stop offset=".5" stop-color="#e02424"/><stop offset="1" stop-color="#7d0e0e"/></linearGradient>
+<linearGradient id="cl-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe98a"/><stop offset="1" stop-color="#b97f00"/></linearGradient>
+<linearGradient id="cl-chrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#aebdd0"/><stop offset="1" stop-color="#5a6a80"/></linearGradient>
+<radialGradient id="cl-cherry" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ff9a9a"/><stop offset=".55" stop-color="#d41e3a"/><stop offset="1" stop-color="#6e0e1e"/></radialGradient>
+<radialGradient id="cl-lemon" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff9b0"/><stop offset=".55" stop-color="#f5d81e"/><stop offset="1" stop-color="#9a7d00"/></radialGradient>
+<radialGradient id="cl-plum" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d8a8ff"/><stop offset=".55" stop-color="#7d2ac2"/><stop offset="1" stop-color="#3d0e6e"/></radialGradient>
+<radialGradient id="cl-melon" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#b8ff9e"/><stop offset=".55" stop-color="#2ac25a"/><stop offset="1" stop-color="#0e5e22"/></radialGradient>
+<radialGradient id="cl-grape" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d8b0ff"/><stop offset=".55" stop-color="#8a3de0"/><stop offset="1" stop-color="#3d1470"/></radialGradient>
+<radialGradient id="cl-orange" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffd9a8"/><stop offset=".55" stop-color="#f58a1e"/><stop offset="1" stop-color="#9a4d00"/></radialGradient>`;
+
+/* shared chrome frame each classic page draws around its cabinet */
+export const CABINET_CSS = ``;
+
+export const SEVEN = {
+  seven: `<text x="50" y="72" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="52" fill="url(#cl-red)" stroke="#fff" stroke-width="1.5">7</text><text x="50" y="90" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="10" fill="#ffb3b3">SEVEN</text>`,
+  triplebar: `<rect x="12" y="30" width="76" height="16" rx="8" fill="#14141f" stroke="url(#cl-chrome)" stroke-width="3"/><rect x="12" y="52" width="76" height="16" rx="8" fill="#14141f" stroke="url(#cl-chrome)" stroke-width="3"/><rect x="12" y="74" width="76" height="10" rx="5" fill="#14141f" stroke="url(#cl-chrome)" stroke-width="2.5"/><text x="50" y="26" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="11" fill="#dfe8ff">BAR BAR BAR</text>`,
+  doublebar: `<rect x="18" y="34" width="64" height="16" rx="8" fill="#14141f" stroke="url(#cl-chrome)" stroke-width="3"/><rect x="18" y="56" width="64" height="16" rx="8" fill="#14141f" stroke="url(#cl-chrome)" stroke-width="3"/><text x="50" y="28" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="11" fill="#dfe8ff">BAR BAR</text>`,
+  bar: `<rect x="24" y="40" width="52" height="20" rx="10" fill="#14141f" stroke="url(#cl-chrome)" stroke-width="3.5"/><text x="50" y="34" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="11" fill="#dfe8ff">BAR</text>`,
+  cherry: `<circle cx="36" cy="62" r="17" fill="url(#cl-cherry)"/><circle cx="64" cy="68" r="14" fill="url(#cl-cherry)"/><path d="M36 48Q44 28 62 22M64 56Q60 38 62 22" stroke="#2a5e1a" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="56" rx="6" ry="4" fill="#fff" opacity=".5" transform="rotate(-25 30 56)"/>`,
+  bell: `<path d="M50 16q22 0 24 34l8 18H18l8-18q2-34 24-34z" fill="url(#cl-gold)" stroke="#7d5e00" stroke-width="3"/><circle cx="50" cy="76" r="9" fill="url(#cl-chrome)" stroke="#5a6a80" stroke-width="2.5"/><rect x="46" y="8" width="8" height="10" rx="4" fill="#7d5e00"/>`,
+};
+
+export const FRUIT = {
+  melon: `<path d="M20 55a30 30 0 0 1 60 0z" fill="url(#cl-melon)" stroke="#0e5e22" stroke-width="3"/><path d="M28 55a22 22 0 0 1 44 0z" fill="#ff8a9e"/><circle cx="42" cy="62" r="2.4" fill="#3d0e1e"/><circle cx="54" cy="66" r="2.4" fill="#3d0e1e"/><circle cx="62" cy="60" r="2.4" fill="#3d0e1e"/><path d="M50 25q2-8 10-10" stroke="#2a5e1a" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+  grapes: `<g fill="url(#cl-grape)" stroke="#3d1470" stroke-width="2"><circle cx="40" cy="40" r="11"/><circle cx="60" cy="40" r="11"/><circle cx="50" cy="54" r="11"/><circle cx="36" cy="66" r="11"/><circle cx="60" cy="68" r="11"/><circle cx="48" cy="80" r="10"/></g><path d="M50 30q4-12 14-14" stroke="#2a5e1a" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="66" cy="20" rx="10" ry="6" fill="#2ac25a" transform="rotate(-25 66 20)"/>`,
+  orange: `<circle cx="50" cy="54" r="27" fill="url(#cl-orange)"/><ellipse cx="41" cy="44" rx="9" ry="6" fill="#fff" opacity=".45" transform="rotate(-25 41 44)"/><path d="M50 27q2-8 10-10" stroke="#2a5e1a" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="64" cy="20" rx="9" ry="5.5" fill="#2ac25a" transform="rotate(-25 64 20)"/>`,
+  lemon: `<ellipse cx="50" cy="54" rx="30" ry="23" fill="url(#cl-lemon)" transform="rotate(-18 50 54)"/><ellipse cx="50" cy="54" rx="30" ry="23" fill="none" stroke="#9a7d00" stroke-width="2.5" transform="rotate(-18 50 54)"/><ellipse cx="42" cy="46" rx="8" ry="5" fill="#fff" opacity=".5" transform="rotate(-18 42 46)"/>`,
+  cherry: `<circle cx="36" cy="62" r="17" fill="url(#cl-cherry)"/><circle cx="64" cy="68" r="14" fill="url(#cl-cherry)"/><path d="M36 48Q44 28 62 22M64 56Q60 38 62 22" stroke="#2a5e1a" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="56" rx="6" ry="4" fill="#fff" opacity=".5" transform="rotate(-25 30 56)"/>`,
+  plum: `<circle cx="50" cy="54" r="27" fill="url(#cl-plum)"/><path d="M50 28q-4 26 0 52" stroke="#3d0e6e" stroke-width="2.5" fill="none" opacity=".7"/><ellipse cx="40" cy="42" rx="8" ry="5" fill="#fff" opacity=".45" transform="rotate(-25 40 42)"/>`,
+  star: `<polygon points="50,12 61,38 89,39 67,57 75,85 50,69 25,85 33,57 11,39 39,38" fill="url(#cl-gold)" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/><rect x="28" y="86" width="44" height="10" rx="5" fill="#14141f"/><text x="50" y="94" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="8" fill="#ffe98a">WILD</text>`,
+};
+
+export const DIAMOND = {
+  diamond: `<polygon points="50,8 82,38 50,92 18,38" fill="#dff4ff" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><polygon points="50,8 66,38 34,38" fill="#fff"/><polygon points="34,38 66,38 50,92" fill="#9fd4f5"/><line x1="50" y1="38" x2="50" y2="92" stroke="#fff" stroke-width="2"/><text x="50" y="99" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="8" fill="#9fd4f5">WILD ×2</text>`,
+  ruby: `<polygon points="50,12 78,40 50,88 22,40" fill="url(#cl-cherry)" stroke="#ffb3b3" stroke-width="2.5" stroke-linejoin="round"/><polygon points="50,18 62,40 38,40" fill="#fff" opacity=".4"/>`,
+  emerald: `<rect x="24" y="24" width="52" height="52" rx="6" fill="url(#cl-melon)" stroke="#d8ffd0" stroke-width="2.5" transform="rotate(45 50 50)"/><rect x="36" y="36" width="28" height="28" rx="4" fill="#fff" opacity=".25" transform="rotate(45 50 50)"/>`,
+  sapphire: `<polygon points="50,14 76,50 50,86 24,50" fill="url(#cl-orange)" style="filter:hue-rotate(190deg)" stroke="#d0f4ff" stroke-width="2.5"/><polygon points="50,20 62,50 38,50" fill="#fff" opacity=".4"/>`,
+  amethyst: `<polygon points="50,10 74,34 66,78 34,78 26,34" fill="url(#cl-grape)" stroke="#e8d0ff" stroke-width="2.5" stroke-linejoin="round"/><line x1="50" y1="10" x2="50" y2="78" stroke="#fff" stroke-width="2" opacity=".4"/>`,
+  quartz: `<polygon points="38,14 62,14 74,50 50,88 26,50" fill="#e8ecf5" stroke="#fff" stroke-width="2.5" stroke-linejoin="round" opacity=".95"/><line x1="50" y1="14" x2="50" y2="88" stroke="#b9c2d8" stroke-width="2"/>`,
+};
+
+export const PIRATE = {
+  captain: `<circle cx="50" cy="44" r="20" fill="#e8b88a"/><path d="M50 58q-14 2-16 16l4 6h24l4-6q-2-14-16-16z" fill="#5e3a1a"/><path d="M28 34q22-24 44 0l-4 10H32z" fill="#14141f"/><circle cx="50" cy="30" r="5" fill="url(#cl-gold)"/><circle cx="43" cy="42" r="3" fill="#14141f"/><path d="M56 40h10v6h-10z" fill="#14141f"/><path d="M42 56q8 5 16 0" stroke="#5e3a1a" stroke-width="2.5" fill="none"/>`,
+  ship: `<path d="M18 62h64l-10 18H28z" fill="#6e3a10" stroke="#3d2008" stroke-width="2.5"/><rect x="46" y="18" width="6" height="44" fill="#5e3a1a"/><path d="M52 20q26 4 24 30q-14-8-24-8z" fill="#f2ead8" stroke="#b9a27a" stroke-width="2"/><path d="M52 44q18 2 16 18q-8-5-16-5z" fill="#e8d8b0" stroke="#b9a27a" stroke-width="2"/><path d="M20 84q10 6 20 0t20 0 20 0" stroke="#22a8d0" stroke-width="3" fill="none"/>`,
+  chest: `<rect x="20" y="46" width="60" height="34" rx="6" fill="#6e3a10" stroke="#3d2008" stroke-width="3"/><path d="M20 46a30 18 0 0 1 60 0v8H20z" fill="#8a4d16" stroke="#3d2008" stroke-width="3"/><rect x="44" y="54" width="12" height="16" rx="4" fill="url(#cl-gold)"/><circle cx="50" cy="38" r="8" fill="url(#cl-gold)" opacity=".9"/>`,
+  map: `<rect x="22" y="26" width="56" height="48" rx="4" fill="#e8d8b0" stroke="#b9a27a" stroke-width="2.5" transform="rotate(-6 50 50)"/><path d="M32 44q12-8 20 0t16 2" stroke="#b31b34" stroke-width="2.5" stroke-dasharray="5 3" fill="none"/><circle cx="66" cy="48" r="4" fill="#b31b34"/><path d="M34 60l8 6M60 58l-6 8" stroke="#b9a27a" stroke-width="2"/>`,
+  compass: `<circle cx="50" cy="52" r="26" fill="url(#cl-chrome)" stroke="#5a6a80" stroke-width="3"/><polygon points="50,30 56,52 50,74 44,52" fill="#b31b34"/><polygon points="28,52 50,46 72,52 50,58" fill="#2a3a4a"/><circle cx="50" cy="52" r="4" fill="#14141f"/>`,
+  anchor: `<circle cx="50" cy="22" r="8" fill="none" stroke="url(#cl-chrome)" stroke-width="5"/><line x1="50" y1="30" x2="50" y2="80" stroke="url(#cl-chrome)" stroke-width="6" stroke-linecap="round"/><path d="M22 58q4 26 28 26t28-26" fill="none" stroke="url(#cl-chrome)" stroke-width="6" stroke-linecap="round"/><polygon points="22,58 16,66 28,66" fill="url(#cl-chrome)"/><polygon points="78,58 84,66 72,66" fill="url(#cl-chrome)"/>`,
+  parrot: `<ellipse cx="50" cy="54" rx="18" ry="24" fill="url(#cl-melon)" stroke="#0e5e22" stroke-width="2.5"/><circle cx="50" cy="28" r="13" fill="url(#cl-melon)" stroke="#0e5e22" stroke-width="2.5"/><path d="M50 24q10 2 8 12q-6 2-8-2z" fill="#f5a81e"/><circle cx="46" cy="26" r="2.6" fill="#14141f"/><path d="M32 44q-12 4-14 18q10-2 14-8z" fill="#e0244e"/><rect x="32" y="78" width="36" height="9" rx="4.5" fill="#14141f"/><text x="50" y="85.5" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="7.5" fill="#b8ff9e">WILD</text>`,
+};

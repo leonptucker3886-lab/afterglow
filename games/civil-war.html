@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Civil War · AFTERGLOW social casino</title>
+<meta name="description" content="Civil War: up to 117,649 ways to win with cascading volleys. 4+ Lines trigger 12 Link Spins with an uncapped growing multiplier. Play money only.">
+<meta name="theme-color" content="#14100a"><link rel="icon" href="/favicon.svg">
+<link rel="canonical" href="https://afterglow.leonlink.net/games/civil-war.html">
+<meta property="og:title" content="Civil War · AFTERGLOW social casino">
+<meta property="og:description" content="117,649 ways, cascading volleys, uncapped Link Spins multiplier. Play money only.">
+<meta property="og:image" content="https://afterglow.leonlink.net/og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/core/ag.css">
+<link rel="stylesheet" href="/games/engine/v2/slots-v2.css">
+<style>
+:root{--acc:#e8c87a;--acc2:#8a93a8}
+body{background:#0d0a06}
+.s2-stage{background:radial-gradient(120% 100% at 50% 0%,#241a0e 0%,#0d0a06 70%);border-color:#3d3220}
+.s2-cell{background:rgba(232,200,122,.06);border-color:rgba(232,200,122,.18)}
+.s2-spin{background:linear-gradient(180deg,#f2e3c2,#c9a86a);box-shadow:0 0 22px #e8c87a55;color:#241a0e}
+.s2-linkbar{background:linear-gradient(90deg,#2a2012,#14100a);border-color:var(--acc)}
+.s2-head h1 .em{color:var(--acc)}
+.s2-winbox.on{border-color:var(--acc)}.s2-winbox.on b{color:var(--acc);text-shadow:0 0 14px #e8c87a88}
+.s2-cell.win{border-color:var(--acc);box-shadow:0 0 14px #e8c87a88}
+.s2-waysbar{display:flex;justify-content:center;gap:8px;font:800 12px system-ui;color:var(--s2-dim);letter-spacing:.1em}
+.s2-waysbar b{color:var(--acc);font-family:ui-monospace,monospace}
+</style></head>
+<body>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="sl-spinrow">
+      <button class="btn big pri s2-spin" id="spin" aria-label="Spin (space bar)">FIRE</button>
+      <button class="btn pt" id="ptbtn" aria-label="Paytable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></button>
+    </div>
+    <div id="betslot"></div>
+    <div class="sl-opt"><span>Turbo<small>Faster volleys</small></span><label class="toggle"><input type="checkbox" id="turbo" aria-label="Turbo spins"><i></i></label></div>
+    <div class="field"><label>Autoplay <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">stops on Link Spins or 20×+</span></label>
+      <div class="sl-auto"><div class="seg" id="aseg"><button data-n="10" class="on">10</button><button data-n="25">25</button><button data-n="50">50</button><button data-n="100">100</button></div><button class="btn" id="auto">Auto</button></div>
+    </div>
+  </section>
+  <section class="stage sl" id="stage">
+    <div class="s2-wrap">
+      <div class="s2-head"><h1>CIVIL <span class="em">WAR</span></h1></div>
+      <div class="s2-waysbar">WAYS <b id="ways">—</b></div>
+      <div class="s2-linkbar" id="linkbar"><span>Link Spins</span><span>Left <b id="fsleft">0</b></span><span>Mult <b id="fslock">×1</b></span><span>Won <b id="fswon">0</b></span></div>
+      <div class="s2-stage" id="s2stage">
+        <div class="s2-mult" id="mult"></div>
+        <div class="s2-grid" id="grid"></div>
+        <div class="s2-overlay" id="overlay"></div>
+      </div>
+      <div class="s2-winbox" id="winbox" aria-live="polite"><small id="winmsg">Up to 117,649 ways · 4+ Lines trigger 12 Link Spins</small><b id="winamt">0</b></div>
+      <div class="s2-msg" id="msg"></div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/games/civilwar.js"></script>
+</body></html>
