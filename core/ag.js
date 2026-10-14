@@ -2,12 +2,15 @@
 export * from './store.js';
 export * from './ui.js';
 export { sfx, buzz } from './audio.js';
+export { initLink } from './link.js';
 export { startRound, Round } from './round.js';
 export { shuffle, weighted, int, floatsFor, sha256 } from './fair.js';
 export { GAMES, CATS, art, gameById } from './games.js';
 import { mountShell, mountFooter } from './ui.js';
+import { initLink } from './link.js';
 
 export function boot({ nav = '', footer = true } = {}) {
   mountShell(nav);
   if (footer) mountFooter();
+  try { initLink(); } catch (e) {} // Glow Link: inert on any failure
 }
