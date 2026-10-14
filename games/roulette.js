@@ -101,7 +101,7 @@ function unWon() { table.classList.remove('won'); $$('.spot', table).forEach(s =
 
 /* ---------- wheel (canvas) ---------- */
 const cv = $('#wheel'), ctx = cv.getContext('2d'), STEP = Math.PI * 2 / 37;
-let S = 0, wheelImg = null, rimImg = null;
+let S = 0, wheelImg = null, rimImg, ballImg = null;
 let wAng = 0, ballRel = 0, ballR = 0.6, wVel = 0.12, anim = null;
 const PCOL = { red: ['#c01f98', '#7a0f60'], black: ['#14152c', '#0a0b18'], green: ['#4f9a00', '#2a5200'] };
 
@@ -156,6 +156,15 @@ function build() {
   // diamond deflectors
   q.shadowBlur = R * 0.03; q.shadowColor = '#22f0ff'; q.fillStyle = '#9ff8ff';
   for (let i = 0; i < 8; i++) { q.save(); q.rotate(i * Math.PI / 4 + Math.PI / 8); q.translate(0, -R * 0.925); q.rotate(Math.PI / 4); q.fillRect(-R * 0.018, -R * 0.018, R * 0.036, R * 0.036); q.restore(); }
+  // ball sprite: gradient + glow baked once, so draw() is a plain drawImage (no per-frame gradient/shadowBlur)
+  ballImg = document.createElement('canvas');
+  const br2 = R * 0.045, bp = br2 * 2.6;
+  ballImg.width = ballImg.height = Math.ceil(bp);
+  const bq = ballImg.getContext('2d'), bc = bp / 2;
+  const bg2 = bq.createRadialGradient(bc - br2 * 0.35, bc - br2 * 0.35, br2 * 0.1, bc, bc, br2);
+  bg2.addColorStop(0, '#fff'); bg2.addColorStop(0.7, '#dfe6ff'); bg2.addColorStop(1, '#8c93b8');
+  bq.shadowColor = '#ffffff'; bq.shadowBlur = R * 0.06; bq.fillStyle = bg2;
+  bq.beginPath(); bq.arc(bc, bc, br2, 0, Math.PI * 2); bq.fill();
   draw();
 }
 
@@ -166,11 +175,8 @@ function draw() {
   ctx.save(); ctx.translate(R, R); ctx.rotate(wAng); ctx.drawImage(wheelImg, -R, -R); ctx.restore();
   ctx.drawImage(rimImg, 0, 0);
   const a = wAng + ballRel - Math.PI / 2, br = R * ballR;
-  const x = R + Math.cos(a) * br, y = R + Math.sin(a) * br, rr = R * 0.045;
-  const bg = ctx.createRadialGradient(x - rr * 0.35, y - rr * 0.35, rr * 0.1, x, y, rr);
-  bg.addColorStop(0, '#fff'); bg.addColorStop(0.7, '#dfe6ff'); bg.addColorStop(1, '#8c93b8');
-  ctx.save(); ctx.shadowColor = '#ffffff'; ctx.shadowBlur = R * 0.06; ctx.fillStyle = bg;
-  ctx.beginPath(); ctx.arc(x, y, rr, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  const x = R + Math.cos(a) * br, y = R + Math.sin(a) * br;
+  ctx.drawImage(ballImg, x - ballImg.width / 2, y - ballImg.height / 2);
 }
 
 let lastT = performance.now();
