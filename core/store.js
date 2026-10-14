@@ -138,3 +138,20 @@ export const fmt = n => {
 };
 export const fmtFull = n => Math.floor(n).toLocaleString('en-US');
 export const fmtX = m => (m >= 100 ? m.toFixed(0) : m >= 10 ? m.toFixed(1) : m.toFixed(2)) + '×';
+
+/* ---------- Glow vault mirror (leonlink.net) ----------
+   One-way sync: this wallet is the source of truth; the vault on
+   leonlink.net mirrors it so Arcadeline reads the same balance. */
+try {
+  const VF = document.createElement('iframe');
+  VF.src = 'https://www.leonlink.net/wallet.html';
+  VF.style.display = 'none'; VF.setAttribute('aria-hidden', 'true');
+  const vpost = m => { try { VF.contentWindow && VF.contentWindow.postMessage(Object.assign({ glow: 1 }, m), 'https://www.leonlink.net'); } catch (e) {} };
+  addEventListener('message', e => {
+    if (e.origin !== 'https://www.leonlink.net') return;
+    const m = e.data; if (!m || m.glow !== 1) return;
+    if (m.type === 'ready') { if (!m.value) vpost({ type: 'seed', value: state.coins }); else if (m.value !== state.coins) vpost({ type: 'set', value: state.coins }); }
+  });
+  on('coins', () => vpost({ type: 'set', value: state.coins }));
+  if (document.body) document.body.appendChild(VF); else addEventListener('DOMContentLoaded', () => document.body.appendChild(VF));
+} catch (e) {}
