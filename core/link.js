@@ -59,6 +59,13 @@ function adoptBalance(bal, why) {
   paint();
 }
 
+let errShown = false;
+function syncErr(e) {
+  if (errShown || !e) return;
+  errShown = true;
+  try { toast('Glow sync error: ' + (e.message || e.code || 'unknown'), 'r'); } catch (_) {}
+}
+
 async function rpcDelta(delta, reason) {
   const { data, error } = await sb.rpc('arc_glow_delta', {
     p_delta: Math.floor(delta),
@@ -78,6 +85,7 @@ async function flush(reason) {
         // Can't happen from real play; self-heal by re-pulling the server.
         adoptBalance(await pull(true), 'link');
       } else {
+        syncErr(error);
         pending = delta; // transient: retry on the next tick
       }
       return;
@@ -113,6 +121,7 @@ async function linkFor(u) {
     if (target > server0) {
       try {
         const { data, error } = await rpcDelta(target - server0, 'merge');
+        if (error) syncErr(error);
         if (!error && (typeof data === 'number' || typeof data === 'bigint') && Number.isFinite(Number(data))) {
           server = Number(data);
         } else {
