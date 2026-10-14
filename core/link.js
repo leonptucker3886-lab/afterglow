@@ -60,8 +60,12 @@ function adoptBalance(bal, why) {
 }
 
 let errShown = false;
+let lastErr = '';
 function syncErr(e) {
-  if (errShown || !e) return;
+  if (!e) return;
+  lastErr = [e.message || e.code || 'unknown', e.details || '', e.hint || ''].filter(Boolean).join(' | ');
+  try { localStorage.setItem('afterglow:synerr', lastErr); } catch (_) {}
+  if (errShown) return;
   errShown = true;
   try { toast('Glow sync error: ' + (e.message || e.code || 'unknown'), 'r'); } catch (_) {}
 }
@@ -196,7 +200,8 @@ function openAcctModal() {
   if (user) {
     modal(`<h2 style="margin-top:0">Glow linked</h2>
       <p class="dim">Signed in as <b style="color:var(--txt)">${esc(user.email || '')}</b>. One pile across Afterglow and Arcadeline.</p>
-      <div class="stat-row"><span>Shared balance</span><b>${Math.floor(state.coins).toLocaleString('en-US')} Glow</b></div>`,
+      <div class="stat-row"><span>Shared balance</span><b>${Math.floor(state.coins).toLocaleString('en-US')} Glow</b></div>
+      ${lastErr ? `<p class="dim" style="color:#ff8a8a;font-size:12.5px;word-break:break-word">Last sync error: ${esc(lastErr)}</p>` : ''}`,
       { actions: [{ label: 'Sign out', value: 'out' }, { label: 'Close', cls: 'pri', value: 'x' }] })
       .then(async v => {
         if (v === 'out') {
@@ -244,6 +249,7 @@ function openAcctModal() {
 
 /* ---------------- boot ---------------------------------------------------- */
 async function bootLink() {
+  try { lastErr = localStorage.getItem('afterglow:synerr') || ''; } catch (e) {}
   let createClient;
   try {
     ({ createClient } = await import(SUPA_ESM));
