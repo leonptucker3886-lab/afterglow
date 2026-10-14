@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Route 66 — Afterglow Casino</title>
+<style>
+  :root { --bg:#0a1420; --cy:#ff2f6d; --mg:#22f0ff; --gd:#ffd23f; --tx:#f2f0ff; --dim:#9a94b8; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; }
+  body { background:radial-gradient(120% 90% at 50% 0%, #101c30 0%, var(--bg) 60%);
+         color:var(--tx); font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,Roboto,sans-serif;
+         display:flex; flex-direction:column; align-items:center; min-height:100dvh; overflow-x:hidden;
+         user-select:none; -webkit-user-select:none; }
+  header { width:100%; max-width:520px; display:flex; align-items:center; justify-content:space-between;
+           padding:14px 16px 6px; }
+  header h1 { font-size:22px; letter-spacing:3px; font-weight:800;
+              background:linear-gradient(90deg,var(--cy),var(--mg)); -webkit-background-clip:text;
+              background-clip:text; color:transparent; }
+  .bal { font-size:15px; color:var(--gd); font-weight:700; font-variant-numeric:tabular-nums; }
+  .iconbtn { background:#1b1440; border:1px solid #332a6b; color:var(--tx); border-radius:12px;
+             width:40px; height:40px; font-size:18px; cursor:pointer; }
+  #fsbadge { display:none; width:100%; max-width:520px; text-align:center; padding:8px;
+             font-weight:800; letter-spacing:2px; color:#0a0618;
+             background:linear-gradient(90deg,var(--gd),#ff9d2f); font-size:15px; }
+  #grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; width:100%;
+          max-width:520px; padding:12px 12px 4px; }
+  .cell { aspect-ratio:1; background:linear-gradient(180deg,#1d1546,#120c2e); border:1px solid #2c2360;
+          border-radius:14px; display:flex; align-items:center; justify-content:center;
+          transition:transform .12s, border-color .12s, opacity .2s; position:relative; }
+  .cell svg { width:72%; height:72%; }
+  .cell.win { border-color:var(--gd); transform:scale(1.07); z-index:2;
+              box-shadow:0 0 18px rgba(255,210,63,.55); }
+  .cell.dim { opacity:.35; }
+  .cell.tease { border-color:var(--mg); animation:teasePulse .35s infinite alternate; }
+  @keyframes teasePulse { from{box-shadow:0 0 6px rgba(255,47,179,.4);} to{box-shadow:0 0 22px rgba(255,47,179,.95);} }
+  .reelspin .cell svg { animation:cyc .09s infinite; }
+  @keyframes cyc { 0%{transform:translateY(-6%)} 100%{transform:translateY(6%)} }
+  #winbar { height:64px; display:flex; align-items:center; justify-content:center; }
+  #winamt { font-size:34px; font-weight:800; color:var(--gd); font-variant-numeric:tabular-nums;
+            text-shadow:0 0 18px rgba(255,210,63,.5); }
+  #winamt.pop { animation:pop .35s; }
+  @keyframes pop { 0%{transform:scale(.6);} 60%{transform:scale(1.15);} 100%{transform:scale(1);} }
+  #controls { width:100%; max-width:520px; padding:6px 16px 18px; display:flex;
+              align-items:center; justify-content:space-between; gap:10px; }
+  .betctl { display:flex; align-items:center; gap:8px; }
+  .betbtn { width:44px; height:44px; border-radius:50%; border:1px solid #332a6b; background:#1b1440;
+            color:var(--tx); font-size:22px; cursor:pointer; }
+  #bet { font-size:17px; font-weight:700; min-width:64px; text-align:center; font-variant-numeric:tabular-nums; }
+  #bet small { display:block; font-size:10px; color:var(--dim); font-weight:400; letter-spacing:1px; }
+  #spin { flex:1; height:64px; border:none; border-radius:18px; font-size:22px; font-weight:800;
+          letter-spacing:3px; color:#0a0618; cursor:pointer;
+          background:linear-gradient(180deg,var(--cy),#00b8d4); box-shadow:0 4px 24px rgba(0,240,255,.35); }
+  #spin:active { transform:scale(.97); }
+  #spin:disabled { opacity:.4; }
+  #sub { width:100%; max-width:520px; display:flex; justify-content:space-between; padding:0 18px 20px; }
+  #sub button { background:none; border:1px solid #332a6b; color:var(--dim); border-radius:10px;
+                padding:8px 14px; font-size:13px; cursor:pointer; letter-spacing:1px; }
+  #sub button.on { color:var(--cy); border-color:var(--cy); }
+  .overlay { position:fixed; inset:0; background:rgba(6,3,20,.88); display:none; z-index:50;
+             align-items:center; justify-content:center; flex-direction:column; gap:18px; padding:24px;
+             text-align:center; }
+  .overlay.show { display:flex; }
+  .overlay h2 { font-size:52px; font-weight:900; letter-spacing:4px; }
+  #bigwin h2 { color:var(--gd); text-shadow:0 0 40px rgba(255,210,63,.8); animation:pop .4s; }
+  #megawin h2 { background:linear-gradient(90deg,var(--cy),var(--mg),var(--gd));
+                -webkit-background-clip:text; background-clip:text; color:transparent;
+                animation:pop .4s; }
+  #megawin.shake { animation:shk .5s 6; }
+  @keyframes shk { 0%,100%{transform:translate(0)} 25%{transform:translate(-7px,4px)} 75%{transform:translate(7px,-4px)} }
+  .overlay .amt { font-size:40px; font-weight:800; color:var(--tx); font-variant-numeric:tabular-nums; }
+  .overlay p { color:var(--dim); font-size:15px; max-width:340px; }
+  .choicebtn { width:min(340px,86vw); padding:18px; border-radius:16px; border:2px solid var(--mg);
+               background:#1b0f2e; color:var(--tx); font-size:20px; font-weight:800; cursor:pointer; }
+  .choicebtn small { display:block; font-size:13px; color:var(--dim); font-weight:400; margin-top:4px; }
+  .choicebtn:active { transform:scale(.97); background:#2a1445; }
+  .pill { padding:12px 26px; border-radius:14px; border:none; font-size:17px; font-weight:800;
+          background:linear-gradient(180deg,var(--cy),#00b8d4); color:#0a0618; cursor:pointer; }
+  .ghost { background:none; border:1px solid #332a6b; color:var(--dim); }
+  #paytable .card { background:#14102e; border:1px solid #332a6b; border-radius:18px; padding:20px;
+                    width:min(420px,92vw); max-height:80dvh; overflow:auto; text-align:left; }
+  #paytable h3 { letter-spacing:2px; margin-bottom:12px; color:var(--cy); }
+  .prow { display:flex; align-items:center; gap:12px; padding:7px 0; border-bottom:1px solid #241c52; font-size:14px; }
+  .prow svg { width:40px; height:40px; flex:none; }
+  .prow .pays { margin-left:auto; color:var(--gd); font-weight:700; font-variant-numeric:tabular-nums; }
+  .coin { position:fixed; top:-20px; width:10px; height:10px; border-radius:50%; background:var(--gd);
+          z-index:60; pointer-events:none; animation:fall linear forwards; }
+  @keyframes fall { to { transform:translateY(110vh) rotate(720deg); } }
+  #toast { position:fixed; bottom:110px; left:50%; transform:translateX(-50%); background:#1b1440;
+           border:1px solid var(--mg); padding:12px 22px; border-radius:14px; display:none; z-index:70;
+           font-size:15px; font-weight:600; }
+</style>
+</head>
+<body>
+<header>
+  <button class="iconbtn" id="muteBtn" title="sound" style="font-size:13px;font-weight:800">SND</button>
+  <h1>ROUTE 66</h1>
+  <div class="bal"><span id="bal">10,000</span></div>
+</header>
+<div id="fsbadge">FREE SPINS <span id="fsn">0</span> &nbsp;•&nbsp; ×<span id="fsm">2</span></div>
+<div id="grid"></div>
+<div id="winbar"><div id="winamt"></div></div>
+<div id="controls">
+  <div class="betctl">
+    <button class="betbtn" id="betDown">−</button>
+    <div id="bet">30<small>BET</small></div>
+    <button class="betbtn" id="betUp">+</button>
+  </div>
+  <button id="spin">SPIN</button>
+</div>
+<div id="sub">
+  <button id="turboBtn">TURBO</button>
+  <button id="payBtn">PAYS</button>
+  <button id="refillBtn" style="display:none">+10K</button>
+</div>
+
+<div class="overlay" id="bigwin"><h2>BIG WIN</h2><div class="amt" id="bigamt"></div></div>
+<div class="overlay" id="megawin"><h2>MEGA WIN</h2><div class="amt" id="megaamt"></div>
+  <button class="pill" id="shareBtn">SHARE</button></div>
+<div class="overlay" id="fschoice"><h2 style="font-size:34px;color:var(--mg)">PICK YOUR SPINS</h2>
+  <div id="choices" style="display:flex;flex-direction:column;gap:12px"></div></div>
+<div class="overlay" id="fssummary"><h2 style="font-size:34px;color:var(--gd)">FREE SPINS DONE</h2>
+  <div class="amt" id="fsamt"></div><button class="pill" id="fsok">NICE</button></div>
+<div class="overlay" id="paytable"><div class="card"><h3>PAYTABLE</h3><div id="prows"></div>
+  <p style="margin-top:12px">30 lines pay left to right. 3+ scatters trigger free spins. Pick your spins: 15 ×2, 10 ×3 or 5 ×5. Retriggers allowed.</p>
+  <button class="pill ghost" id="payclose" style="margin-top:14px;width:100%">CLOSE</button></div></div>
+<div id="toast"></div>
+
+<script src="engine/paylines-30.js"></script>
+<script src="engine/slot-engine.js"></script>
+<script>
+window.GAME_CONFIG = {"id": "route-66", "name": "Route 66", "tagline": "Neon miles, chrome wins.", "rtpTarget": 0.96, "volatility": "medium", "reels": 5, "rows": 3, "paylines": "PAYLINES_30", "symbols": {"wild": {"wild": true, "pays": {"3": 208, "4": 1039, "5": 4200}}, "scatter": {"scatter": true, "awardBetMult": {"3": 2, "4": 10, "5": 50}, "freeSpins": {"3": 10, "4": 15, "5": 25}}, "seven": {"pays": {"3": 104, "4": 520, "5": 2000}}, "diamond": {"pays": {"3": 62, "4": 260, "5": 831}}, "bell": {"pays": {"3": 52, "4": 208, "5": 730}}, "ace": {"pays": {"3": 42, "4": 156, "5": 520}}, "king": {"pays": {"3": 31, "4": 125, "5": 416}}, "queen": {"pays": {"3": 26, "4": 104, "5": 312}}, "jack": {"pays": {"3": 20, "4": 83, "5": 260}}, "ten": {"pays": {"3": 15, "4": 62, "5": 208}}, "blank": {}}, "reelStrips": [["wild", "blank", "jack", "bell", "blank", "ten", "king", "scatter", "blank", "jack", "ace", "blank", "ten", "queen", "seven", "blank", "jack", "ace", "blank", "ten", "queen", "diamond", "blank", "jack", "king", "blank", "blank", "queen", "bell", "blank", "ten", "king"], ["wild", "ten", "queen", "bell", "blank", "jack", "king", "scatter", "ten", "queen", "bell", "blank", "jack", "king", "seven", "blank", "queen", "ace", "blank", "ten", "king", "diamond", "blank", "jack", "ace", "blank", "ten", "queen", "diamond", "blank", "jack", "ace"], ["wild", "ten", "queen", "bell", "blank", "jack", "king", "scatter", "ten", "queen", "bell", "blank", "jack", "king", "seven", "ten", "queen", "ace", "blank", "ten", "king", "diamond", "blank", "jack", "ace", "blank", "ten", "queen", "diamond", "blank", "jack", "ace"], ["wild", "jack", "king", "bell", "ten", "jack", "ace", "scatter", "ten", "queen", "bell", "blank", "jack", "king", "seven", "ten", "queen", "bell", "blank", "jack", "king", "diamond", "ten", "queen", "ace", "blank", "jack", "king", "diamond", "ten", "queen", "ace"], ["wild", "jack", "king", "diamond", "ten", "queen", "ace", "wild", "jack", "king", "diamond", "ten", "queen", "ace", "scatter", "jack", "king", "bell", "ten", "jack", "ace", "seven", "ten", "queen", "bell", "blank", "jack", "king", "seven", "ten", "queen", "bell"]], "freeSpins": {"choices": [[15, 2], [10, 3], [5, 5]], "retrigger": true}, "pity": {"deadSpins": 25, "baseChance": 0.1, "perSpin": 0.05}, "newGameBoost": {"spins": 20, "rerollChance": 0.35}, "theme": {"bg": "#0a1420", "primary": "#ff2f6d", "accent": "#22f0ff", "gold": "#ffd23f"}};
+</script>
+<script>
+(function(){
+"use strict";
+var cfg = window.GAME_CONFIG;
+var game = SlotEngine.createGame(cfg);
+var BETS = [30, 60, 150, 300], betIdx = 0;
+var balance = (function(){ try{ var s=JSON.parse(localStorage.getItem("afterglow:v1")); if(s && isFinite(s.coins)) return Math.floor(s.coins); }catch(e){} return 10000; })();
+var spinning = false, turbo = false, muted = localStorage.getItem("ag_mute") === "1";
+var SYM_ORDER = ["wild","scatter","seven","diamond","bell","ace","king","queen","jack","ten","blank"];
+
+/* ---------- symbols (inline SVG, themed) ---------- */
+function svg(inner){ return '<svg viewBox="0 0 64 64">' + inner + '</svg>'; }
+var SYM = {
+  wild: '<svg viewBox="0 0 64 64"><path d="M6 40 Q6 32 14 31 L22 30 L28 18 Q29 15 33 15 L45 15 Q49 15 51 19 L55 28 L58 30 Q62 32 62 38 L62 42 L6 42 Z" fill="#ff2f6d"/><rect x="28" y="20" width="14" height="9" rx="2" fill="#a8e8f0"/><circle cx="18" cy="42" r="7" fill="#1a1a22"/><circle cx="18" cy="42" r="3" fill="#8a8a99"/><circle cx="50" cy="42" r="7" fill="#1a1a22"/><circle cx="50" cy="42" r="3" fill="#8a8a99"/><rect x="8" y="33" width="8" height="4" rx="2" fill="#ffd23f"/></svg>',
+  scatter: '<svg viewBox="0 0 64 64"><path d="M32 4 L54 12 L54 34 C54 46 44 54 32 60 C20 54 10 46 10 34 L10 12 Z" fill="#1d3a8f"/><path d="M32 8 L50 15 L50 33 C50 43 42 50 32 55 C22 50 14 43 14 33 L14 15 Z" fill="none" stroke="#f4f4f8" stroke-width="2"/><text x="32" y="42" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">66</text></svg>',
+  seven: '<svg viewBox="0 0 64 64"><path d="M14 52 L14 28 Q14 10 32 10 Q50 10 50 28 L50 52 Z" fill="#8a2be2"/><circle cx="24" cy="40" r="7" fill="#1a0d24"/><circle cx="40" cy="40" r="7" fill="#1a0d24"/><rect x="28" y="4" width="8" height="10" rx="3" fill="#ffd23f"/></svg>',
+  diamond: '<svg viewBox="0 0 64 64"><rect x="12" y="12" width="40" height="40" rx="9" fill="#f4f4f8"/><circle cx="24" cy="26" r="4" fill="#e01040"/><circle cx="40" cy="26" r="4" fill="#e01040"/><circle cx="24" cy="40" r="4" fill="#e01040"/><circle cx="40" cy="40" r="4" fill="#e01040"/><circle cx="32" cy="33" r="4" fill="#e01040"/></svg>',
+  bell: '<svg viewBox="0 0 64 64"><path d="M22 14 L42 14 L40 44 Q32 50 24 44 Z" fill="#a8e8f0"/><rect x="20" y="44" width="24" height="5" rx="2.5" fill="#5a8a99"/><rect x="30" y="6" width="4" height="12" fill="#ff5c39" transform="rotate(12 32 12)"/><circle cx="36" cy="10" r="3.4" fill="#ff2f4d"/></svg>',
+  ace: '<svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="7" fill="#14141c" stroke="#22f0ff" stroke-width="2"/><text x="32" y="43" text-anchor="middle" font-size="30" font-weight="900" fill="#7df4ff">A</text></svg>',
+  king: '<svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="7" fill="#14141c" stroke="#ff2f6d" stroke-width="2"/><text x="32" y="43" text-anchor="middle" font-size="30" font-weight="900" fill="#ff7fa0">K</text></svg>',
+  queen: '<svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="7" fill="#14141c" stroke="#ffd23f" stroke-width="2"/><text x="32" y="43" text-anchor="middle" font-size="30" font-weight="900" fill="#ffe27f">Q</text></svg>',
+  jack: '<svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="7" fill="#14141c" stroke="#8a8aa0" stroke-width="2"/><text x="32" y="43" text-anchor="middle" font-size="30" font-weight="900" fill="#c9c9da">J</text></svg>',
+  ten: '<svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="7" fill="#14141c" stroke="#5a5a6e" stroke-width="2"/><text x="32" y="43" text-anchor="middle" font-size="24" font-weight="900" fill="#8a8a99">10</text></svg>',
+  blank: '<svg viewBox="0 0 64 64"></svg>',
+};
+var SYM_NAMES = {wild:"CONVERTIBLE · WILD", scatter:"SHIELD · SCATTER", seven:"JUKEBOX", diamond:"DICE", bell:"MILKSHAKE", ace:"A", king:"K", queen:"Q", jack:"J", ten:"10"};
+/* ---------- audio (procedural WebAudio) ---------- */
+var AC = null;
+function ac(){ if(!AC){ AC = new (window.AudioContext||window.webkitAudioContext)(); } return AC; }
+function tone(f, d, type, v, when){
+  if(muted) return;
+  try{
+    var c = ac(), o = c.createOscillator(), g = c.createGain();
+    o.type = type || "square"; o.frequency.value = f;
+    var t = c.currentTime + (when || 0);
+    g.gain.setValueAtTime(v || .06, t);
+    g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g); g.connect(c.destination);
+    o.start(t); o.stop(t + d + .02);
+  }catch(e){}
+}
+var tick = function(i){ tone(300 + i*90, .05, "square", .05); };
+var teaseTick = function(i){ tone(400 + i*60, .09, "sine", .07); };
+function jingle(tier){
+  var notes = tier==="mega" ? [523,659,784,1047,1319] : tier==="big" ? [523,659,784,1047] : [659,784];
+  notes.forEach(function(f,i){ tone(f,.12,"triangle",.08,i*.09); });
+}
+function fanfare(){ [392,523,659,784].forEach(function(f,i){ tone(f,.25,"sawtooth",.05,i*.12); }); }
+
+/* ---------- dom ---------- */
+var grid = document.getElementById("grid"), cells = [];
+for(var r=0;r<5;r++){ cells[r]=[];
+  for(var row=0;row<3;row++){ var d=document.createElement("div"); d.className="cell";
+    d.innerHTML = SYM.blank; grid.appendChild(d); cells[r][row]=d; } }
+function render(g){ for(var r=0;r<5;r++) for(var row=0;row<3;row++) cells[r][row].innerHTML = SYM[g[r][row]] || SYM.blank; }
+function fmt(n){ return Math.round(n).toLocaleString("en-US"); }
+function setBal(){ document.getElementById("bal").textContent = fmt(balance);
+  try{ var _s=JSON.parse(localStorage.getItem("afterglow:v1"))||{}; _s.coins=balance; localStorage.setItem("afterglow:v1", JSON.stringify(_s)); }catch(e){}
+  document.getElementById("refillBtn").style.display = balance < BETS[betIdx] ? "" : "none"; }
+function toast(msg){ var t=document.getElementById("toast"); t.textContent=msg; t.style.display="block";
+  setTimeout(function(){ t.style.display="none"; },2200); }
+function countUp(el, to, ms){
+  var t0=performance.now();
+  (function f(t){ var p=Math.min(1,(t-t0)/ms);
+    el.textContent = fmt(to*(1-Math.pow(1-p,3)));
+    if(p<1) requestAnimationFrame(f); })(t0);
+}
+function coins(n){ for(var i=0;i<Math.min(n,40);i++){ var c=document.createElement("div"); c.className="coin";
+  c.style.left=(5+Math.random()*90)+"vw"; c.style.animationDuration=(1.2+Math.random()*1.4)+"s";
+  document.body.appendChild(c); setTimeout(function(el){return function(){el.remove()};}(c),3000); } }
+
+/* ---------- spin flow ---------- */
+function setSpin(on){ spinning=on; document.getElementById("spin").disabled=on; }
+function clearMarks(){ cells.flat().forEach(function(c){ c.classList.remove("win","dim","tease"); }); }
+
+function animateSpin(result, done){
+  grid.classList.add("reelspin");
+  var cycInt = setInterval(function(){
+    for(var r=0;r<5;r++) for(var row=0;row<3;row++)
+      if(!cells[r][row].dataset.stopped) cells[r][row].innerHTML = SYM[SYM_ORDER[Math.floor(Math.random()*10)]];
+  }, 90);
+  var stopped = [false,false,false,false,false];
+  cells.flat().forEach(function(c){ delete c.dataset.stopped; });
+  // tease: 2 scatters on first 4 reels -> slow the last reel
+  var sc4 = 0;
+  for(var r=0;r<4;r++) for(var row=0;row<3;row++) if(result.grid[r][row]==="scatter") sc4++;
+  var tease = sc4===2 && result.scatterCount>=2;
+  var base = turbo?70:170, gap = turbo?40:130;
+  function stopReel(r){
+    stopped[r]=true;
+    for(var row=0;row<3;row++){ cells[r][row].dataset.stopped="1";
+      cells[r][row].innerHTML = SYM[result.grid[r][row]]; }
+    (tease && r===3 ? teaseTick : tick)(r);
+    if(tease && r===3){ for(var row2=0;row2<3;row2++) cells[4][row2].classList.add("tease"); }
+    if(r===4){ clearInterval(cycInt); grid.classList.remove("reelspin"); done(); }
+  }
+  for(var r2=0;r2<5;r2++){
+    (function(r){ setTimeout(function(){ stopReel(r); }, base + r*gap + (tease&&r===4?650:0)); })(r2);
+  }
+}
+
+function showWins(result, bet, done){
+  var wm = document.getElementById("winamt");
+  clearMarks();
+  if(result.totalWin>0){
+    // mark winning cells
+    var winCells = {};
+    result.lineWins.forEach(function(w){
+      var line = game.paylines[w.line-1];
+      for(var r=0;r<w.count;r++) winCells[r+"-"+line[r]]=1;
+    });
+    if(result.scatterCount>=3) for(var r=0;r<5;r++) for(var row=0;row<3;row++)
+      if(result.grid[r][row]==="scatter") winCells[r+"-"+row]=1;
+    var any=false;
+    for(var r2=0;r2<5;r2++) for(var row2=0;row2<3;row2++){
+      var k=r2+"-"+row2;
+      if(winCells[k]){ cells[r2][row2].classList.add("win"); any=true; }
+      else cells[r2][row2].classList.add("dim");
+    }
+    if(!any) cells.flat().forEach(function(c){ c.classList.remove("dim"); });
+    wm.textContent = fmt(result.totalWin);
+    wm.classList.remove("pop"); void wm.offsetWidth; wm.classList.add("pop");
+    jingle(result.tier);
+    if(result.tier==="big"){
+      var b=document.getElementById("bigwin"); document.getElementById("bigamt").textContent="";
+      b.classList.add("show"); coins(24);
+      countUp(document.getElementById("bigamt"), result.totalWin, 1800);
+      setTimeout(function(){ b.classList.remove("show"); done(); }, 2600);
+    } else if(result.tier==="mega"){
+      var m=document.getElementById("megawin"); document.getElementById("megaamt").textContent="";
+      m.classList.add("show","shake"); coins(40);
+      countUp(document.getElementById("megaamt"), result.totalWin, 3200);
+      setTimeout(function(){ m.classList.remove("show","shake"); done(); }, 4200);
+    } else { setTimeout(done, 650); }
+  } else { wm.textContent=""; setTimeout(done, 250); }
+}
+
+function doSpin(){
+  if(spinning) return;
+  var bet = BETS[betIdx];
+  if(balance < bet){ toast("Out of coins — hit +10K"); return; }
+  setSpin(true);
+  balance -= bet; setBal();
+  document.getElementById("winamt").textContent="";
+  var res = game.spin(bet);
+  animateSpin(res, function(){
+    showWins(res, bet, function(){
+      balance += Math.round(res.totalWin); setBal();
+      if(res.pendingChoice){ offerChoice(res, bet); }
+      else setSpin(false);
+    });
+  });
+}
+
+function offerChoice(res, bet){
+  fanfare();
+  var box = document.getElementById("choices"); box.innerHTML="";
+  res.pendingChoice.forEach(function(c){
+    var b=document.createElement("button"); b.className="choicebtn";
+    b.innerHTML = c.spins+" SPINS<small>×"+c.mult+" multiplier</small>";
+    b.onclick=function(){ document.getElementById("fschoice").classList.remove("show");
+      runFreeSpins(c.index, bet); };
+    box.appendChild(b);
+  });
+  document.getElementById("fschoice").classList.add("show");
+}
+
+function runFreeSpins(choiceIdx, bet){
+  game.chooseFreeSpins(choiceIdx);
+  var badge=document.getElementById("fsbadge");
+  badge.style.display="block";
+  var total=0;
+  (function next(){
+    var f = game.spinFree(bet);
+    document.getElementById("fsn").textContent=f.fsRemaining;
+    document.getElementById("fsm").textContent=f.fsMult;
+    animateSpin(f, function(){
+      showWins(f, bet, function(){
+        total += f.totalWin;
+        balance += Math.round(f.totalWin); setBal();
+        if(f.done){
+          badge.style.display="none";
+          document.getElementById("fsamt").textContent = fmt(total);
+          document.getElementById("fssummary").classList.add("show");
+          document.getElementById("fsok").onclick=function(){
+            document.getElementById("fssummary").classList.remove("show"); setSpin(false); };
+        } else setTimeout(next, turbo?200:550);
+      });
+    });
+  })();
+}
+
+/* ---------- controls ---------- */
+document.getElementById("spin").onclick = doSpin;
+document.getElementById("betDown").onclick=function(){ betIdx=(betIdx+BETS.length-1)%BETS.length;
+  document.getElementById("bet").innerHTML=BETS[betIdx]+"<small>BET</small>"; setBal(); };
+document.getElementById("betUp").onclick=function(){ betIdx=(betIdx+1)%BETS.length;
+  document.getElementById("bet").innerHTML=BETS[betIdx]+"<small>BET</small>"; setBal(); };
+document.getElementById("turboBtn").onclick=function(){ turbo=!turbo;
+  this.classList.toggle("on",turbo); };
+document.getElementById("muteBtn").onclick=function(){ muted=!muted;
+  localStorage.setItem("ag_mute", muted?"1":"0");
+  this.textContent = muted?"OFF":"SND"; };
+document.getElementById("refillBtn").onclick=function(){ balance+=10000; setBal(); toast("+10,000 coins"); };
+document.getElementById("shareBtn").onclick=function(){
+  var t="I just hit "+document.getElementById("megaamt").textContent+" on ROUTE 66";
+  if(navigator.share) navigator.share({text:t}).catch(function(){});
+  else if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ toast("Copied"); });
+};
+(function buildPaytable(){
+  var box=document.getElementById("prows");
+  ["wild","scatter","seven","diamond","bell","ace","king","queen","jack","ten"].forEach(function(id){
+    var d=cfg.symbols[id], row=document.createElement("div"); row.className="prow";
+    var p = d.pays ? ("3×:"+d.pays["3"]+"  4×:"+d.pays["4"]+"  5×:"+d.pays["5"]) :
+            (d.scatter ? "3+ = free spins" : "");
+    row.innerHTML = SYM[id] + "<span>"+(SYM_NAMES[id]||id.toUpperCase())+"</span>";
+    var s=document.createElement("span"); s.className="pays"; s.textContent=p; row.appendChild(s);
+    box.appendChild(row);
+  });
+})();
+document.getElementById("payBtn").onclick=function(){ document.getElementById("paytable").classList.add("show"); };
+document.getElementById("payclose").onclick=function(){ document.getElementById("paytable").classList.remove("show"); };
+
+/* init */
+if(muted) document.getElementById("muteBtn").textContent="OFF";
+setBal();
+render([["blank","blank","blank"],["blank","blank","blank"],["blank","blank","blank"],["blank","blank","blank"],["blank","blank","blank"]]);
+})();
+</script>
+</body>
+</html>
