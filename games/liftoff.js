@@ -46,7 +46,7 @@ $('#rseg').onclick = e => { const b = e.target.closest('button'); if (!b || auto
 /* ---------- flow ---------- */
 async function launch() {
   if (phase !== 'idle') return;
-  phase = 'arming'; paint();
+  phase = 'arming'; paint(); kickFrame();
   const r = await startRound('liftoff', bet.value);
   if (!r) { phase = 'idle'; if (autoRun) stopAuto(); paint(); return; }
   const f = await r.float();
@@ -255,8 +255,12 @@ function frame(now) {
   drawParticles(boom, dt, false);
   if (ring) { ring.life -= dt / 700; if (ring.life <= 0) ring = null; else { ctx.strokeStyle = `rgba(255,77,109,${ring.life})`; ctx.lineWidth = 3 * ring.life + 1; ctx.beginPath(); ctx.arc(ring.x, ring.y, (1 - ring.life) * 90 + 8, 0, 6.283); ctx.stroke(); } }
   if (flying) paint();
+  const settled = phase === 'idle' && !autoRun && flame.length === 0 && boom.length === 0 && !ring;
+  if (settled) { rafOn = false; return; } // static frame stays on screen; loop sleeps
   requestAnimationFrame(frame);
 }
+let rafOn = false;
+function kickFrame() { if (!rafOn) { rafOn = true; lastFrame = performance.now(); requestAnimationFrame(frame); } }
 
 function setView(t, m) { view = { t: Math.max(9000, t / 0.8), m: Math.max(2, 1 + (m - 1) / 0.78) }; }
 function niceY() {
@@ -380,5 +384,5 @@ function explode() {
   }
 }
 
-requestAnimationFrame(frame);
+kickFrame(); // single initial frame; the idle gate stops the loop until launch()
 paint(); paintAuto();

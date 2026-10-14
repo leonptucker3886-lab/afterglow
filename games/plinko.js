@@ -280,7 +280,9 @@ function frame(now) {
   floats = floats.filter(f => f.k === undefined || f.k < 1);
   ctx.globalAlpha = 1;
   if (fly.textContent != balls.length + pending) { fly.textContent = balls.length + pending; lock(); }
-  kick();
+  // keep the loop alive only while there's motion; the last drawn frame stays put when idle
+  if (balls.length || flashes.size || sparks.length || floats.length || shooters.length || pending) kick();
+  else raf = 0;
 }
 
 function rr(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }

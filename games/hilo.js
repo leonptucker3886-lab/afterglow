@@ -82,6 +82,7 @@ function frame(t) {
     if (s.z <= 0.02 || x < -40 || x > W + 40 || y < -40 || y > H + 40) Object.assign(s, newStar(1));
   }
   drawStars(dz);
+  if (!round && kick < 0.02) { rafOn = false; return; } // idle: static starfield stays, loop sleeps
   requestAnimationFrame(frame);
 }
 function startWarp() { if (!rafOn && !reduced()) { rafOn = true; lastT = 0; requestAnimationFrame(frame); } }
@@ -131,7 +132,7 @@ async function start() {
   if (!r) { busy = false; paint(); return; }
   sfx('bet'); buzz(10);
   $('#mult').classList.remove('lost');
-  round = r; mult = 1; chain = 0; skips = MAX_SKIPS; ban?.remove(); ban = null;
+  round = r; mult = 1; chain = 0; skips = MAX_SKIPS; ban?.remove(); ban = null; startWarp();
   slot.classList.remove('won', 'lost');
   trail.replaceChildren();
   cur = await draw();
@@ -226,7 +227,7 @@ addEventListener('keydown', e => {
 });
 
 showCard(null, false);
-setWarp(); resize(); startWarp();
+setWarp(); resize(); drawStars(0); // static starfield; warp starts with a round
 paint();
 // keep the Launch label in sync with bet edits
 $('input', bet.el).addEventListener('blur', () => setTimeout(paint));

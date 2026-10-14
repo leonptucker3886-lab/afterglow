@@ -180,10 +180,12 @@ function draw() {
 }
 
 let lastT = performance.now();
+let rafOn = false;
+function kickLoop() { if (!rafOn) { rafOn = true; lastT = performance.now(); requestAnimationFrame(loop); } }
 function loop(t) {
   const dt = Math.min(0.05, (t - lastT) / 1000); lastT = t;
-  if (anim) anim(t);
-  else if (!reduced()) { wAng += wVel * dt; }
+  if (!anim) { rafOn = false; draw(); return; } // idle: one static frame, loop stops
+  anim(t);
   draw();
   requestAnimationFrame(loop);
 }
@@ -215,6 +217,7 @@ function spinTo(n) {
         wAng = wAng % (2 * Math.PI); anim = null; res();
       }
     };
+    kickLoop();
   });
 }
 
@@ -283,5 +286,4 @@ $('#spin').onclick = async () => {
 
 addEventListener('keydown', e => { if (e.code === 'Space' && !e.target.closest('input,button,a')) { e.preventDefault(); $('#spin').click(); } });
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(build, 120); });
-build(); paintStats(); render();
-requestAnimationFrame(loop);
+build(); paintStats(); render(); // build() ends with draw(): one static frame, no loop until a spin
