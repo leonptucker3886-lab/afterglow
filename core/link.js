@@ -168,7 +168,7 @@ function paintAcct() {
     acctBtn.classList.remove('on');
   } else {
     const who = esc(String(user.user_metadata?.nickname || user.email || 'Account').split('@')[0].slice(0, 14));
-    acctBtn.innerHTML = '<i class="dot"></i>' + who;
+    acctBtn.innerHTML = '<i class="dot"></i><span class="who">' + who + '</span>';
     acctBtn.classList.add('on');
   }
 }
@@ -178,13 +178,9 @@ function mountAcctBtn() {
     const bar = $('.topbar');
     if (!bar || acctBtn) return;
     acctBtn = h('<button class="gacct" aria-label="Account">Sign in</button>');
-    acctBtn.style.cssText = 'display:inline-flex;align-items:center;gap:7px;margin-right:10px;padding:8px 14px;border-radius:99px;border:1px solid var(--line,#26263d);background:rgba(255,255,255,.04);color:var(--txt,#fff);font:600 13px/1 inherit;cursor:pointer;white-space:nowrap';
     acctBtn.onclick = openAcctModal;
     const bal = $('.bal', bar);
     bar.insertBefore(acctBtn, bal);
-    const st = document.createElement('style');
-    st.textContent = '.gacct.on{border-color:#22f0ff}.gacct .dot{width:8px;height:8px;border-radius:99px;background:#3ddc97;box-shadow:0 0 8px #3ddc97}';
-    document.head.appendChild(st);
     paintAcct();
   } catch (e) {}
 }

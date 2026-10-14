@@ -18,6 +18,7 @@ const I = {
   profile: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-7 8-7s7 2.5 8 7"/>',
   back: '<path d="M15 5l-7 7 7 7"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+  arcade: '<path d="M7 8h10a5 5 0 0 1 5 5v2a3 3 0 0 1-5.6 1.5L15 15H9l-1.4 1.5A3 3 0 0 1 2 15v-2a5 5 0 0 1 5-5z"/><path d="M7.5 11v4M5.5 13h4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="17.5" cy="14" r=".8" fill="currentColor"/>',
 };
 export const icon = (n, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 
@@ -119,14 +120,15 @@ export function gameHeader(host, { title, rules = '' }) {
 export function mountShell(active = '') {
   document.body.classList.toggle('reduced', !!state.settings.reduced);
   const top = h(`<header class="topbar"><a class="logo" href="/" aria-label="AFTERGLOW lobby">${LOGO}<span class="lt">AFTER<b>GLOW</b></span></a>
-    <nav class="tnav">${[['lobby', '/', 'Lobby'], ['games', '/#games', 'Games'], ['rewards', '/rewards.html', 'Rewards'], ['fair', '/fair.html', 'Fair play'], ['profile', '/profile.html', 'Profile']].map(([k, u, l]) => `<a href="${u}" class="${k === active ? 'on' : ''}">${l}</a>`).join('')}</nav>
+    <nav class="tnav">${[['lobby', '/', 'Lobby'], ['games', '/#games', 'Games'], ['rewards', '/rewards.html', 'Rewards'], ['fair', '/fair.html', 'Fair play'], ['profile', '/profile.html', 'Profile']].map(([k, u, l]) => `<a href="${u}" class="${k === active ? 'on' : ''}">${l}</a>`).join('')}<a href="https://arcadeline.leonlink.net">Arcade</a></nav>
     <div class="tsp"></div>
     <div class="bal" title="Glow Coins (play money)">${COIN}<span class="amt mono"></span><a class="plus" href="/store.html" aria-label="Get Glow" style="display:grid;place-items:center">+</a></div>
     <button class="lvl" aria-label="Level"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#0e0e1c" stroke="#22223d" stroke-width="4"/><circle class="ring" cx="20" cy="20" r="17" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="106.8"/></svg><span></span></button></header>`);
   document.body.prepend(top);
-  const bn = h(`<nav class="bnav" aria-label="Main">${[['lobby', '/', 'Lobby'], ['games', '/#games', 'Games'], ['rewards', '/rewards.html', 'Rewards'], ['fair', '/fair.html', 'Fair'], ['profile', '/profile.html', 'Profile']].map(([k, u, l]) => `<a href="${u}" class="${k === active ? 'on' : ''}" data-k="${k}">${icon(k)}<span>${l}</span></a>`).join('')}</nav>`);
+  const bnItems = [['lobby', '/', 'Lobby'], ['games', '/#games', 'Games'], ['arcade', 'https://arcadeline.leonlink.net', 'Arcade', 1], ['rewards', '/rewards.html', 'Rewards'], ['profile', '/profile.html', 'Profile']];
+  const bn = h(`<nav class="bnav" aria-label="Main">${bnItems.map(([k, u, l, ext]) => `<a href="${u}"${ext ? '' : ` class="${k === active ? 'on' : ''}"`} data-k="${k}">${icon(k)}<span>${l}</span></a>`).join('')}</nav>`);
   document.body.appendChild(bn);
-  if (innerWidth < 380) $('.lt', top).style.display = 'none';
+  if (innerWidth < 480) $('.lt', top).style.display = 'none';
 
   const amt = $('.amt', top), bal = $('.bal', top); let shown = state.coins, ft;
   amt.textContent = fmt(shown);
