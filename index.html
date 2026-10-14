@@ -16,10 +16,7 @@
 .hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
 .orb{position:absolute;right:-60px;top:-50px;width:300px;height:300px;pointer-events:none;opacity:.9}
 @media(min-width:760px){.hero{padding:44px;min-height:340px}.orb{right:30px;top:20px;width:320px;height:320px}}
-.orb .r1{animation:spin 18s linear infinite;transform-origin:150px 150px}.orb .r2{animation:spin 11s linear infinite reverse;transform-origin:150px 150px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.chipf{position:absolute;animation:float 6s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-12px) rotate(8deg)}}
+.orb .r1{transform-origin:150px 150px;transform:rotate(-24deg)}.orb .r2{transform-origin:150px 150px;transform:rotate(30deg)}
 .bonus{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,82%);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 8px;margin:14px -2px 0;scrollbar-width:none}
 .bonus::-webkit-scrollbar{display:none}
 @media(min-width:760px){.bonus{grid-auto-flow:row;grid-template-columns:repeat(3,1fr);overflow:visible}}
@@ -56,6 +53,12 @@
 .hist{display:flex;flex-direction:column;gap:6px}
 .hist a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--line);color:var(--txt);font-size:14px}
 .hist a b{margin-left:auto;font-family:var(--mono)}
+.xban{display:flex;align-items:center;gap:12px;margin-top:12px;padding:16px 18px;border-radius:18px;border:1px solid var(--line2);
+  background:linear-gradient(100deg,#141430,#0b0b18 60%),radial-gradient(300px 120px at 8% 20%,#22f0ff22,transparent 70%);color:var(--txt)}
+.xban .xb-t{font:900 19px/1 var(--sans);letter-spacing:.06em;background:linear-gradient(90deg,var(--c),var(--p));-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.xban .xb-s{color:var(--dim);font-size:13.5px;flex:1;min-width:0}
+.xban .xb-go{flex:none;font-weight:800;color:var(--c);white-space:nowrap}
+@media(max-width:480px){.xban{padding:14px}.xban .xb-t{font-size:16px}.xban .xb-s{font-size:12.5px}}
 </style><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"AFTERGLOW","url":"https://afterglow.leonlink.net/","description":"Free-to-play neon social casino. 19 games, play money only.","mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"url":"https://afterglow.leonlink.net/games/baccarat.html","name":"Velvet Baccarat"},
 {"@type":"ListItem","position":2,"url":"https://afterglow.leonlink.net/games/blackjack.html","name":"Neon 21"},
 {"@type":"ListItem","position":3,"url":"https://afterglow.leonlink.net/games/buffalo.html","name":"Thunder Herd"},
@@ -89,6 +92,12 @@
     <p>Neon slots, blackjack, roulette and originals you won't find anywhere else. Play money only: nothing to buy, nothing to lose.</p>
     <div class="ctas"><a class="btn pri" id="heroCta" href="/games/slots.html">Play Nebula Nights</a><a class="btn ghost" href="#games">Browse games</a></div>
   </section>
+
+  <a class="xban" href="https://arcadeline.leonlink.net" aria-label="Play Arcadeline — 15 games, same Glow balance">
+    <span class="xb-t">ARCADELINE</span>
+    <span class="xb-s">15 games · same Glow balance · Daily Sudoku</span>
+    <span class="xb-go">Play&nbsp;&rarr;</span>
+  </a>
 
   <div class="bonus" id="bonus">
     <a class="bcard" id="bDaily" href="/rewards.html#wheel"><div class="ic" style="background:#ff3dc822;box-shadow:inset 0 0 0 1px #ff3dc855">🎡</div><div><h3>Daily Glow Wheel</h3><small data-k="s">…</small></div><span class="btn sm pink go" data-k="b">Spin</span></a>
