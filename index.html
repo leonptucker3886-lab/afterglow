@@ -32,9 +32,12 @@
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
 @media(min-width:720px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}}
 @media(min-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
-.gc{position:relative;display:block;border-radius:var(--rad);overflow:hidden;border:1px solid var(--line);background:var(--panel);color:var(--txt);transition:transform .15s,box-shadow .2s,border-color .2s}
-.gc:hover{transform:translateY(-3px);border-color:var(--c);box-shadow:0 10px 30px #000a,0 0 24px #22f0ff33}
+.gc{position:relative;display:block;border-radius:var(--rad);overflow:hidden;border:1px solid var(--line);background:var(--panel);color:var(--txt);transition:transform .15s,border-color .2s;contain:layout paint;content-visibility:auto;contain-intrinsic-size:auto 220px}
+.gc::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:0 10px 30px #000a,0 0 24px #22f0ff33;opacity:0;transition:opacity .2s}
+.gc:hover{transform:translateY(-3px);border-color:var(--c)}.gc:hover::after{opacity:1}
 .gc .art{aspect-ratio:16/10;display:grid;place-items:center;padding:8px 14px;position:relative}
+.gc .art::before{content:"";position:absolute;inset:12% 18%;border-radius:50%;background:radial-gradient(closest-side,#22f0ff22,#ff3dc814 60%,transparent);pointer-events:none}
+.gc .art svg{position:relative}
 .gc .art svg{width:100%;height:100%}
 .gc .meta{padding:10px 12px 12px}
 .gc h3{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -124,36 +127,40 @@ import * as B from '/core/bonus.js';
 boot({ nav: 'lobby' });
 
 let cat = 'all';
+// Lobby thumbnails: drop the per-shape glow filters (very slow to paint); a cheap CSS halo stands in.
+const lite = s => s.replace(/filter:\s*drop-shadow\([^)]*\);?/g, '');
 $('#cats').innerHTML = CATS.map(([k, l]) => `<button data-c="${k}" class="${k === cat ? 'on' : ''}">${l}</button>`).join('');
 $('#cats').onclick = e => { const b = e.target.closest('button'); if (!b) return; sfx('tap'); cat = b.dataset.c; [...$('#cats').children].forEach(x => x.classList.toggle('on', x === b)); grid(); };
 function grid() {
   const list = GAMES.filter(g => cat === 'all' || g.cat === cat);
   $('#grid').innerHTML = list.map(g => {
     const best = state.stats.byGame[g.id]?.best;
-    return `<a class="gc ${g.live ? '' : 'soon'}" ${g.live ? `href="${g.url}"` : 'aria-disabled="true"'}><div class="art" style="background:${g.bg || 'linear-gradient(135deg,#141428,#08080f)'}">${art(g.live ? g.id : 'soon')}${g.badge ? `<span class="badge ${g.badge}">${g.badge}</span>` : ''}${!g.live ? '<span class="badge" style="background:#32325a;box-shadow:none">SOON</span>' : ''}${best ? `<span class="mine">best ${fmtX(best)}</span>` : ''}</div><div class="meta"><h3>${esc(g.name)}</h3><small>${esc(g.tag)}</small></div>${g.live ? '<div class="play"><span>Play</span></div>' : ''}</a>`;
+    return `<a class="gc ${g.live ? '' : 'soon'}" ${g.live ? `href="${g.url}"` : 'aria-disabled="true"'}><div class="art" style="background:${g.bg || 'linear-gradient(135deg,#141428,#08080f)'}">${lite(art(g.live ? g.id : 'soon'))}${g.badge ? `<span class="badge ${g.badge}">${g.badge}</span>` : ''}${!g.live ? '<span class="badge" style="background:#32325a;box-shadow:none">SOON</span>' : ''}${best ? `<span class="mine">best ${fmtX(best)}</span>` : ''}</div><div class="meta"><h3>${esc(g.name)}</h3><small>${esc(g.tag)}</small></div>${g.live ? '<div class="play"><span>Play</span></div>' : ''}</a>`;
   }).join('');
   { const soon = GAMES.filter(g => !g.live).length; $("#gcount").textContent = `${GAMES.filter(g => g.live).length} games live${soon ? ` · ${soon} coming soon` : ""}`; }
 }
 grid();
 
+const _m = new WeakMap();
+const put = (el, k, v) => { let o = _m.get(el); if (!o) _m.set(el, o = {}); if (o[k] === v) return; o[k] = v; if (k === 'html') el.innerHTML = v; else if (k === 'text') el.textContent = v; else if (k[0] === '@') el.setAttribute(k.slice(1), v); else el[k] = v; };
 function bonus() {
   const d = $('#bDaily'), r = B.dailyReady();
-  d.classList.toggle('ready', r);
-  $('[data-k=s]', d).textContent = r ? `Day ${B.nextStreak()} streak · up to ${fmt(Math.round(25000 * B.streakMult(B.nextStreak())))}` : `Next spin in ${B.clock(B.msToMidnight())}`;
-  $('[data-k=b]', d).textContent = r ? 'Spin' : 'View';
+  if (d.classList.contains('ready') !== r) d.classList.toggle('ready', r);
+  put($('[data-k=s]', d), 'text', r ? `Day ${B.nextStreak()} streak · up to ${fmt(Math.round(25000 * B.streakMult(B.nextStreak())))}` : `Next spin in ${B.clock(B.msToMidnight())}`);
+  put($('[data-k=b]', d), 'text', r ? 'Spin' : 'View');
   const p = $('#bDrop'), dr = B.dropReady();
-  p.classList.toggle('ready', dr);
-  $('[data-k=s]', p).textContent = dr ? `${fmtFull(B.dropAmount())} Glow is ready` : `Next drop in ${B.clock(B.dropIn())}`;
-  $('[data-k=b]', p).disabled = !dr;
+  if (p.classList.contains('ready') !== dr) p.classList.toggle('ready', dr);
+  put($('[data-k=s]', p), 'text', dr ? `${fmtFull(B.dropAmount())} Glow is ready` : `Next drop in ${B.clock(B.dropIn())}`);
+  put($('[data-k=b]', p), 'disabled', !dr);
   const l = $('#bLvl'), t = tierOf(state.level), k = state.xp / xpFor(state.level);
-  $('[data-k=t]', l).innerHTML = `Level ${state.level} <span style="color:${t[2]};font-size:12px">· ${t[1]}</span>`;
-  $('[data-k=s]', l).textContent = `${Math.floor(k * 100)}% to level ${state.level + 1} · +${fmt(levelReward(state.level + 1))}`;
-  const ring = $('[data-k=ring]', l); ring.setAttribute('stroke-dashoffset', 113.1 * (1 - k)); ring.style.stroke = t[2];
-  if (r) { $('#heroCta').textContent = 'Spin the daily wheel'; $('#heroCta').href = '/rewards.html#wheel'; $('#heroCta').className = 'btn pink'; }
+  put($('[data-k=t]', l), 'html', `Level ${state.level} <span style="color:${t[2]};font-size:12px">· ${t[1]}</span>`);
+  put($('[data-k=s]', l), 'text', `${Math.floor(k * 100)}% to level ${state.level + 1} · +${fmt(levelReward(state.level + 1))}`);
+  const ring = $('[data-k=ring]', l); put(ring, '@stroke-dashoffset', String(113.1 * (1 - k))); put(ring, '@stroke', t[2]);
+  if (r && !_m.get($('#heroCta'))?.hero) { put($('#heroCta'), 'hero', 1); $('#heroCta').textContent = 'Spin the daily wheel'; $('#heroCta').href = '/rewards.html#wheel'; $('#heroCta').className = 'btn pink'; }
 }
 $('#bDrop [data-k=b]').onclick = e => { const n = B.claimDrop(); if (n) { sfx('cash'); const r = e.target.getBoundingClientRect(); burst(r.left + r.width / 2, r.top, { count: 40 }); toast(`🛰️ Orbit Drop · <b>+${fmtFull(n)} Glow</b>`, 'l'); bonus(); } };
 $('#bLvl').onclick = levelModal;
-bonus(); setInterval(bonus, 1000); on('change', bonus);
+bonus(); setInterval(() => { if (!document.hidden) bonus(); }, 1000); on('change', bonus); document.addEventListener('visibilitychange', () => { if (!document.hidden) bonus(); });
 
 if (state.history.length) {
   $('#recentWrap').hidden = false;

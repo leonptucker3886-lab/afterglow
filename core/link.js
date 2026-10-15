@@ -284,6 +284,19 @@ async function bootLink() {
   }
 }
 
+// Load the ~100 KB Supabase client right away only when it's needed now
+// (a saved session or an auth redirect). Otherwise wait until the page is idle
+// so it never competes with first paint and scrolling.
+function needsLinkNow() {
+  try {
+    if (/access_token=|[?&]code=|error_description=/.test(location.hash + location.search)) return true;
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && /^sb-.*-auth-token$/.test(k)) return true; }
+  } catch (e) {}
+  return false;
+}
 export function initLink() {
-  bootLink().catch(() => {}).finally(() => { try { readyResolve(true); } catch (e) {} });
+  const go = () => bootLink().catch(() => {}).finally(() => { try { readyResolve(true); } catch (e) {} });
+  if (needsLinkNow()) return go();
+  const idle = () => (window.requestIdleCallback ? requestIdleCallback(go, { timeout: 4000 }) : setTimeout(go, 1500));
+  if (document.readyState === 'complete') idle(); else addEventListener('load', idle, { once: true });
 }

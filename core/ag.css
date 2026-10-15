@@ -12,12 +12,14 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip}
 body{overflow-x:clip}
-body{margin:0;min-height:100vh;color:var(--txt);font:15px/1.5 var(--sans);background:
-  radial-gradient(900px 500px at 10% -10%,#22f0ff14,transparent 60%),
-  radial-gradient(800px 600px at 110% 10%,#ff3dc814,transparent 60%),
-  radial-gradient(700px 500px at 50% 120%,#8b5cff12,transparent 60%),var(--bg);background-attachment:fixed;
+body{margin:0;min-height:100vh;color:var(--txt);font:15px/1.5 var(--sans);background:var(--bg);
   padding-bottom:calc(var(--bn) + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
 @media(min-width:900px){body{padding-bottom:0}}
+/* Fixed glow layer on its own GPU layer: no full-page repaint on scroll (replaces background-attachment:fixed) */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;transform:translateZ(0);will-change:transform;background:
+  radial-gradient(900px 500px at 10% -10%,#22f0ff14,transparent 60%),
+  radial-gradient(800px 600px at 110% 10%,#ff3dc814,transparent 60%),
+  radial-gradient(700px 500px at 50% 120%,#8b5cff12,transparent 60%)}
 a{color:var(--c);text-decoration:none}
 button,input,select{font:inherit;color:inherit}
 img,svg{display:block;max-width:100%}
@@ -28,7 +30,7 @@ img,svg{display:block;max-width:100%}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 /* --- top bar --- */
-.topbar{position:sticky;top:0;z-index:40;height:var(--top);display:flex;align-items:center;gap:10px;padding:0 12px;min-width:0}
+.topbar{position:sticky;top:0;z-index:40;height:var(--top);display:flex;align-items:center;gap:10px;padding:0 12px;min-width:0;
   background:#05050ae6;border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:8px;font:900 18px/1 var(--sans);letter-spacing:.08em;color:var(--hi);white-space:nowrap}
 .logo b{background:linear-gradient(90deg,var(--c),var(--p));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px #ff3dc866)}
