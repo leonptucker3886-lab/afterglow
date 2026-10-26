@@ -1,0 +1,82 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"><meta name="theme-color" content="#07060f">
+<title>Glow Slots · Afterglow Casino · LeonLink</title><style>
+:root{--bg:#07060f;--glow:#ff3df2;--cyan:#22e6ff;--gold:#ffd25a;--txt:#f3eefe}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:radial-gradient(ellipse at top,#2a0b45 0%,var(--bg) 60%);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+body:before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(90deg,transparent 0 79px,rgba(34,230,255,.05) 80px),repeating-linear-gradient(0deg,transparent 0 79px,rgba(255,61,242,.05) 80px);pointer-events:none}
+header{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 4vw;background:#07060fcc;backdrop-filter:blur(10px);border-bottom:1px solid #ffffff12}
+.logo{font-weight:900;font-size:1.1rem;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(90deg,var(--glow),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none}
+.back{color:var(--txt);text-decoration:none;padding:8px 12px;border-radius:999px;border:1px solid #ffffff1f;font-size:.85rem}
+.wal{color:var(--gold);font-weight:800;text-shadow:0 0 10px rgba(255,210,90,.5);white-space:nowrap}
+main{position:relative;max-width:820px;margin:0 auto;padding:20px 4vw 40px;text-align:center}
+h1{font-size:clamp(2rem,8vw,3.4rem);font-weight:900;letter-spacing:.06em;color:var(--glow);text-shadow:0 0 18px var(--glow),0 0 42px rgba(255,61,242,.5)}
+.sub{opacity:.75;margin:6px 0 18px}
+.table{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;box-shadow:0 0 0 1px var(--glow) inset,0 0 40px rgba(255,61,242,.25)}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:14px 0}
+button{font:700 15px system-ui;min-height:44px;padding:10px 18px;border-radius:999px;border:1.5px solid var(--cyan);background:rgba(0,0,0,.35);color:var(--txt);cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+button.go{background:var(--glow);border-color:var(--glow);color:#07060f}
+button.alt{background:var(--cyan);color:#031417}
+.bet{font-weight:900;color:var(--gold);min-width:90px}
+#msg{min-height:1.6em;font-weight:800;font-size:1.15rem;margin:8px 0}
+.win{color:var(--gold);text-shadow:0 0 12px var(--gold)}.lose{color:#ff7aa8}
+details{margin-top:18px;text-align:left;background:#0e0c1c;border:1px solid #ffffff1f;border-radius:16px;padding:12px 16px}
+summary{cursor:pointer;font-weight:800;color:var(--cyan)}
+details table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
+details td,details th{border-bottom:1px solid #ffffff14;padding:6px;text-align:left}
+details p,details li{margin-top:6px;line-height:1.5;opacity:.9}details ul{padding-left:18px}
+.disc{margin-top:16px;font-size:.8rem;opacity:.6;line-height:1.5}
+footer{text-align:center;padding:24px;opacity:.5;font-size:.85rem}
+
+.reels{display:flex;gap:10px;justify-content:center;margin:8px 0}
+.reel{width:min(28vw,120px);height:min(28vw,120px);border-radius:16px;background:#0e0c1c;border:2px solid var(--cyan);display:grid;place-items:center;font-size:min(16vw,68px);box-shadow:0 0 20px #22e6ff44 inset}
+.reel.spin{animation:blur .1s infinite}@keyframes blur{50%{transform:translateY(4px);filter:blur(2px)}}
+.reel.hit{border-color:var(--gold);box-shadow:0 0 26px var(--gold)}
+</style></head><body data-game="glow-slots">
+<header><a class="back" href="../../index.html">&larr; Lobby</a><a class="logo" href="../../index.html">Afterglow</a><span class="wal">&#10022; <span id="bal">0</span> Glow</span></header>
+<main><h1>Glow Slots</h1><p class="sub">Three neon reels. Line up symbols on the center line.</p>
+<script>
+"use strict";
+/* Afterglow coin wallet: uses the casino's main balance (localStorage 'afterglow:v1'), shared with every Afterglow game, the lobby, rewards and stats. */
+const AG_KEY='afterglow:v1',AG_GAME=document.body.dataset.game||location.pathname.split('/').filter(Boolean).slice(-1)[0];
+function agLoad(){try{const s=JSON.parse(localStorage.getItem(AG_KEY));if(s&&s.v===1)return s}catch(e){}return {v:1,created:Date.now(),name:'Player',ageOk:false,coins:10000,xp:0,level:1,stats:{wagered:0,won:0,rounds:0,wins:0,biggestWin:0,biggestMult:0,byGame:{}},ach:{},bets:{},history:[]}}
+function agSave(s){try{localStorage.setItem(AG_KEY,JSON.stringify(s))}catch(e){}renderGlow()}
+function agStat(s){s.stats=s.stats||{wagered:0,won:0,rounds:0,wins:0,biggestWin:0,biggestMult:0,byGame:{}};s.stats.byGame=s.stats.byGame||{};return s.stats.byGame[AG_GAME]||(s.stats.byGame[AG_GAME]={rounds:0,wagered:0,won:0,wins:0,best:0})}
+function getGlow(){const c=agLoad().coins;return Number.isFinite(c)?Math.max(0,Math.floor(c)):0}
+function setGlow(v){const s=agLoad();s.coins=Math.max(0,Math.floor(v));agSave(s);return s.coins}
+function addGlow(n){n=Math.floor(n);const s=agLoad();s.coins=Math.max(0,Math.floor(s.coins||0)+n);if(n>0){const g=agStat(s);s.stats.won+=n;g.won+=n;g.wins++;s.stats.wins++;if(n>s.stats.biggestWin)s.stats.biggestWin=n}agSave(s);return s.coins}
+function spendGlow(n){n=Math.floor(n);const s=agLoad();if(!(n>0)||n>(s.coins||0))return false;s.coins-=n;const g=agStat(s);s.stats.wagered+=n;g.wagered+=n;s.stats.rounds++;g.rounds++;agSave(s);return true}
+function renderGlow(){const e=document.getElementById('bal');if(e)e.textContent=getGlow().toLocaleString()}
+addEventListener('storage',e=>{if(e.key===AG_KEY)renderGlow()});
+function say(t,c){const m=document.getElementById('msg');m.textContent=t;m.className=c||''}
+function refill(){location.href='../../rewards.html'}
+let bet=10;const BETS=[5,10,25,50,100,250];
+function betUI(){const e=document.getElementById('betv');if(e)e.textContent=bet+' Glow'}
+function betStep(d){let i=BETS.indexOf(bet);i=Math.max(0,Math.min(BETS.length-1,i+d));bet=BETS[i];betUI()}
+const $=id=>document.getElementById(id);
+</script>
+<div class="table"><div class="reels"><div class="reel" id="r0">7</div><div class="reel" id="r1">7</div><div class="reel" id="r2">7</div></div>
+<div id="msg">Set your bet and spin.</div><div class="ctrl"><button onclick="betStep(-1)" aria-label="Lower bet">&minus;</button><span class="bet" id="betv">10 Glow</span><button onclick="betStep(1)" aria-label="Raise bet">+</button></div><div class="ctrl"><button class="go" id="spin">Spin</button></div></div>
+<details open><summary>Paytable (multiplier &times; bet)</summary><table id="pt"><tr><th>Line</th><th>Pays</th></tr></table><p>Any two cherries on the line pay 2&times;; one cherry pays 0.5&times; (half your bet back). Theoretical return about 91%. Outcomes are random.</p></details><p class="disc">Play money only. Glow has no cash value, cannot be purchased, cashed out or redeemed, and is for entertainment only. No real-money gambling. 18+. If gambling stops being fun, call 1-800-GAMBLER.</p>
+<button style="margin-top:10px" onclick="refill()">Need more Glow? Free rewards</button>
+</main><footer>&copy; LeonLink &middot; Afterglow Casino &middot; a LeonLink games property</footer>
+<script>
+"use strict";
+renderGlow();betUI();
+
+const SYM=[['\u{1F352}',14,18],['\u{1F34B}',28,9],['\u{1F514}',22,13],['\u2B50',16,20],['\u{1F48E}',9,42],['7',4,170]];
+const tot=SYM.reduce((a,s)=>a+s[1],0);
+function pick(){let r=Math.random()*tot;for(const s of SYM){if((r-=s[1])<0)return s}return SYM[0]}
+SYM.forEach(s=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+s[0]+' '+s[0]+' '+s[0]+'</td><td>'+s[2]+'&times;</td>';$('pt').appendChild(tr)});
+let busy=false;const R=[0,1,2].map(i=>$('r'+i));
+$('spin').onclick=()=>{if(busy)return;if(!spendGlow(bet)){say('Not enough Glow for that bet.','lose');return}busy=true;$('spin').disabled=true;say('');
+const res=[pick(),pick(),pick()],stake=bet;R.forEach(r=>{r.classList.remove('hit');r.classList.add('spin')});
+const iv=setInterval(()=>R.forEach(r=>{if(r.classList.contains('spin'))r.textContent=pick()[0]}),70);
+R.forEach((r,i)=>setTimeout(()=>{r.classList.remove('spin');r.textContent=res[i][0];
+if(i===2){clearInterval(iv);let m=0;const c=res.filter(s=>s===SYM[0]).length;
+if(res[0]===res[1]&&res[1]===res[2])m=res[0][2];else if(c===2)m=2;else if(c===1)m=.5;
+if(m){addGlow(Math.floor(stake*m));if(m>1)R.forEach(x=>x.classList.add('hit'));say(m<1?'One cherry: half your bet back.':'Win '+Math.floor(stake*m)+' Glow!',m>1?'win':'')}else say('No win this spin.','lose');
+busy=false;$('spin').disabled=false}},700+i*450))};
+
+</script><script src="../shared/afterglow-polish.js" data-title="Glow Slots"></script></body></html>
