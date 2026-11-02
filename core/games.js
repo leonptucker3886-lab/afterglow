@@ -2,12 +2,6 @@
 const S = (inner, vb = '0 0 200 120') => `<svg viewBox="${vb}" aria-hidden="true">${inner}</svg>`;
 const ART = {
   lionlink: S(`<text x="100" y="80" font-size="56" text-anchor="middle" style="filter:drop-shadow(0 0 10px #ffb02e)">🦁</text>`),
-  fishinglink: S(`<text x="100" y="80" font-size="56" text-anchor="middle" style="filter:drop-shadow(0 0 10px #22b8ff)">🎣</text>`),
-  neonbj: S(`<text x="100" y="80" font-size="56" text-anchor="middle" style="filter:drop-shadow(0 0 10px #22f0ff)">🂡</text>`),
-  agroulette: S(`<text x="100" y="80" font-size="56" text-anchor="middle" style="filter:drop-shadow(0 0 10px #ff3dc8)">🎡</text>`),
-  glowslots: S(`<text x="100" y="80" font-size="56" text-anchor="middle" style="filter:drop-shadow(0 0 10px #b8ff3b)">🎰</text>`),
-  pulseplinko: S(`<text x="100" y="80" font-size="56" text-anchor="middle" style="filter:drop-shadow(0 0 10px #ff3dc8)">🔮</text>`),
-  midnighthilo: S(`<text x="100" y="80" font-size="56" text-anchor="middle" style="filter:drop-shadow(0 0 10px #ffd84d)">🌙</text>`),
 
   pharaohs: S(`<circle cx="100" cy="46" r="20" fill="#ffd23f"/><path d="M100 26 L152 104 H48 Z" fill="#c9962e" opacity=".85"/><rect x="26" y="104" width="148" height="7" rx="3" fill="#ffd23f" opacity=".55"/>`),
   dragons: S(`<path d="M100 18 C60 30 44 62 52 104 L148 104 C156 62 140 30 100 18Z" fill="#7a1f3d"/><circle cx="84" cy="58" r="5" fill="#ffd23f"/><circle cx="116" cy="58" r="5" fill="#ffd23f"/><path d="M84 84 Q100 96 116 84" stroke="#ffd23f" stroke-width="4" fill="none"/>`),
@@ -63,12 +57,6 @@ export const GAMES = [
   { id: 'civilwar', name: 'Civil War', tag: '117,649 ways · Link Spins', cat: 'slots', url: '/games/civil-war.html', bg: 'linear-gradient(135deg,#2b2118,#14100c 60%,#3a2c1c)', badge: 'NEW', live: true },
   { id: 'classics', name: 'Classic Slots', tag: '4 retro cabinets · Gamble', cat: 'slots', url: '/games/classics.html', bg: 'linear-gradient(135deg,#3a0d2a,#0b0720 60%,#123a2c)', badge: 'NEW', live: true },
   { id: 'lionlink', name: 'Lion-Link', tag: '243 ways · Pride Wilds · DATABASE LOCK', cat: 'slots', url: '/games/lion-link/', bg: 'linear-gradient(135deg,#3a2a0b,#05050a 60%,#2a1a06)', live: true },
-  { id: 'fishinglink', name: 'Fishing-Link', tag: 'Scatter pays · Tide Cascades · DATABASE LOCK', cat: 'slots', url: '/games/fishing-link/', bg: 'linear-gradient(135deg,#0b2a4a,#05050a 60%,#06233a)', live: true },
-  { id: 'glowslots', name: 'Glow Slots', tag: 'Classic 3-reel neon slot', cat: 'slots', url: '/games/glow-slots/', bg: 'linear-gradient(135deg,#1a3a0b,#05050a 60%,#2a0b33)', live: true },
-  { id: 'neonbj', name: 'Neon Blackjack', tag: '6-deck shoe · pays 3:2', cat: 'table', url: '/games/neon-blackjack/', bg: 'linear-gradient(135deg,#062b1f,#05050a 60%,#0b2a33)', live: true },
-  { id: 'agroulette', name: 'Afterglow Roulette', tag: 'European wheel · single zero', cat: 'table', url: '/games/afterglow-roulette/', bg: 'linear-gradient(135deg,#3a0b2a,#05050a 60%,#0b1a3a)', live: true },
-  { id: 'pulseplinko', name: 'Pulse Plinko', tag: '12 rows · low or high risk, up to 50×', cat: 'originals', url: '/games/pulse-plinko/', bg: 'linear-gradient(135deg,#2a0b3a,#05050a 60%,#0b2a33)', live: true },
-  { id: 'midnighthilo', name: 'Midnight Hi-Lo', tag: 'Build a streak, cash out anytime', cat: 'originals', url: '/games/midnight-hi-lo/', bg: 'linear-gradient(135deg,#0b0b33,#05050a 60%,#33200b)', live: true }
 ];
 export const CATS = [['all', 'All games'], ['slots', 'Slots'], ['originals', 'Originals'], ['table', 'Table']];
 export const art = id => ART[id] || ART.soon;
