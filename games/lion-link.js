@@ -101,16 +101,16 @@ async function spinOnce() {
       } else if (!res.lineWins.length) {
         await countWin(winbox, winamt, 'No ways \u2014 the pride is resting', 0, 300);
       }
-    } catch (e) { console.error('lion-link: animation error', e); }
+    } catch (e) { console.error('[lion-link] spin failed', e); }
     const mult = stake ? res.totalWin / stake : 0;
     settled = r.settle(res.totalWin, { detail: 'lion-link-database-lock' });
     r = null;
     if (res.bonus || mult >= 20) { autoLeft = 0; msg(res.bonus ? 'Database Lock complete.' : 'Big win \u2014 autoplay stopped.'); }
     return settled;
   } catch (e) {
-    console.error('lion-link: spin error', e);
+    console.error('[lion-link] spin failed', e);
     autoLeft = 0;
-    if (r && res) { try { r.settle(res.totalWin, { detail: 'lion-link-database-lock' }); } catch (e2) { console.error(e2); } }
+    if (r && res) { try { r.settle(res.totalWin, { detail: 'lion-link-database-lock' }); } catch (e2) { console.error('[lion-link] settle failed', e2); } }
     msg('Something went wrong \u2014 tap SPIN to try again.');
     return 'error';
   } finally {
