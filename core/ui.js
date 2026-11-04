@@ -44,11 +44,26 @@ export function modal(html, { actions = [{ label: 'Close', cls: 'pri' }], dismis
 }
 
 /* ---------- number tween ---------- */
+/* Returns a Promise that resolves once the tween reaches `to`.
+ * Callers (e.g. v2present countWin) chain .catch()/await on it; before this it
+ * returned undefined, which threw mid-spin, skipped settle() and left SPIN locked.
+ * A timer fallback finishes the tween if requestAnimationFrame is paused (hidden tab). */
 export function tween(from, to, ms, fn) {
-  if (state.settings.reduced || ms <= 0) return fn(to);
-  const t0 = performance.now();
-  const step = t => { const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - Math.pow(1 - k, 3); fn(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
-  requestAnimationFrame(step);
+  if (state.settings.reduced || ms <= 0) { fn(to); return Promise.resolve(); }
+  return new Promise(resolve => {
+    const t0 = performance.now();
+    let done = false;
+    const finish = () => { if (done) return; done = true; fn(to); resolve(); };
+    const step = t => {
+      if (done) return;
+      const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - Math.pow(1 - k, 3);
+      if (k >= 1) return finish();
+      fn(from + (to - from) * e);
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    setTimeout(finish, ms + 250);
+  });
 }
 
 /* ---------- particles ---------- */
