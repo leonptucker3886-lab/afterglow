@@ -82,31 +82,46 @@ async function showBonus(b) {
 }
 
 async function spinOnce() {
+  if (busy) return 'busy';
+  busy = true; paint();
   const stake = bet.value;
-  const r = await startRound(ID, stake);
-  if (!r) { msg('Not enough Glow'); return 'broke'; }
-  busy = true; paint(); msg('');
-  winamt.textContent = '0'; winbox.classList.remove('on');
-  sfx('bet');
-  const res = game.spin(stake);
-  let total = await showBase(res);
-  if (res.bonus) {
-    total += await showBonus(res.bonus);
-    await countWin(winbox, winamt, `Database Lock won ${fmtFull(Math.floor(res.bonus.totalWin))}`, res.totalWin, 900);
-  } else if (!res.lineWins.length) {
-    await countWin(winbox, winamt, 'No ways — the pride is resting', 0, 300);
+  let r = null, res = null, settled;
+  try {
+    r = await startRound(ID, stake);
+    if (!r) { msg('Not enough Glow'); return 'broke'; }
+    msg('');
+    winamt.textContent = '0'; winbox.classList.remove('on');
+    sfx('bet');
+    res = game.spin(stake);
+    try {
+      await showBase(res);
+      if (res.bonus) {
+        await showBonus(res.bonus);
+        await countWin(winbox, winamt, `Database Lock won ${fmtFull(Math.floor(res.bonus.totalWin))}`, res.totalWin, 900);
+      } else if (!res.lineWins.length) {
+        await countWin(winbox, winamt, 'No ways \u2014 the pride is resting', 0, 300);
+      }
+    } catch (e) { console.error('lion-link: animation error', e); }
+    const mult = stake ? res.totalWin / stake : 0;
+    settled = r.settle(res.totalWin, { detail: 'lion-link-database-lock' });
+    r = null;
+    if (res.bonus || mult >= 20) { autoLeft = 0; msg(res.bonus ? 'Database Lock complete.' : 'Big win \u2014 autoplay stopped.'); }
+    return settled;
+  } catch (e) {
+    console.error('lion-link: spin error', e);
+    autoLeft = 0;
+    if (r && res) { try { r.settle(res.totalWin, { detail: 'lion-link-database-lock' }); } catch (e2) { console.error(e2); } }
+    msg('Something went wrong \u2014 tap SPIN to try again.');
+    return 'error';
+  } finally {
+    busy = false; paint();
   }
-  const mult = stake ? res.totalWin / stake : 0;
-  const settled = r.settle(res.totalWin, { detail: 'lion-link-database-lock' });
-  if (res.bonus || mult >= 20) { autoLeft = 0; msg(res.bonus ? 'Database Lock complete.' : 'Big win — autoplay stopped.'); }
-  busy = false; paint();
-  return settled;
 }
 
 async function loop() {
   while (autoLeft > 0) {
     const s = await spinOnce();
-    if (s === 'broke') { autoLeft = 0; break; }
+    if (s === 'broke' || s === 'error') { autoLeft = 0; break; }
     autoLeft--; paint();
     if (autoLeft <= 0) break;
     await sleep(450);
