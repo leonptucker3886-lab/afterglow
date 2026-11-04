@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lion-Link · AFTERGLOW social casino</title>
+<meta name="description" content="Lion-Link: 243 ways, expanding Pride Wilds and the DATABASE LOCK hold-and-respin. Play money only.">
+<meta name="theme-color" content="#1a0a03"><link rel="icon" href="/favicon.svg">
+<link rel="canonical" href="https://afterglow.leonlink.net/games/lion-link.html">
+<meta property="og:title" content="Lion-Link · AFTERGLOW social casino">
+<meta property="og:description" content="Expanding Pride Wilds and the DATABASE LOCK. Play money only.">
+<meta property="og:image" content="https://afterglow.leonlink.net/og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/core/ag.css">
+<link rel="stylesheet" href="/games/engine/v2/slots-v2.css">
+<style>
+:root{--acc:#ffb020;--acc2:#ff6a1a}
+.s2-stage{background:radial-gradient(120% 100% at 50% 0%,#5a1e05 0%,#1a0a03 70%)}
+.s2-cell{background:rgba(255,176,32,.06);border-color:rgba(255,176,32,.18)}
+.s2-linkbar{background:linear-gradient(90deg,#4a2006,#1c0c04);border-color:var(--acc)}
+.ll-sym{display:grid;place-items:center;width:100%;height:100%;font-size:clamp(22px,7vw,46px);line-height:1;font-weight:900;color:#ffe27a}
+</style></head>
+<body>
+<script src="https://www.leonlink.net/ll-beats.js" defer></script><script src="https://www.leonlink.net/ll-intro.js" data-cat="casino" defer></script>
+<main class="game">
+  <section class="panel" id="panel">
+    <div class="sl-spinrow">
+      <button class="btn big pri s2-spin" id="spin" aria-label="Spin (space bar)">SPIN</button>
+      <button class="btn pt" id="ptbtn" aria-label="Paytable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></button>
+    </div>
+    <div id="betslot"></div>
+    <div class="sl-opt"><span>Turbo<small>Faster reels</small></span><label class="toggle"><input type="checkbox" id="turbo" aria-label="Turbo spins"><i></i></label></div>
+    <div class="field"><label>Autoplay <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:500">stops on Database Lock or 20×+</span></label>
+      <div class="sl-auto"><div class="seg" id="aseg"><button data-n="10" class="on">10</button><button data-n="25">25</button><button data-n="50">50</button><button data-n="100">100</button></div><button class="btn" id="auto">Auto</button></div>
+    </div>
+  </section>
+  <section class="stage sl" id="stage">
+    <div class="s2-wrap">
+      <div class="s2-head"><h1>LION-<span class="em">LINK</span></h1></div>
+      <div class="s2-linkbar" id="linkbar"><span>Database Lock</span><span>Respins <b id="fsleft">0</b></span><span>Held <b id="fslock">0</b></span><span>Won <b id="fswon">0</b></span></div>
+      <div class="s2-stage" id="s2stage">
+        <div class="s2-mult" id="mult"></div>
+        <div class="s2-grid" id="grid"></div>
+        <div class="s2-overlay" id="overlay"></div>
+      </div>
+      <div class="s2-winbox" id="winbox" aria-live="polite"><small id="winmsg">243 ways · Pride Wilds expand on reels 2–4</small><b id="winamt">0</b></div>
+      <div class="s2-msg" id="msg"></div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/games/lion-link.js"></script>
+</body></html>
