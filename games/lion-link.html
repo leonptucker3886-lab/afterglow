@@ -16,6 +16,13 @@
 .s2-cell{background:rgba(255,176,32,.06);border-color:rgba(255,176,32,.18)}
 .s2-linkbar{background:linear-gradient(90deg,#4a2006,#1c0c04);border-color:var(--acc)}
 .ll-sym{display:grid;place-items:center;width:100%;height:100%;font-size:clamp(22px,7vw,46px);line-height:1;font-weight:900;color:#ffe27a}
+/* mobile: keep controls clear of the bottom nav and hide empty slots */
+@media (max-width:820px){
+  main.game{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  #panel{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+#ptbtn svg{width:22px;height:22px;display:block}
+#betslot:empty,.s2-mult:empty{display:none}
 </style></head>
 <body>
 <script src="https://www.leonlink.net/ll-beats.js" defer></script><script src="https://www.leonlink.net/ll-intro.js" data-cat="casino" defer></script>
