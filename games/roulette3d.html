@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roulette 3D (WIP)</title>
+<style>body{margin:0;background:#0b0b14;color:#fff;font-family:system-ui,sans-serif}#stage{width:100vw;height:70vh;display:flex;align-items:center;justify-content:center}</style>
+</head>
+<body>
+<!-- Roulette 3D scaffold. Hare's 3D engine mounts into #stage via window.Roulette3D.mount(el). -->
+<div id="stage">Roulette 3D — engine not loaded yet</div>
+<script>
+window.Roulette3D = window.Roulette3D || { mount: function(el){ el.textContent = 'Roulette 3D — engine not loaded yet'; } };
+window.Roulette3D.mount(document.getElementById('stage'));
+</script>
+</body>
+</html>
