@@ -74,7 +74,14 @@ export function countWin(box, amtEl, msg, coins, ms = 600) {
   box.classList.toggle('on', coins > 0);
   $('#winmsg').textContent = msg;
   if (RED() || ms <= 0) { amtEl.textContent = fmtFull(coins); return Promise.resolve(); }
-  return tween(0, coins, ms, v => { amtEl.textContent = fmtFull(v); }).catch(() => {});
+  try {
+    return Promise.resolve(tween(0, coins, ms, v => { amtEl.textContent = fmtFull(v); }))
+      .catch(err => { console.error('[slots-v2] countWin failed', err); amtEl.textContent = fmtFull(coins); });
+  } catch (err) {
+    console.error('[slots-v2] countWin failed', err);
+    amtEl.textContent = fmtFull(coins);
+    return Promise.resolve();
+  }
 }
 
 /* Full-stage overlay banner. Returns a promise resolving on tap/timeout. */
