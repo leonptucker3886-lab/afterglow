@@ -56,7 +56,7 @@ export const GAMES = [
   { id: 'route66', name: 'Route 66', tag: 'Road Trip Link · pick + Link Wheel', cat: 'slots', url: '/games/route-66.html', bg: 'linear-gradient(135deg,#0b2a3a,#0b0720 60%,#3a0b2a)', badge: 'NEW', live: true },
   { id: 'civilwar', name: 'Civil War', tag: '117,649 ways · Link Spins', cat: 'slots', url: '/games/civil-war.html', bg: 'linear-gradient(135deg,#2b2118,#14100c 60%,#3a2c1c)', badge: 'NEW', live: true },
   { id: 'classics', name: 'Classic Slots', tag: '4 retro cabinets · Gamble', cat: 'slots', url: '/games/classics.html', bg: 'linear-gradient(135deg,#3a0d2a,#0b0720 60%,#123a2c)', badge: 'NEW', live: true },
-  { id: 'lionlink', name: 'Lion-Link', tag: '243 ways · Pride Wilds · DATABASE LOCK', cat: 'slots', url: '/games/lion-link/', bg: 'linear-gradient(135deg,#3a2a0b,#05050a 60%,#2a1a06)', live: true },
+  { id: 'lionlink', name: 'Lion-Link', tag: '243 ways · Pride Wilds · DATABASE LOCK', cat: 'slots', url: '/games/lion-link.html', bg: 'linear-gradient(135deg,#3a2a0b,#05050a 60%,#2a1a06)', live: true },
 ];
 export const CATS = [['all', 'All games'], ['slots', 'Slots'], ['originals', 'Originals'], ['table', 'Table']];
 export const art = id => ART[id] || ART.soon;
