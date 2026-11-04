@@ -6,6 +6,8 @@
   --c:#22f0ff;--c2:#00b8d4;--p:#ff3dc8;--p2:#c21d97;--l:#b8ff3b;--v:#8b5cff;--y:#ffd84d;--r:#ff4d6d;--g:#39ff88;
   --glow:0 0 18px #22f0ff88,0 0 2px #22f0ff;--glowp:0 0 18px #ff3dc888,0 0 2px #ff3dc8;--glowl:0 0 18px #b8ff3b88;
   --rad:16px;--rad2:12px;--top:58px;--bn:64px;
+  /* bottom-menu clearance: --bn-measured can be set from JS (offsetHeight of .bnav); falls back to --bn */
+  --bn-h:calc(var(--bn-measured,var(--bn)) + env(safe-area-inset-bottom,0px));
   --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
@@ -13,8 +15,10 @@
 html{-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip}
 body{overflow-x:clip}
 body{margin:0;min-height:100vh;color:var(--txt);font:15px/1.5 var(--sans);background:var(--bg);
-  padding-bottom:calc(var(--bn) + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
-@media(min-width:900px){body{padding-bottom:0}}
+  padding-bottom:calc(var(--bn-h) + 12px);scroll-padding-bottom:var(--bn-h);-webkit-tap-highlight-color:transparent}
+html{scroll-padding-bottom:var(--bn-h)}
+.game .panel{scroll-margin-bottom:var(--bn-h)}
+@media(min-width:900px){body{padding-bottom:0}html{scroll-padding-bottom:0}}
 /* Fixed glow layer on its own GPU layer: no full-page repaint on scroll (replaces background-attachment:fixed) */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;transform:translateZ(0);will-change:transform;background:
   radial-gradient(900px 500px at 10% -10%,#22f0ff14,transparent 60%),
@@ -61,7 +65,7 @@ img,svg{display:block;max-width:100%}
 @media(max-width:480px){.gacct{margin-right:6px;padding:8px 10px;font-size:12px;max-width:104px}.gacct .who{max-width:64px}}
 
 /* --- bottom nav --- */
-.bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);height:calc(var(--bn) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);height:var(--bn-h);padding-bottom:env(safe-area-inset-bottom);
   background:#07070fef;border-top:1px solid var(--line)}
 .bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--faint);font:600 11px var(--sans);position:relative}
 .bnav a svg{width:22px;height:22px}
